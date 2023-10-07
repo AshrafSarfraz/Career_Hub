@@ -3,7 +3,7 @@ export const Bobi=require(ImgPath+'Bobi.png')
 export const Gif=require(ImgPath+'Ghost.png')
 export const T_Logo=require(ImgPath+'T_Logo.png')
 export const Bobi_Logo=require(ImgPath+'Bobi_Logo.png')
-export const Mobile=require(ImgPath+'mobile.png')
+
 export const Bg_Logo=require(ImgPath+'Bg_Logo.png')
 export const Circle=require(ImgPath+'circle.png')
 export const Rectangle=require(ImgPath+'rectangle.png')
