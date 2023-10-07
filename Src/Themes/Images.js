@@ -1,8 +1,11 @@
 const ImgPath='../Assets/Images/'
 export const Bobi=require(ImgPath+'Bobi.png')
 export const Gif=require(ImgPath+'Ghost.png')
+export const Logo=require(ImgPath+'logo.png')
 export const T_Logo=require(ImgPath+'T_Logo.png')
 export const Bobi_Logo=require(ImgPath+'Bobi_Logo.png')
+export const Logo_G=require(ImgPath+'logo_G.png')
+
 
 export const Bg_Logo=require(ImgPath+'Bg_Logo.png')
 export const Circle=require(ImgPath+'circle.png')

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Modal, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Colors } from '../../Themes/Colors';
-import { Mobile } from '../../Themes/Images';
+import { Device } from '../../Themes/Images';
 import { Fonts } from '../../Themes/Fonts';
 
 const SuccessAlert = ({ visible, message, onClose }) => {
@@ -9,7 +9,7 @@ const SuccessAlert = ({ visible, message, onClose }) => {
     <Modal transparent={true} visible={visible} animationType="fade">
       <View style={styles.overlay}>
         <View style={styles.alertContainer}>
-        <Image source={Mobile} style={styles.Logo}/>
+        <Image source={Device} style={styles.Logo}/>
 
         <Text style={styles.Txt} >Password reset successful!</Text>
        

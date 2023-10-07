@@ -1,6 +1,6 @@
 import { View, Text,StyleSheet,Image, } from 'react-native'
 import React from 'react'
-import { Bobi_Logo } from '../../Themes/Images'
+import { Bobi_Logo, Logo_G } from '../../Themes/Images'
 import { Fonts } from '../../Themes/Fonts'
 import { Colors } from '../../Themes/Colors'
 
@@ -11,7 +11,7 @@ const Forget_Header = ({title}) => {
       <Text style={styles.Forget_Txt} >Forgot Password?</Text>
       <Text style={styles.Continue_Txt} >{title}</Text>
       </View>
-      <Image source={Bobi_Logo} style={styles.Bobi_Logo} />
+      <Image source={Logo_G} style={styles.Bobi_Logo} />
     </View>
   )
 }
@@ -42,9 +42,10 @@ const styles=StyleSheet.create({
     lineHeight:30,
   },
   Bobi_Logo:{
-   width:100,
-   height:100,
-   resizeMode:'contain'
+   width:80,
+   height:80,
+   resizeMode:'contain',
+   marginRight:"3%"
   }
 
 })

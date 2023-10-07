@@ -55,7 +55,7 @@ const OnBoarding = ({navigation}) => {
         </View>
         <View style={styles.buttonContainer}>
           {isLastSlide ? (
-            <CustomButton title={'Next'} onPress={() =>navigation.navigate('Welcome')} />
+            <CustomButton title={'Next'} onPress={() =>navigation.navigate('Login')} />
           ) : (
             <CustomButton title={'Next'} onPress={handleNextSlide} />
           )}
