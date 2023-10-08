@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text,ScrollView,StyleSheet,TextInput,Image,TouchableOpacity,Alert,} from 'react-native';
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import { Colors } from '../../../Themes/Colors';
 import { Discovery, H_Logo, Hide, Lock, Logo, Message, Profile, Show } from '../../../Themes/Images';
 import CustomButton from '../../../Components/CustomButton/CustomButton';
 import { styles } from './style';
 import CustomHeader2 from '../../../Components/CustomHeader2/CustomHeader2';
+
+
 
 
 const SignUp = ({ navigation }) => {
@@ -20,6 +25,50 @@ const SignUp = ({ navigation }) => {
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
+
+  // firebase  Auth BY Google
+  GoogleSignin.configure({
+    webClientId: '499188544934-7je57jquuqs6cv3fjiatagjqv5meo28f.apps.googleusercontent.com',
+  });
+  async function onGoogleButtonPress() {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+  
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
+// firebase  Auth BY Google
+
+
+
+
+
+// firebase 
+const handleRegister = async () => {
+  try {
+    await auth().createUserWithEmailAndPassword(Email, Password);
+    Alert.alert('User account created & signed in!');
+  } catch (error) {
+    if (error.code === 'auth/email-already-in-use') {
+      Alert.alert('That email address is already in use!');
+    } else if (error.code === 'auth/invalid-email') {
+      Alert.alert('That email address is invalid!');
+    } else {
+      Alert.alert('An error occurred. Please try again later.');
+    }
+  }
+};
+
+//firebase 
+
+
+
 
   return (
     <ScrollView contentContainerStyle={styles.MainContainer}>
@@ -106,12 +155,12 @@ const SignUp = ({ navigation }) => {
     </View>
         </View>
 
-        <TouchableOpacity style={styles.Guest} onPress={()=>{navigation.navigate('BottomTab')}} >
+        <TouchableOpacity style={styles.Guest}  onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))} >
           <Text style={styles.Guest_Btn} >Continue as Google</Text>
         </TouchableOpacity>
 
         <View style={styles.SignUp_Btn} >
-        <CustomButton title='Sign Up' onPress={()=>{navigation.navigate('PhoneNo')}} />
+        <CustomButton title='Sign Up' onPress={()=>{navigation.navigate('PhoneNo'),handleRegister()}} />
         </View>
         <View style={styles.Btn_Cont} >
           <Text style={styles.Already_Txt} >Already have an account?  </Text>

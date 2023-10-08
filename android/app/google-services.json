@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "499188544934",
+    "project_id": "career-hub-c4556",
+    "storage_bucket": "career-hub-c4556.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499188544934:android:fd767a36a701986019cb67",
+        "android_client_info": {
+          "package_name": "com.career_hub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499188544934-jtcjhir4497itrv1mair4alhna8mv6eb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.career_hub",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "499188544934-7je57jquuqs6cv3fjiatagjqv5meo28f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBfDYBlCjZJSdCH5c1RVEW-bxIxWx4qEo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499188544934-7je57jquuqs6cv3fjiatagjqv5meo28f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

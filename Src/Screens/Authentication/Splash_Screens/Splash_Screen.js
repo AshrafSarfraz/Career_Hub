@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image,Button, TouchableOpacity } from 'react-na
 import React from 'react'
 import { Colors } from '../../../Themes/Colors'
 import { Bobi, Gif } from '../../../Themes/Images'
+import { Fonts } from '../../../Themes/Fonts'
 
 
 const Splash_Screen=({navigation}) => {
@@ -16,7 +17,8 @@ setTimeout(() => {
       <Image source={Bobi} style={styles.Logo_Img} />
       </View>
       <View  style={styles.Footer} >
-      <Image source={Gif}    style={styles.Gif_Img} />
+      {/* <Image source={Gif}    style={styles.Gif_Img} /> */}
+      <Text  style={styles.Gift} >In a world with limitless opportunities, anyone can achieve their dreams</Text>
       </View>
       
     </View>
@@ -40,17 +42,27 @@ export default Splash_Screen
       },
     Logo_Img:{
       width:'70%',
-      height:'80%',
+      height:'90%',
       resizeMode:'contain'
     },
     Footer:{
      flex:0.1,
      justifyContent:'center',
-     alignItems:'center'
+     alignItems:'center',
+     width:"85%"
 
     },
     Gif_Img:{
       width:50,height:60,
     },
+    Gift:{
+      fontSize:14,
+      lineHeight:20,
+      textAlign:'center',
+      color:Colors.White,
+      width:"100%",
+      fontFamily:Fonts.SF_Medium,
+      fontWeight:"600"
+    }
     }
     )
