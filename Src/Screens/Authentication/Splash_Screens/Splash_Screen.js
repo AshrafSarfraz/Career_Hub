@@ -18,7 +18,7 @@ setTimeout(() => {
       </View>
       <View  style={styles.Footer} >
       {/* <Image source={Gif}    style={styles.Gif_Img} /> */}
-      <Text  style={styles.Gift} >In a world with limitless opportunities, anyone can achieve their dreams</Text>
+      <Text  style={styles.Gift} >In a world with limitless opportunities</Text>
       </View>
       
     </View>
@@ -47,7 +47,7 @@ export default Splash_Screen
     },
     Footer:{
      flex:0.1,
-     justifyContent:'center',
+     justifyContent:'flex-end',
      alignItems:'center',
      width:"85%"
 

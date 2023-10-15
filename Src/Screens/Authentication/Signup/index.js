@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text,ScrollView,StyleSheet,TextInput,Image,TouchableOpacity,Alert,} from 'react-native';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore'; // Import Firebase Firestore
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import Icons from 'react-native-vector-icons/FontAwesome5';
@@ -18,62 +19,61 @@ const SignUp = ({ navigation }) => {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
   const [ConfirmPassword, setConfirmPassword] = useState('');
-  const [ShowPassword,setShowPassword]=useState(false)
-  const [ShowConfirmPassword,setShowConfirmPassword]=useState(false)
+  const [ShowPassword, setShowPassword] = useState(false);
+  const [ShowConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isError, setIsError] = useState('');
   const [isChecked, setIsChecked] = useState(false);
- 
+
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
 
-  // firebase  Auth BY Google
+  // Firebase Auth BY Google
   GoogleSignin.configure({
     webClientId: '499188544934-7je57jquuqs6cv3fjiatagjqv5meo28f.apps.googleusercontent.com',
   });
-  async function onGoogleButtonPress() {
-    // Check if your device supports Google Play
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn();
-  
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
-  }
 
-// firebase  Auth BY Google
-
-
-
-
-
-// firebase 
-const handleRegister = async () => {
-  try {
-    await auth().createUserWithEmailAndPassword(Email, Password);
-    Alert.alert('User account created & signed in!');
-  } catch (error) {
-    if (error.code === 'auth/email-already-in-use') {
-      Alert.alert('That email address is already in use!');
-    } else if (error.code === 'auth/invalid-email') {
-      Alert.alert('That email address is invalid!');
-    } else {
-      Alert.alert('An error occurred. Please try again later.');
+  const handleRegister = async () => {
+    if (!Email || !Password || !Username || !ConfirmPassword) {
+      Alert.alert('All fields are required.');
+      return;
     }
-  }
-};
 
-//firebase 
+    if (Password !== ConfirmPassword) {
+      Alert.alert("Passwords don't match.");
+      return;
+    }
 
+    try {
+      const userCredential = await auth().createUserWithEmailAndPassword(Email, Password);
+      const user = userCredential.user;
+      const uid = user.uid;
 
+      // Save user data in Firestore
+      await firestore().collection('users').doc(uid).set({
+        username: Username,
+        email: Email,
+        // Add other user information as needed
+      });
 
+      // Navigate to the desired screen
+      navigation.navigate('Profile'); // Change 'Profile' to the screen name you want to navigate to.
+      Alert.alert('User account created & signed in!');
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        Alert.alert('That email address is already in use!');
+      } else if (error.code === 'auth/invalid-email') {
+        Alert.alert('That email address is invalid!');
+      } else {
+        Alert.alert('An error occurred. Please try again later.');
+      }
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.MainContainer}>
       <View>
-        <CustomHeader2 title="" onBackPress={() => { navigation.navigate('Login')}} />
+        <CustomHeader2 title="" onBackPress={() => { navigation.goBack()}} />
         
         <Image source={Logo} style={styles.H_Logo} resizeMode="contain" />
         <Text style={styles.Welcome_Txt}>Welcome!</Text>
@@ -160,7 +160,7 @@ const handleRegister = async () => {
         </TouchableOpacity>
 
         <View style={styles.SignUp_Btn} >
-        <CustomButton title='Sign Up' onPress={()=>{navigation.navigate('PhoneNo'),handleRegister()}} />
+        <CustomButton title='Sign Up' onPress={()=>{handleRegister()}} />
         </View>
         <View style={styles.Btn_Cont} >
           <Text style={styles.Already_Txt} >Already have an account?  </Text>

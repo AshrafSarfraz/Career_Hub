@@ -13,6 +13,7 @@ import ForgetPassword from '../../Screens/Authentication/ForgetPassword/ForgetPa
 import GetCode from '../../Screens/Authentication/ForgetPassword/GetCode';
 import Reset from '../../Screens/Authentication/ForgetPassword/Reset';
 
+
 function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -26,7 +27,7 @@ const Stack = createNativeStackNavigator();
 const Stack_Navigation=()=>{
   return (
     <NavigationContainer>
-      <Stack.Navigator  screenOptions={{headerShown:false}} >
+      <Stack.Navigator   initialRouteName='Splash_Blank' screenOptions={{headerShown:false}} >
         <Stack.Screen name="Splash_Blank" component={Splash_Blank} />
         <Stack.Screen name="Splash" component={Splash_Screen} />
         <Stack.Screen name="onBoarding" component={OnBoarding} />
@@ -37,6 +38,8 @@ const Stack_Navigation=()=>{
         <Stack.Screen name="Forget" component={ForgetPassword} />
         <Stack.Screen name="GetCode" component={GetCode} />
         <Stack.Screen name="Reset" component={Reset} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+       
 
 
 

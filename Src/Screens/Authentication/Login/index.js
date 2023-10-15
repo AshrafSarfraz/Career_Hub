@@ -120,7 +120,8 @@ const SignInScreen = ({ navigation }) => {
 
         </View>
         <View style={styles.SignUp_Btn} >
-        <CustomButton title='Sign In' onPress={handleSignIn} />
+        {/* <CustomButton title='Sign In' onPress={handleSignIn} /> */}
+        <CustomButton title='Sign In' onPress={()=>{navigation.navigate('HomeScreen')}} />
         </View>
         <TouchableOpacity style={styles.Guest} onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))} >
           <Text style={styles.Guest_Btn} >Continue With Google</Text>
