@@ -1,13 +1,16 @@
 const ImgPath='../Assets/Images/'
 export const Bobi=require(ImgPath+'Bobi.png')
-export const Gif=require(ImgPath+'Ghost.png')
 export const Logo=require(ImgPath+'logo.png')
+export const CareerHub_W=require(ImgPath+'CareerHub_W.png')
 export const T_Logo=require(ImgPath+'T_Logo.png')
 export const Bobi_Logo=require(ImgPath+'Bobi_Logo.png')
 export const Logo_G=require(ImgPath+'logo_G.png')
+export const Logo_W=require(ImgPath+'logo_W.png')
+export const HeaderHome=require(ImgPath+'Home.png')
+export const Menu=require(ImgPath+'Menu.png')
 
 
-export const Bg_Logo=require(ImgPath+'Bg_Logo.png')
+export const Gif=require(ImgPath+'Ghost.png')
 export const Circle=require(ImgPath+'circle.png')
 export const Rectangle=require(ImgPath+'rectangle.png')
 export const Device=require(ImgPath+'Device.png')
@@ -30,13 +33,19 @@ export const ScanBg=require(ImgPath+'ScanBg.png')
 export const Qrcode=require(ImgPath+'Qrcode.png')
 export const Chatting=require(ImgPath+'chatting.png')
 export const QR=require(ImgPath+'QR.png')
-export const Bhoot=require(ImgPath+'Bhoot.png')
 export const shout=require(ImgPath+'shout.png')
 
 
 
 const IconPath='../Assets/Icons/'
 export const Back_Icon=require(IconPath+'goBack.png')
+export const Addmission=require(IconPath+'Admission.png')
+export const Staff=require(IconPath+'Staff.png')
+export const Scholarship=require(IconPath+'Scholarship.png')
+export const Resume=require(IconPath+'Resume.png')
+
+
+
 export const Discovery=require(IconPath+'Discovery.png')
 export const Hide=require(IconPath+'Hide.png')
 export const Show=require(IconPath+'Show.png')

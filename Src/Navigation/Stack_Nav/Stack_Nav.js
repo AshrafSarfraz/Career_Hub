@@ -12,22 +12,17 @@ import Otp from '../../Screens/Authentication/PhoneValidation/Enter_Otp';
 import ForgetPassword from '../../Screens/Authentication/ForgetPassword/ForgetPassword';
 import GetCode from '../../Screens/Authentication/ForgetPassword/GetCode';
 import Reset from '../../Screens/Authentication/ForgetPassword/Reset';
+import HomeScreen from '../../Screens/HomeScreen';
 
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
+
 
 const Stack = createNativeStackNavigator();
 
 const Stack_Navigation=()=>{
   return (
     <NavigationContainer>
-      <Stack.Navigator   initialRouteName='Splash_Blank' screenOptions={{headerShown:false}} >
+      <Stack.Navigator   initialRouteName='HomeScreen' screenOptions={{headerShown:false}} >
         <Stack.Screen name="Splash_Blank" component={Splash_Blank} />
         <Stack.Screen name="Splash" component={Splash_Screen} />
         <Stack.Screen name="onBoarding" component={OnBoarding} />
