@@ -5,13 +5,13 @@ import { Colors } from '../../Themes/Colors'
 import { Fonts } from '../../Themes/Fonts'
 
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   return (
     <View style={styles.MainCont} >
     
       <ImageBackground source={HeaderHome} style={styles.Header} imageStyle={{width:"100%",height:300,resizeMode:"contain",top:"-60%"}}>
       <View style={styles.Logo_Cont} >
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>{navigation.openDrawer()}} >
       <Image source={Menu} style={styles.Menu} />
       </TouchableOpacity>
       <Image source={CareerHub_W} style={styles.CareerHub_Logo} />
@@ -96,7 +96,7 @@ const styles=StyleSheet.create({
     marginTop:'5%'
   },
   BtnContainer:{
-      top:'38%',
+      top:'42%',
       flexDirection:"row",
       flexWrap:"wrap",
       justifyContent:'space-between',
@@ -104,13 +104,13 @@ const styles=StyleSheet.create({
       
   },
   Btn:{
-     width:'45%',height:140,
+     width:'44%',height:125,
      backgroundColor:Colors.White,
      elevation:7,
      alignItems:"center",
      justifyContent:'center',
      borderRadius:15,
-     margin:"2%",
+     margin:"3%",
      
 
   },
