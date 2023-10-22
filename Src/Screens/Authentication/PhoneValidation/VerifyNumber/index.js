@@ -37,7 +37,7 @@ const PhoneValidation = ({ navigation }) => {
   // Handle the button press to send the verification code
   async function sendVerificationCode() {
     try {
-      const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+      const confirmation = await auth().signInWithPhoneNumber(PhoneNumber);
       setConfirm(confirmation);
       setVerificationCodeSent(true); // Set to true after sending the code
     } catch (error) {

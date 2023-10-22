@@ -1,4 +1,4 @@
-import { View, Text, Image, ImageBackground, StyleSheet,TouchableOpacity } from 'react-native'
+import { View, Text, Image, ImageBackground, StyleSheet,TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 import { Addmission, CareerHub_W, HeaderHome, Logo4, Logo_W, Menu, Resume, Scholarship, Staff } from '../../Themes/Images'
 import { Colors } from '../../Themes/Colors'
@@ -20,22 +20,22 @@ const HomeScreen = ({navigation}) => {
       <Text style={styles.World_Txt} >A World of Limitless Opportunities </Text>
       </ImageBackground>
       <View style={styles.BtnContainer} >
-      <TouchableOpacity style={styles.Btn} >
+      <TouchableOpacity style={styles.Btn}  onPress={()=>{navigation.navigate('Uni_Name')}} >
       <Image  source={Addmission} style={styles.Btn_Icon}/>
       <Text style={styles.Btn_Txt} >Admission </Text>
       <Text style={styles.Avaliable_Txt} > 29 Avaliable </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.Btn} >
+      <TouchableOpacity style={styles.Btn} onPress={()=>{navigation.navigate('Uni_Name')}} >
       <Image  source={Scholarship} style={styles.Btn_Icon}/>
       <Text style={styles.Btn_Txt} >Scholarship</Text>
       <Text style={styles.Avaliable_Txt} > 29 Avaliable </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.Btn} >
+      <TouchableOpacity style={styles.Btn}  onPress={()=>{navigation.navigate('Uni_Name')}} >
       <Image  source={Staff} style={styles.Btn_Icon}/>
       <Text style={styles.Btn_Txt} >Job-Seeker</Text>
       <Text style={styles.Avaliable_Txt} > 29 Avaliable </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.Btn} >
+      <TouchableOpacity style={styles.Btn}  onPress={()=>{Alert.alert('Still Close')}} >
       <Image  source={Resume} style={styles.Btn_Icon}/>
       <Text style={styles.Btn_Txt} >Resume</Text>
       <Text style={styles.Avaliable_Txt} > 29 Avaliable </Text>

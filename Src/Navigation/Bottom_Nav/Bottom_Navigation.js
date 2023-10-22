@@ -30,7 +30,7 @@ function MyTabs() {
             iconName = require('../../Assets/Icons/Notification.png');
             tintColor = focused ? '#038F54' : '#E2E2E2';
           } else if (route.name === 'Bookmark') {
-            iconName = require('../../Assets/Icons/bookmark.png');
+            iconName = require('../../Assets/Icons/bookmark1.png');
             tintColor = focused ? '#038F54' : '#E2E2E2';
           } else if (route.name === 'Profile') {
             iconName = require('../../Assets/Icons/Profile.png');

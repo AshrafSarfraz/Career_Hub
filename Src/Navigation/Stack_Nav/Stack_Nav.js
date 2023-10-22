@@ -14,6 +14,8 @@ import GetCode from '../../Screens/Authentication/ForgetPassword/GetCode';
 import Reset from '../../Screens/Authentication/ForgetPassword/Reset';
 import HomeScreen from '../../Screens/HomeScreen';
 import Bottom from '../Bottom_Nav/Bottom_Navigation';
+import university_Name from '../../Screens/Universities/Names/Index';
+import Uni_Details from '../../Screens/Universities/Details';
 
 
 
@@ -35,6 +37,8 @@ const Stack_Navigation=()=>{
         <Stack.Screen name="GetCode" component={GetCode} />
         <Stack.Screen name="Reset" component={Reset} />
         <Stack.Screen name="Bottom" component={Bottom} />
+        <Stack.Screen name="Uni_Name" component={university_Name} />
+        <Stack.Screen name="Uni_Detail" component={Uni_Details} />
        
 
 
