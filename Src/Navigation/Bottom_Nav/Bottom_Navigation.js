@@ -24,13 +24,13 @@ function MyTabs() {
           let tintColor;
 
           if (route.name === 'Home') {
-            iconName = require('../../Assets/Icons/search.png');
+            iconName = require('../../Assets/Icons/home.png');
             tintColor = focused ? '#038F54' : '#E2E2E2';
           } else if (route.name === 'Notification') {
-            iconName = require('../../Assets/Icons/plus.png');
+            iconName = require('../../Assets/Icons/Notification.png');
             tintColor = focused ? '#038F54' : '#E2E2E2';
           } else if (route.name === 'Bookmark') {
-            iconName = require('../../Assets/Icons/sms.png');
+            iconName = require('../../Assets/Icons/bookmark.png');
             tintColor = focused ? '#038F54' : '#E2E2E2';
           } else if (route.name === 'Profile') {
             iconName = require('../../Assets/Icons/Profile.png');

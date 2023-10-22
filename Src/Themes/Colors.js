@@ -11,7 +11,5 @@ export const Colors={
     Grey9:'#9E9E9E',
     Black:'#000000',
     Black2:'#232C33',
-    Black4:'#424242'
-
-    
+    Black4:'#424242'  
 }

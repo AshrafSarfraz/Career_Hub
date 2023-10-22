@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Modal, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Colors } from '../../Themes/Colors';
-import { Device, Mobile } from '../../Themes/Images';
+import { Device, } from '../../Themes/Images';
 import { Fonts } from '../../Themes/Fonts';
 
 const SubmissionAlert = ({ visible, message, onClose }) => {
@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
       fontFamily:Fonts.SF_Bold,
       color:Colors.Black,
       lineHeight:28,
-      marginVertical:'4%'
+      marginVertical:'4%',
+      fontWeight:"600"
     },
   okButton: {
     backgroundColor:Colors.Green,

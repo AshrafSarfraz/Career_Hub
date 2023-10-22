@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image,Button, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Colors } from '../../../Themes/Colors'
-import { Bobi, Gif } from '../../../Themes/Images'
+import {  Logo4 } from '../../../Themes/Images'
 import { Fonts } from '../../../Themes/Fonts'
 
 
@@ -14,7 +14,7 @@ setTimeout(() => {
   return (
     <View style={styles.Main_Container} >
       <View  style={styles.Body} >
-      <Image source={Bobi} style={styles.Logo_Img} />
+      <Image source={Logo4} style={styles.Logo_Img} />
       </View>
       <View  style={styles.Footer} >
       {/* <Image source={Gif}    style={styles.Gif_Img} /> */}

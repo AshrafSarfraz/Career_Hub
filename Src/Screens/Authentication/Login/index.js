@@ -14,7 +14,7 @@ import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import { Colors } from '../../../Themes/Colors';
-import { Discovery, H_Logo, Hide, Lock, Logo, Message, Profile, Show } from '../../../Themes/Images';
+import { Drop, Hide, Lock,  Message, Show } from '../../../Themes/Images';
 import CustomButton from '../../../Components/CustomButton/CustomButton';
 import { styles } from './style';
 
@@ -23,53 +23,58 @@ const SignInScreen = ({ navigation }) => {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
   const [ShowPassword,setShowPassword]=useState(false)
+  const [isError, setIsError] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
+
 
 // firebase  Auth BY Google
   GoogleSignin.configure({
     webClientId: '499188544934-7je57jquuqs6cv3fjiatagjqv5meo28f.apps.googleusercontent.com',
   });
   async function onGoogleButtonPress() {
-    // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    // Get the users ID token
     const { idToken } = await GoogleSignin.signIn();
-  
-    // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  
-    // Sign-in the user with the credential
     return auth().signInWithCredential(googleCredential);
   }
-
 // firebase  Auth BY Google
 
+
 // firebase  Auth BY Email/Password
-  const handleSignIn = async () => {
-    try {
-      await auth().signInWithEmailAndPassword(Email,Password)
-      // navigation.navigate('HomeScreen')
-      Alert.alert('User signed in successfully!');
-      // You can navigate to the next screen or perform other actions here
-    } catch (error) {
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        Alert.alert('Invalid email or password. Please try again.');
-      } 
-      else  {
-        Alert.alert('An error occurred. Please try again later.');
-      }
+const handleSignIn = async () => {
+  if (!Email || !Password ) {
+    setIsError('Please fill in both email and password fields and checkbox.');
+    return; // Don't proceed with sign-in
+  }
+
+  if (!isChecked) {
+    setIsError('Please check the "Remember me" checkbox.');
+    return; // Don't proceed with sign-in
+  }
+
+  try {
+    await auth().signInWithEmailAndPassword(Email, Password);
+    setIsError('User signed in successfully!');
+    navigation.navigate('Bottom');
+  } catch (error) {
+    if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+      setIsError('Invalid email or password. Please try again.');
+    } else {
+      setIsError('An error occurred. Please try again later.');
     }
-  };
+  }
+};
+
 
   // firebase  Auth BY Email/Password
 
   return (
     <ScrollView contentContainerStyle={styles.MainContainer}>
       <View>
-        <Image source={Logo} style={styles.H_Logo} resizeMode="contain" />
+        <Image source={Drop} style={styles.H_Logo} resizeMode="contain" />
         <Text style={styles.Welcome_Txt}>Welcome Back!</Text>
         <Text style={styles.SignUp_Txt}>Sign in with your account</Text>
         <View style={styles.InputContainer}>
@@ -117,11 +122,13 @@ const SignInScreen = ({ navigation }) => {
          <Text style={styles.Forget_Txt} >Forgot Password</Text>
          </TouchableOpacity>
     </View>
-
+         {isError ? (
+          <Text style={{ color: 'red' }}>{isError}</Text>
+         ) : null}
         </View>
         <View style={styles.SignUp_Btn} >
-        {/* <CustomButton title='Sign In' onPress={handleSignIn} /> */}
-        <CustomButton title='Sign In' onPress={()=>{navigation.navigate('Bottom')}} />
+        <CustomButton title='Sign In Auth ' onPress={handleSignIn} /> 
+       
         </View>
         <TouchableOpacity style={styles.Guest} onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))} >
           <Text style={styles.Guest_Btn} >Continue With Google</Text>

@@ -1,6 +1,6 @@
 import { View, Text,StyleSheet,Image, } from 'react-native'
 import React from 'react'
-import { Bobi_Logo, Logo_G } from '../../Themes/Images'
+import { Logo1,  } from '../../Themes/Images'
 import { Fonts } from '../../Themes/Fonts'
 import { Colors } from '../../Themes/Colors'
 
@@ -11,7 +11,7 @@ const Forget_Header = ({title}) => {
       <Text style={styles.Forget_Txt} >Forgot Password?</Text>
       <Text style={styles.Continue_Txt} >{title}</Text>
       </View>
-      <Image source={Logo_G} style={styles.Bobi_Logo} />
+      <Image source={Logo1} style={styles.Bobi_Logo} />
     </View>
   )
 }

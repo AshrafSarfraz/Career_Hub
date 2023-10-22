@@ -6,6 +6,8 @@ import Forget_Header from '../../../../Components/ForgetPass_Header/Forget_Heade
 import { Message } from '../../../../Themes/Images'
 import CustomButton from '../../../../Components/CustomButton/CustomButton'
 import { styles } from './style'
+
+
 const ForgetPassword = ({navigation}) => {
   const [Email, setEmail] = useState('');
   return (

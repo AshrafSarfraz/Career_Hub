@@ -1,6 +1,6 @@
 import { View, Text, Image, ImageBackground, StyleSheet,TouchableOpacity } from 'react-native'
 import React from 'react'
-import { Addmission, CareerHub_W, HeaderHome, Logo_W, Menu, Resume, Scholarship, Staff } from '../../Themes/Images'
+import { Addmission, CareerHub_W, HeaderHome, Logo4, Logo_W, Menu, Resume, Scholarship, Staff } from '../../Themes/Images'
 import { Colors } from '../../Themes/Colors'
 import { Fonts } from '../../Themes/Fonts'
 
@@ -9,12 +9,12 @@ const HomeScreen = ({navigation}) => {
   return (
     <View style={styles.MainCont} >
     
-      <ImageBackground source={HeaderHome} style={styles.Header} imageStyle={{width:"100%",height:300,resizeMode:"contain",top:"-60%"}}>
+      <ImageBackground source={HeaderHome} style={styles.Header} imageStyle={{width:"100%",height:300,resizeMode:"contain",top:"-30%"}}>
       <View style={styles.Logo_Cont} >
       <TouchableOpacity onPress={()=>{navigation.openDrawer()}} >
       <Image source={Menu} style={styles.Menu} />
       </TouchableOpacity>
-      <Image source={CareerHub_W} style={styles.CareerHub_Logo} />
+      <Image source={Logo4} style={styles.CareerHub_Logo} />
       </View>
       <Text style={styles.Wlcm_Txt} >Welcome To Career Hub</Text>
       <Text style={styles.World_Txt} >A World of Limitless Opportunities </Text>
@@ -63,7 +63,7 @@ const styles=StyleSheet.create({
       justifyContent:'space-between',
       alignItems:"center",
       padding:"3%",
-      paddingTop:"7%"
+      paddingTop:30
   },
   Menu:{
     width:60,height:60
@@ -96,7 +96,7 @@ const styles=StyleSheet.create({
     marginTop:'5%'
   },
   BtnContainer:{
-      top:'42%',
+      top:'45%',
       flexDirection:"row",
       flexWrap:"wrap",
       justifyContent:'space-between',

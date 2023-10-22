@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Modal, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Colors } from '../../Themes/Colors';
-import { Mobile, Wallet } from '../../Themes/Images';
+import {  Wallet } from '../../Themes/Images';
 import { Fonts } from '../../Themes/Fonts';
 
 const PaymentAlert = ({ visible, message, onClose }) => {

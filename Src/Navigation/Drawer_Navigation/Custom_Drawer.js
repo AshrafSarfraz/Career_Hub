@@ -7,8 +7,9 @@ import {
   } from '@react-navigation/drawer';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Bobi, Logo, Profile, Profile2 } from '../../Themes/Images';
+import { Bobi, Doc, Home, Logo, Logo1, Logout, Profile, Profile2 } from '../../Themes/Images';
 import { Fonts } from '../../Themes/Fonts';
+import { Colors } from '../../Themes/Colors';
 
   
 
@@ -25,61 +26,50 @@ function CustomDrawerContent(props) {
           label="Help"
           onPress={() =>{props.navigation.navigate('Navigator')}}
         /> */}
-
-
+          <View  style={{backgroundColor:Colors.Green,borderBottomWidth:1,borderColor:Colors.Grey4 ,top:'-1%'}} >
+        <Image source={require('../../Assets/Images/uni_logo.png')}  style={[styles.UserImg]} />
+        <Text  style={styles.UserName} >Ashraf Sarfraz</Text>
+        </View>
+        <View style={{padding:'4%'}} >
         <TouchableOpacity onPress={()=>{setButtonState(1),props.navigation.navigate('HomeScreen')}}  style={[styles.ButtonStyle,ButtonState===1?styles.ActiveButton:null]} >
           {ButtonState===1?
-          <Image source={Bobi}  style={styles.HomeIcon} />
+          <Image source={Home}  style={[styles.HomeIcon,{tintColor:'#FFFFFF'}]} />
           :
-          <Image source={Bobi}  style={styles.HomeIcon} />  }
+          <Image source={Home}  style={styles.HomeIcon} />  }
           <Text style={[styles.Label,ButtonState===1?styles.ActiveButtonTxt:null]} >Home</Text>
         </TouchableOpacity>
 
-
-        <TouchableOpacity onPress={()=>{setButtonState(2),props.navigation.navigate('Buy_Pixel')}}  style={[styles.ButtonStyle,ButtonState===2?styles.ActiveButton:null]} >
+        <TouchableOpacity onPress={()=>{setButtonState(2),props.navigation.navigate('Contact')}}  style={[styles.ButtonStyle,ButtonState===2?styles.ActiveButton:null]} >
           {ButtonState===2?
-          <Image source={Bobi}  style={styles.HomeIcon} />
+          <Image source={Profile}  style={[styles.HomeIcon,{tintColor:'#FFFFFF'}]} />
           :
-          <Image source={Bobi}  style={styles.HomeIcon} />  }
-          <Text style={[styles.Label,ButtonState===2?styles.ActiveButtonTxt:null]} >Buy Pixel</Text>
+          <Image source={Profile}  style={[styles.HomeIcon,{tintColor:Colors.Green}]} />  }
+          <Text style={[styles.Label,ButtonState===2?styles.ActiveButtonTxt:null]} >Contact us</Text>
         </TouchableOpacity>
 
 
-        <TouchableOpacity onPress={()=>{setButtonState(3),props.navigation.navigate('View_Pixel')}}  style={[styles.ButtonStyle,ButtonState===3?styles.ActiveButton:null]} >
+        <TouchableOpacity onPress={()=>{setButtonState(3),props.navigation.navigate('Policies')}}  style={[styles.ButtonStyle,ButtonState===3?styles.ActiveButton:null]} >
           {ButtonState===3?
-          <Image source={Bobi}  style={styles.HomeIcon} />
+          <Image source={Doc} style={[styles.HomeIcon,{tintColor:'#FFFFFF'}]}  />
           :
-          <Image source={Bobi}  style={styles.HomeIcon} />  }
-          <Text style={[styles.Label,ButtonState===3?styles.ActiveButtonTxt:null]} >View Pixel</Text>
-        </TouchableOpacity>
-
-
-        <TouchableOpacity onPress={()=>{setButtonState(4),props.navigation.navigate('')}}  style={[styles.ButtonStyle,ButtonState===4?styles.ActiveButton:null]} >
-          {ButtonState===4?
-          <Image source={Profile}  style={styles.HomeIcon} />
-          :
-          <Image source={Profile2}  style={styles.HomeIcon} />  }
-          <Text style={[styles.Label,ButtonState===4?styles.ActiveButtonTxt:null]} >Contact us</Text>
-        </TouchableOpacity>
-
-
-        <TouchableOpacity onPress={()=>{setButtonState(5),props.navigation.navigate('Policies')}}  style={[styles.ButtonStyle,ButtonState===5?styles.ActiveButton:null]} >
-          {ButtonState===5?
-          <Image source={Bobi}  style={styles.HomeIcon} />
-          :
-          <Image source={Bobi}  style={styles.HomeIcon} />  }
-          <Text style={[styles.Label,ButtonState===5?styles.ActiveButtonTxt:null]} >Terms & Privay Policy</Text>
+          <Image source={Doc}  style={[styles.HomeIcon,{tintColor:Colors.Green}]}  />  }
+          <Text style={[styles.Label,ButtonState===3?styles.ActiveButtonTxt:null]} >Terms & Privay Policy</Text>
         </TouchableOpacity>
         
+        <TouchableOpacity onPress={()=>{setButtonState(4),props.navigation.navigate('Policies')}}  style={[styles.ButtonStyle,ButtonState===4?styles.ActiveButton:null]} >
+        {ButtonState===4?
+        <Image source={Logout} style={[styles.HomeIcon,{tintColor:'#FFFFFF'}]}  />
+        :
+        <Image source={Logout}  style={[styles.HomeIcon,{tintColor:Colors.Green}]}  />  }
+        <Text style={[styles.Label,ButtonState===4?styles.ActiveButtonTxt:null]} >Logout</Text>
+      </TouchableOpacity>
+      </View>
         <View  style={styles.VersionContainer} >
-        <Image
-        style={styles.logo_Image}
-        source={Logo}
-      />
-         <Text  style={styles.Vibes} >Vibes</Text>
-         <Text  style={styles.ShareVibes} >SHARE YOUR VIBES WITH US</Text>
-         <Text  style={styles.Version} >VERSION 1.0</Text>
-        </View>
+      
+        <Text  style={styles.Vibes} >CareerHub</Text>
+        <Text  style={styles.ShareVibes} >SHARE YOUR VIBES WITH US</Text>
+        <Text  style={styles.Version} >VERSION 1.0</Text>
+       </View>
       </DrawerContentScrollView>
       </View>
     );
@@ -89,9 +79,27 @@ function CustomDrawerContent(props) {
   const styles=StyleSheet.create({
       DrawerCont:{
         flex:1,
-        backgroundColor:'red',
-        padding:"4%",
-        paddingTop:'30%'
+        backgroundColor:Colors.White,
+     
+      
+       },
+       UserImg:{
+       width:80,height:80,
+       borderRadius:50,
+       resizeMode:"contain",
+       alignSelf:"center",
+       marginTop:'8%',
+       marginBottom:'2%'
+       },
+       UserName:{
+        fontSize:20,
+       lineHeight:30,
+       color:Colors.White,
+       textAlign:"center",
+       marginVertical:"2%",
+       paddingBottom:"4%",
+       fontFamily:Fonts.SF_SemiBold
+
        },
     ButtonStyle:{
       width:'100%',
@@ -100,14 +108,14 @@ function CustomDrawerContent(props) {
       flexDirection:"row",
       padding:'4%',
       paddingHorizontal:"6%",
-      marginBottom:'4%'
+      marginBottom:'2%'
     },
     ActiveButton:{
-      backgroundColor:'#000000',
+      backgroundColor:Colors.Green,
       borderRadius:7
     },
     ActiveButtonTxt:{
-      color:'red'
+      color:'#FFFFFF'
     },
     HomeIcon:{
       width:25,height:25,resizeMode:'contain',marginRight:"5%"
@@ -115,24 +123,20 @@ function CustomDrawerContent(props) {
     Label:{
       fontSize:16,
       lineHeight:20,
-      color:"#FFFFFF",
+      color:Colors.Green,
       fontWeight:'700'
     },
     VersionContainer:{
-      marginTop:'63%',
+      marginTop:'40%',
       justifyContent:'center',
       alignItems:'center'
     },
  
-  logo_Image: {
-    height: 60,
-    width:60,
-    resizeMode: 'contain',
-  },
+
   Vibes:{
     fontSize:22,
     fontFamily:Fonts.SF_Bold,
-    color:"#FFFFFF",
+    color:Colors.Green,
     fontWeight:'900',
     lineHeight:30,
    

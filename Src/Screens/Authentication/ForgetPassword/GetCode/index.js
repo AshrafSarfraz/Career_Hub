@@ -1,13 +1,12 @@
 import { View, Text,ScrollView ,StyleSheet,Image,TextInput,TouchableOpacity,Alert} from 'react-native'
 import React,{useState,useRef,useEffect} from 'react'
-import { Colors } from '../../../../Themes/Colors'
+
 import CustomHeader from '../../../../Components/CustomHeader/CustomHeader'
 import Forget_Header from '../../../../Components/ForgetPass_Header/Forget_Header'
-import { Message } from '../../../../Themes/Images'
 import CustomButton from '../../../../Components/CustomButton/CustomButton'
 import { useRoute } from '@react-navigation/native'
-import { Fonts } from '../../../../Themes/Fonts'
 import { styles } from './style'
+
 const GetCode = ({navigation}) => {
     const route = useRoute()
     const [otp, setOtp] = useState(['', '', '', '','','']);

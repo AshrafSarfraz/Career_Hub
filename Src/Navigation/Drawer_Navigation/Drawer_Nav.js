@@ -5,6 +5,9 @@ import Notification from '../../Screens/Notifications';
 import HomeScreen from '../../Screens/HomeScreen';
 import Bookmarks from '../../Screens/Bookmark';
 import Profile from '../../Screens/Profile';
+import Contact from '../../Screens/Contact';
+import Policies from '../../Screens/Policies';
+
 
 
 
@@ -26,14 +29,14 @@ const MyDrawer = () => {
         options={{ title: 'Home' }}
       />
       <Drawer.Screen
-        name='Buy_Pixel'
-        component={Notification}
-        options={{ title: 'Buy_Pixel' }}
+        name='Contact'
+        component={Contact}
+        options={{ title: 'Contact' }}
       />
       <Drawer.Screen
-        name='View_Pixel'
-        component={Bookmarks}
-        options={{ title: 'View_Pixel' }}
+        name='Policies'
+        component={Policies}
+        options={{ title: 'Policies' }}
       />
       <Drawer.Screen
         name='Contact_Us'
