@@ -8,8 +8,8 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.Bg,
   },
   Back_Icon: {
-    width: 30,
-    height: 30,
+    width: 60,
+    height: 50,
   },
   slide: {
     flex: 1,

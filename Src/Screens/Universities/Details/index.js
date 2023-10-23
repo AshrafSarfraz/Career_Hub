@@ -61,8 +61,8 @@ const Uni_Details = ({navigation}) => {
          <View  style={styles.Header} >
           <TouchableOpacity   onPress={()=>{navigation.goBack()}}  style={styles.Back_Cont} >
             <Image  source={Back_Icon} style={styles.Back_Icon}/>
-            <Text style={styles.Back_Txt} >Details</Text>
           </TouchableOpacity>
+          <Text style={styles.Back_Txt} >Details</Text>
          <View style={styles.Auth_Cont} >
            <TouchableOpacity  >
            <Image source={Bookmark} style={styles.Bookmark} />
@@ -137,8 +137,9 @@ const styles=StyleSheet.create({
     Header:{
     flexDirection:'row',
     justifyContent:'space-between',
-    paddingVertical:'6%',
+    paddingVertical:'4%',
     backgroundColor:Colors.Bg,
+    alignItems:"center"
     },
     Back_Cont:{
        flexDirection:'row',
@@ -146,25 +147,27 @@ const styles=StyleSheet.create({
     
     },
     Back_Txt:{
-         marginLeft:"8%",
+        
          color:Colors.Green,
-         fontFamily:Fonts.SF_Medium,
-         lineHeight:24,
-         fontSize:20
+         fontFamily:Fonts.SF_Bold,
+         lineHeight:26,
+         fontSize:22,
+         fontWeight:"700",
+         marginRight:"3%"
     },
     Back_Icon:{
-     width:25,height:25,
+     width:50,height:50,
      marginLeft:"5%",
-     tintColor:Colors.Green
+   
     },
     Auth_Cont:{
       flexDirection:'row',
       alignItems:"center",
-      marginRight:"10%"
+      marginRight:"5%"
     },
      
     Bookmark:{
-      width:30,height:30, 
+      width:25,height:25, 
     },
      
       slideContainer: {

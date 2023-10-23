@@ -36,6 +36,7 @@ export const Bookmark2=require(IconPath+'bookmark2.png')
 export const Doc=require(IconPath+'doc.png')
 export const Logout=require(IconPath+'logout.png')
 export const Phone=require(IconPath+'phone.png')
+export const Search=require(IconPath+'search.png')
 
 export const Next=require(IconPath+'next.png')
 export const Cross=require(IconPath+'cross.png')

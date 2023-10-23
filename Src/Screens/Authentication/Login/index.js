@@ -127,7 +127,7 @@ const handleSignIn = async () => {
          ) : null}
         </View>
         <View style={styles.SignUp_Btn} >
-        <CustomButton title='Sign In Auth ' onPress={handleSignIn} /> 
+        <CustomButton title='Sign In' onPress={handleSignIn} /> 
        
         </View>
         <TouchableOpacity style={styles.Guest} onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))} >

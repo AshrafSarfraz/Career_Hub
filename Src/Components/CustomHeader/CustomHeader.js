@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
     marginRight:'5%',
   },
   Back_Icon:{
-   width:30,height:30,
-   tintColor:Colors.Green
+   width:50,height:60,
+ 
   },
   title: {
     fontSize: 20,
