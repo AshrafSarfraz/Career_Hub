@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   slide: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor:Colors.Bg
+    backgroundColor: Colors.Bg
   },
   image: {
     width: '70%',
@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     width: '85%',
     lineHeight: 20,
     marginTop: '2%',
-    
+
   },
   buttonContainer: {
     height: 50,

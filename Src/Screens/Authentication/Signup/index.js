@@ -1,7 +1,7 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore'; 
+import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import Icons from 'react-native-vector-icons/FontAwesome5';
@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const SignUp = () => {
-  const navigation=useNavigation()
+  const navigation = useNavigation()
   const [Username, setUsername] = useState('');
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
@@ -24,7 +24,7 @@ const SignUp = () => {
   const [isError, setIsError] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const toggleCheckbox = () => {
-     setIsChecked(!isChecked);
+    setIsChecked(!isChecked);
   };
 
 
@@ -38,10 +38,10 @@ const SignUp = () => {
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
     return auth().signInWithCredential(googleCredential);
   }
-//  Firebase Auth BY Google
+  //  Firebase Auth BY Google
 
   const handleRegister = async () => {
-    if (!Email || !Password || !Username || !ConfirmPassword || isChecked===false) {
+    if (!Email || !Password || !Username || !ConfirmPassword || isChecked === false) {
       setIsError('All fields are required.');
       return;
     }
@@ -61,14 +61,14 @@ const SignUp = () => {
         email: Email,
         // Add other user information as needed
       });
-     
+
     }
-     catch (error) {
+    catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         setIsError('That email address is already in use!');
       } else if (error.code === 'auth/invalid-email') {
         setIsError('That email address is invalid!');
-      } 
+      }
     }
   };
 
@@ -78,7 +78,7 @@ const SignUp = () => {
     }
   }, [isError]);
 
-  
+
   return (
     <ScrollView contentContainerStyle={styles.MainContainer}>
       <View>

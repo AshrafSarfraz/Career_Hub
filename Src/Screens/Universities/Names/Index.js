@@ -53,21 +53,21 @@ const University_Name = (props) => {
       </View>
       <View style={styles.Input_Cont} >
         <Image source={Search} style={styles.SearchIcon} />
-        <TextInput placeholder='Search here.....'  placeholderTextColor={Colors.Grey9} style={styles.Search_Input} />
+        <TextInput placeholder='Search here.....' placeholderTextColor={Colors.Grey9} style={styles.Search_Input} />
       </View>
-      <ScrollView   horizontal style={styles.Btn_Cont}  >
-            <TouchableOpacity  style={[styles.Btn,BtnState===0?styles.ActiveBtn:null]} onPress={()=>{setBtnState(0)}}>
-             <Text style={[styles.Btn_Txt,BtnState===0?styles.ActiveBtn_Txt:null]} >All</Text>
-            </TouchableOpacity> 
-            <TouchableOpacity  style={[styles.Btn,BtnState===1?styles.ActiveBtn:null]} onPress={()=>{setBtnState(1)}}>
-            <Text style={[styles.Btn_Txt,BtnState==1?styles.ActiveBtn_Txt:null]} >Goverment</Text>
-           </TouchableOpacity>
-           <TouchableOpacity  style={[styles.Btn,BtnState===2?styles.ActiveBtn:null]} onPress={()=>{setBtnState(2)}}>
-            <Text style={[styles.Btn_Txt,BtnState==2?styles.ActiveBtn_Txt:null]} >Semi-Goverment</Text>
-           </TouchableOpacity>
-           <TouchableOpacity  style={[styles.Btn,BtnState===3?styles.ActiveBtn:null]} onPress={()=>{setBtnState(3)}}>
-           <Text style={[styles.Btn_Txt,BtnState===3?styles.ActiveBtn_Txt:null]} >Private</Text>
-          </TouchableOpacity>
+      <ScrollView horizontal style={styles.Btn_Cont}  >
+        <TouchableOpacity style={[styles.Btn, BtnState === 0 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(0) }}>
+          <Text style={[styles.Btn_Txt, BtnState === 0 ? styles.ActiveBtn_Txt : null]} >All</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.Btn, BtnState === 1 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(1) }}>
+          <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Goverment</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.Btn, BtnState === 2 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
+          <Text style={[styles.Btn_Txt, BtnState == 2 ? styles.ActiveBtn_Txt : null]} >Semi-Goverment</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.Btn, BtnState === 3 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(3) }}>
+          <Text style={[styles.Btn_Txt, BtnState === 3 ? styles.ActiveBtn_Txt : null]} >Private</Text>
+        </TouchableOpacity>
       </ScrollView>
 
 
@@ -118,16 +118,16 @@ const styles = StyleSheet.create({
   },
   FlatList_Cont: {
     backgroundColor: Colors.White,
-    paddingVertical:"3%"
+    paddingVertical: "3%"
   },
   Cart: {
     backgroundColor: Colors.White,
     borderRadius: 10,
-     marginVertical:"1%",
+    marginVertical: "1%",
     padding: '2%',
     flexDirection: "row",
-    borderWidth:0.5,
-    borderColor:Colors.Grey4
+    borderWidth: 0.5,
+    borderColor: Colors.Grey4
   },
   Product_Img: {
     width: 110, height: 110,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     alignSelf: 'flex-end',
-    top:"40%",
+    top: "40%",
     right: '20%'
   },
   Title: {
@@ -190,33 +190,33 @@ const styles = StyleSheet.create({
     color: Colors.Black,
     fontFamily: Fonts.SF_Medium,
     fontSize: 14,
-    backgroundColor:Colors.White
+    backgroundColor: Colors.White
   },
-  Btn_Cont:{
-     marginTop:20,
-     marginBottom:30    
-     
+  Btn_Cont: {
+    marginTop: 20,
+    marginBottom: 30
+
   },
-  Btn:{
-   paddingHorizontal:20,
-   paddingVertical:12,
-   borderRadius:8,
-   backgroundColor:Colors.White,
-    marginRight:10,
-    borderWidth:0.5,
-    borderColor:Colors.Grey4
+  Btn: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+    backgroundColor: Colors.White,
+    marginRight: 10,
+    borderWidth: 0.5,
+    borderColor: Colors.Grey4
   },
-  ActiveBtn:{
-    backgroundColor:Colors.Green
+  ActiveBtn: {
+    backgroundColor: Colors.Green
   },
-  Btn_Txt:{
-    fontSize:16,
-    fontFamily:Fonts.SF_SemiBold,
-    lineHeight:20,
-    color:Colors.Black
+  Btn_Txt: {
+    fontSize: 16,
+    fontFamily: Fonts.SF_SemiBold,
+    lineHeight: 20,
+    color: Colors.Black
   },
-  ActiveBtn_Txt:{
-   color:Colors.White
+  ActiveBtn_Txt: {
+    color: Colors.White
   }
 
 

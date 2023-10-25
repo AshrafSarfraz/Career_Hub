@@ -7,7 +7,7 @@ import { styles } from './style';
 import { SlidesData } from './DummyData';
 
 
-const OnBoarding = ({navigation}) => {
+const OnBoarding = ({ navigation }) => {
 
   const [showRealApp, setShowRealApp] = useState(false);
   const sliderRef = useRef(null); // Ref for the slider
@@ -38,9 +38,9 @@ const OnBoarding = ({navigation}) => {
             <Image source={Back_Icon} style={styles.Back_Icon} />
           </TouchableOpacity>
         )}
-        
+
         <Image source={item.image} style={styles.image} resizeMode="contain" />
-      
+
         <Text style={styles.description}>{item.text}</Text>
         <View style={styles.paginationContainer}>
           {SlidesData.map((slide, ind) => (
@@ -55,7 +55,7 @@ const OnBoarding = ({navigation}) => {
         </View>
         <View style={styles.buttonContainer}>
           {isLastSlide ? (
-            <CustomButton title={'Next'} onPress={() =>navigation.navigate('Login')} />
+            <CustomButton title={'Next'} onPress={() => navigation.navigate('Login')} />
           ) : (
             <CustomButton title={'Next'} onPress={handleNextSlide} />
           )}

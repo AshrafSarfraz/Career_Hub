@@ -2,8 +2,8 @@ export const SearchItemData=[
     {
         Id:1,
         Image1:require('../../../Assets/Images/university.png'),
-        Image1:require('../../../Assets/Images/university.png'),
-        Image1:require('../../../Assets/Images/university.png'),
+        Image2:require('../../../Assets/Images/drop1.png'),
+        Image3:require('../../../Assets/Images/chatting.png'),
         Title:'Khwaja Fareed University of Engineering and Information Technology',
         City:'Rahim Yar Khan',
         Status:'Goverment',
@@ -15,8 +15,8 @@ export const SearchItemData=[
     {
         Id:2,
         Image1:require('../../../Assets/Images/university.png'),
-        Image1:require('../../../Assets/Images/university.png'),
-        Image1:require('../../../Assets/Images/university.png'),
+        Image2:require('../../../Assets/Images/university.png'),
+        Image3:require('../../../Assets/Images/university.png'),
         Title:'Khwaja Fareed University of Engineering and Information Technology',
         City:'Rahim Yar Khan',
         Status:'Goverment',
@@ -28,8 +28,8 @@ export const SearchItemData=[
     {
         Id:3,
         Image1:require('../../../Assets/Images/university.png'),
-        Image1:require('../../../Assets/Images/university.png'),
-        Image1:require('../../../Assets/Images/university.png'),
+        Image2:require('../../../Assets/Images/university.png'),
+        Image3:require('../../../Assets/Images/university.png'),
         Title:'Khwaja Fareed University of Engineering and Information Technology',
         City:'Rahim Yar Khan',
         Status:'Goverment',
@@ -41,8 +41,8 @@ export const SearchItemData=[
     {
         Id:4,
         Image1:require('../../../Assets/Images/university.png'),
-        Image1:require('../../../Assets/Images/university.png'),
-        Image1:require('../../../Assets/Images/university.png'),
+        Image2:require('../../../Assets/Images/university.png'),
+        Image3:require('../../../Assets/Images/university.png'),
         Title:'Khwaja Fareed University of Engineering and Information Technology',
         City:'Rahim Yar Khan',
         Status:'Goverment',

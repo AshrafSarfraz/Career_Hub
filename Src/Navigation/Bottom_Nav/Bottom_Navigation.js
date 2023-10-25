@@ -37,29 +37,29 @@ function MyTabs() {
             tintColor = focused ? '#038F54' : '#E2E2E2';
           }
 
-          return <Image source={iconName} style={{ width: 25, height: 25,  tintColor}} />;
+          return <Image source={iconName} style={{ width: 25, height: 25, tintColor }} />;
         },
       })}
-      
+
       tabBarOptions={{
         labelStyle: { paddingBottom: 10 },
         activeTintColor: '#1B938F',
         inactiveTintColor: '#E2E2E2',
-       
+
       }}
-    
+
     >
-      <Tab.Screen name="Home" component={MyDrawer} options={{ tabBarLabel: 'Home',headerShown: false  ,tabBarStyle:{height:70,borderTopLeftRadius:30,borderTopRightRadius:30,elevation:10,backgroundColor:'white'} }} />
-      <Tab.Screen name="Notification" component={Notification} options={{ tabBarLabel: 'Notification',headerShown: false ,tabBarStyle:{height:70,borderTopLeftRadius:30,borderTopRightRadius:30,elevation:10,backgroundColor:'white'}  }} />
-      <Tab.Screen name="Bookmark" component={Bookmarks} options={{ tabBarLabel: 'Bookmark',headerShown: false ,tabBarStyle:{height:70,borderTopLeftRadius:30,borderTopRightRadius:30,elevation:10,backgroundColor:'white'}}} />
-      <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profile',headerShown: false ,tabBarStyle:{height:70,borderTopLeftRadius:30,borderTopRightRadius:30,elevation:10,backgroundColor:'white'} }} />
+      <Tab.Screen name="Home" component={MyDrawer} options={{ tabBarLabel: 'Home', headerShown: false, tabBarStyle: { height: 70, borderTopLeftRadius: 30, borderTopRightRadius: 30, elevation: 10, backgroundColor: 'white' } }} />
+      <Tab.Screen name="Notification" component={Notification} options={{ tabBarLabel: 'Notification', headerShown: false, tabBarStyle: { height: 70, borderTopLeftRadius: 30, borderTopRightRadius: 30, elevation: 10, backgroundColor: 'white' } }} />
+      <Tab.Screen name="Bookmark" component={Bookmarks} options={{ tabBarLabel: 'Bookmark', headerShown: false, tabBarStyle: { height: 70, borderTopLeftRadius: 30, borderTopRightRadius: 30, elevation: 10, backgroundColor: 'white' } }} />
+      <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profile', headerShown: false, tabBarStyle: { height: 70, borderTopLeftRadius: 30, borderTopRightRadius: 30, elevation: 10, backgroundColor: 'white' } }} />
     </Tab.Navigator>
   );
 }
 
 export default function Bottom() {
   return (
-    
+
     <MyTabs />
   );
 }
