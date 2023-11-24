@@ -42,7 +42,7 @@ const University_Name = (props) => {
   };
 
   return (
-    <ScrollView style={styles.MainCont}>
+    <ScrollView style={styles.MainCont}  showsVerticalScrollIndicator={false}>
       <View style={styles.Header} >
         <TouchableOpacity onPress={() => { props.navigation.goBack() }} style={styles.Back_Cont} >
           <Image source={Back_Icon} style={styles.Back_Icon} />
@@ -51,11 +51,16 @@ const University_Name = (props) => {
         <View style={styles.Auth_Cont} >
         </View>
       </View>
+      <View style={styles.Input_With_Filter} >
       <View style={styles.Input_Cont} >
         <Image source={Search} style={styles.SearchIcon} />
         <TextInput placeholder='Search here.....' placeholderTextColor={Colors.Grey9} style={styles.Search_Input} />
       </View>
-      <ScrollView horizontal style={styles.Btn_Cont}  >
+      <TouchableOpacity onPress={() => {  }}  >
+          <Image source={require('../../../Assets/Icons/filter.png')} style={styles.Filter} />
+        </TouchableOpacity>
+      </View>
+      <ScrollView horizontal style={styles.Btn_Cont} showsHorizontalScrollIndicator={false}  >
         <TouchableOpacity style={[styles.Btn, BtnState === 0 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(0) }}>
           <Text style={[styles.Btn_Txt, BtnState === 0 ? styles.ActiveBtn_Txt : null]} >All</Text>
         </TouchableOpacity>
@@ -73,6 +78,8 @@ const University_Name = (props) => {
 
       <View style={styles.FlatList_Cont} >
         <FlatList
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
           data={SearchItemData}
           renderItem={renderItem}
         />
@@ -85,14 +92,15 @@ export default University_Name
 
 const styles = StyleSheet.create({
   MainCont: {
-    backgroundColor: Colors.White,
-    padding: '3%'
+    backgroundColor: Colors.Bg,
+    padding: '5%',
+    
   },
   Header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Colors.White,
-    alignItems: "center"
+    alignItems: "center",
+    marginVertical:"3%",
   },
   Back_Cont: {
     flexDirection: 'row',
@@ -109,7 +117,8 @@ const styles = StyleSheet.create({
     marginRight: "5%"
   },
   Back_Icon: {
-    width: 50, height: 50,
+    width: 20, height: 20,
+    resizeMode:"contain"
   },
   Auth_Cont: {
     flexDirection: 'row',
@@ -117,20 +126,20 @@ const styles = StyleSheet.create({
     marginRight: "5%"
   },
   FlatList_Cont: {
-    backgroundColor: Colors.White,
-    paddingVertical: "3%"
+    paddingBottom: "10%"
   },
   Cart: {
     backgroundColor: Colors.White,
     borderRadius: 10,
-    marginVertical: "1%",
     padding: '2%',
     flexDirection: "row",
-    borderWidth: 0.5,
-    borderColor: Colors.Grey4
+    elevation:2,
+    marginBottom:"3%",
+    height:120,
+    alignItems:"center"
   },
   Product_Img: {
-    width: 110, height: 110,
+    width: 100, height: 100,
 
   },
   City_Cont: {
@@ -150,11 +159,11 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SF_Medium,
   },
   Wishlist: {
-    width: 25,
-    height: 25,
+    width: 20,
+    height: 20,
     alignSelf: 'flex-end',
     top: "40%",
-    right: '20%'
+    right: '40%'
   },
   Title: {
     fontSize: 14,
@@ -169,24 +178,33 @@ const styles = StyleSheet.create({
     marginLeft: "4%",
     width: "60%"
   },
+  Input_With_Filter:{
+   justifyContent:"space-around",
+   flexDirection: "row",
+   borderWidth: 1,
+   elevation: 3,
+   backgroundColor: Colors.White,
+   borderColor: Colors.Black,
+   borderRadius: 10,
+   paddingHorizontal: "2%",
+   marginTop: "3%",
+   alignItems:"center",
+   height:55
+  },
   Input_Cont: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Colors.White,
-    elevation: 3,
-    borderWidth: 1,
-    borderColor: Colors.Black,
-    borderRadius: 10,
-    paddingHorizontal: "3%",
-    paddingVertical: '1%',
-    marginTop: "3%"
   },
   SearchIcon: {
     width: 25, height: 25,
     marginRight: "2%"
   },
+  Filter:{
+    width: 25, height: 25,
+    marginLeft: "2%"
+  },
   Search_Input: {
-    width: "80%",
+    width: "70%",
     color: Colors.Black,
     fontFamily: Fonts.SF_Medium,
     fontSize: 14,

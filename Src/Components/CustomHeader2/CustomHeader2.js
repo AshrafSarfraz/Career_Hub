@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     marginRight:'6%',
   },
   Back_Icon:{
-   width:60,height:50,
+   width:20,height:20,
+   resizeMode:"contain"
   
   },
   title: {

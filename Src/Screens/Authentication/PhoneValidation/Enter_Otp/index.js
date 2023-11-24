@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { Colors } from '../../../../Themes/Colors';
 import { useRoute } from '@react-navigation/native';
@@ -40,6 +40,42 @@ const Otp = ({ navigation }) => {
     }
   };
 
+//   const handleVerifyOtp = async () => {
+//   // Verify the OTP using Firebase
+//   try {
+//     const confirmation = await confirm.confirm(otp.join(''));
+    // if (confirmation) {
+    //   // The OTP is correct, navigate to the next screen
+    //   navigation.navigate('Login');
+    // } else {
+    //   setShowError(true); // Show an error message if verification fails
+    // }
+//   } catch (error) {
+//     setShowError(true); // Show an error message if there's an issue with OTP verification
+//     console.error('Error verifying OTP:', error);
+//   }
+// };
+const handleVerifyOtp = async () => {
+  // Retrieve the confirmation object and phone number from the navigation parameters
+  const confirmation = route.params.Confirmation;
+  const phoneNumber = route.params.Phone;
+
+  try {
+    await confirmation.confirm(otp.join(''));
+    if (confirmation) {
+      // The OTP is correct, navigate to the next screen
+      navigation.navigate('Login');
+    } else {
+      setShowError(true); // Show an error message if verification fails
+    }
+  } catch (error) {
+    setShowError(true);
+    console.error('Error verifying OTP:', error);
+  }
+};
+
+
+
   return (
     <ScrollView contentContainerStyle={styles.MainCont}>
       <CustomHeader title={''} onBackPress={() => { navigation.goBack(); }} />
@@ -54,7 +90,7 @@ const Otp = ({ navigation }) => {
             ref={ref => (inputRef.current[index] = ref)}
             style={[
               styles.Otp,
-              { borderColor: pin ? 'green' : '#959595' }, // Set borderColor to green if pin is filled, black if not
+              { borderColor: pin ? 'green' : '#959595' },
             ]}
             value={pin}
             onChangeText={value => handleOtpChange(value, index)}
@@ -75,12 +111,18 @@ const Otp = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <CustomButton title={'Next'} onPress={() => { navigation.navigate('Login'); }} />
+      <CustomButton title={'Verify OTP'} onPress={handleVerifyOtp} />
     </ScrollView>
   );
 };
 
 export default Otp;
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
   MainCont: {

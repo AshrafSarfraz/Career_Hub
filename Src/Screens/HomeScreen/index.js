@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     marginTop: '5%'
   },
   BtnContainer: {
-    top: '45%',
+    top: '50%',
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: 'space-between',

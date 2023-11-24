@@ -1,11 +1,10 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../../Screens/HomeScreen';
-import Notification from '../../Screens/Notifications';
 import Bookmarks from '../../Screens/Bookmark';
 import Profile from '../../Screens/Profile';
 import MyDrawer from '../Drawer_Navigation/Drawer_Nav';
+import Notifications from '../../Screens/Notification';
 
 
 
@@ -50,7 +49,7 @@ function MyTabs() {
 
     >
       <Tab.Screen name="Home" component={MyDrawer} options={{ tabBarLabel: 'Home', headerShown: false, tabBarStyle: { height: 70, borderTopLeftRadius: 30, borderTopRightRadius: 30, elevation: 10, backgroundColor: 'white' } }} />
-      <Tab.Screen name="Notification" component={Notification} options={{ tabBarLabel: 'Notification', headerShown: false, tabBarStyle: { height: 70, borderTopLeftRadius: 30, borderTopRightRadius: 30, elevation: 10, backgroundColor: 'white' } }} />
+      <Tab.Screen name="Notification" component={Notifications} options={{ tabBarLabel: 'Notification', headerShown: false, tabBarStyle: { height: 70, borderTopLeftRadius: 30, borderTopRightRadius: 30, elevation: 10, backgroundColor: 'white' } }} />
       <Tab.Screen name="Bookmark" component={Bookmarks} options={{ tabBarLabel: 'Bookmark', headerShown: false, tabBarStyle: { height: 70, borderTopLeftRadius: 30, borderTopRightRadius: 30, elevation: 10, backgroundColor: 'white' } }} />
       <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profile', headerShown: false, tabBarStyle: { height: 70, borderTopLeftRadius: 30, borderTopRightRadius: 30, elevation: 10, backgroundColor: 'white' } }} />
     </Tab.Navigator>

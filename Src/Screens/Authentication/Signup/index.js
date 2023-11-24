@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
+
+import PhoneInput from 'react-native-phone-number-input'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -23,6 +25,7 @@ const SignUp = () => {
   const [ShowConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isError, setIsError] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const [PhoneNumber, setPhoneNumber] = useState('')
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
@@ -74,7 +77,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isError === 'User account created & signed in!') {
-      navigation.navigate('PhoneNo');
+      navigation.navigate('Bottom');
     }
   }, [isError]);
 
@@ -109,6 +112,7 @@ const SignUp = () => {
               style={styles.User_Input}
             />
           </View>
+          
 
           <View style={[styles.Input_Field, Password !== '' ? styles.Active_Input_Field : null]}>
             <Image source={Lock} style={[styles.Input_Icon, { tintColor: Password !== '' ? Colors.Black2 : Colors.Grey9 }]} resizeMode='contain' />

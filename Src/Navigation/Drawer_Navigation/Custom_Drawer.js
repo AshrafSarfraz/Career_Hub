@@ -7,6 +7,7 @@ import {
 } from '@react-navigation/drawer';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import auth from '@react-native-firebase/auth';
 import { Bobi, Doc, Home, Logo, Logo1, Logout, Profile, Profile2 } from '../../Themes/Images';
 import { Fonts } from '../../Themes/Fonts';
 import { Colors } from '../../Themes/Colors';
@@ -16,6 +17,17 @@ import { Colors } from '../../Themes/Colors';
 function CustomDrawerContent(props) {
   const [ButtonState, setButtonState] = useState(1)
 
+  const handleSignOut = async () => {
+    try {
+      await auth().signOut();
+      // After successful signout, navigate to the login screen or any other screen as needed
+      props.navigation.navigate('Login');
+    } catch (error) {
+      console.error('Error signing out:', error.message);
+      // You can log or display the error message to understand the issue
+    }
+  };
+  
 
   return (
     <View style={styles.DrawerCont}>
@@ -56,7 +68,7 @@ function CustomDrawerContent(props) {
             <Text style={[styles.Label, ButtonState === 3 ? styles.ActiveButtonTxt : null]} >Terms & Privay Policy</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => { setButtonState(4), props.navigation.navigate('Policies') }} style={[styles.ButtonStyle, ButtonState === 4 ? styles.ActiveButton : null]} >
+          <TouchableOpacity onPress={() => { setButtonState(4),handleSignOut() }} style={[styles.ButtonStyle, ButtonState === 4 ? styles.ActiveButton : null]} >
             {ButtonState === 4 ?
               <Image source={Logout} style={[styles.HomeIcon, { tintColor: '#FFFFFF' }]} />
               :
