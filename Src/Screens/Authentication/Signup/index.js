@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
-
+import { View, Text, ScrollView, StyleSheet, TextInput,Button, Image, TouchableOpacity, Alert } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import { Colors } from '../../../Themes/Colors';
 import { Drop, Hide, Lock, Message, Profile, Show } from '../../../Themes/Images';
@@ -13,6 +11,7 @@ import CustomButton from '../../../Components/CustomButton/CustomButton';
 import { styles } from './style';
 import CustomHeader2 from '../../../Components/CustomHeader2/CustomHeader2';
 import { useNavigation } from '@react-navigation/native';
+import Otp from '../PhoneValidation/Enter_Otp';
 
 
 const SignUp = () => {
@@ -25,6 +24,7 @@ const SignUp = () => {
   const [ShowConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isError, setIsError] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const [confirm, setConfirm] = useState(null);
   const [PhoneNumber, setPhoneNumber] = useState('')
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
@@ -43,45 +43,43 @@ const SignUp = () => {
   }
   //  Firebase Auth BY Google
 
-  const handleRegister = async () => {
-    if (!Email || !Password || !Username || !ConfirmPassword || isChecked === false) {
-      setIsError('All fields are required.');
-      return;
+  // By using Phone number
+  function onAuthStateChanged(user) {
+    if (user) {
+      console.log('User is signed in:', user);
+      // You can add further logic here after successful sign-in
+      navigation.navigate('Bottom'); // Navigate to the Home screen or any other screen
     }
-    if (Password !== ConfirmPassword) {
-      setIsError("Passwords don't match.");
-      return;
-    }
-
-    try {
-      const userCredential = await auth().createUserWithEmailAndPassword(Email, Password);
-      const user = userCredential.user;
-      const uid = user.uid;
-      setIsError('User account created & signed in!');
-      // Save user data in Firestore
-      await firestore().collection('users').doc(uid).set({
-        username: Username,
-        email: Email,
-        // Add other user information as needed
-      });
-
-    }
-    catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-        setIsError('That email address is already in use!');
-      } else if (error.code === 'auth/invalid-email') {
-        setIsError('That email address is invalid!');
-      }
-    }
-  };
+  }
 
   useEffect(() => {
-    if (isError === 'User account created & signed in!') {
-      navigation.navigate('Bottom');
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return () => subscriber(); // Unsubscribe on unmount
+  }, []);
+
+  // Handle the button press
+  async function signInWithPhoneNumber(phoneNumber) {
+    try {
+      const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+      setConfirm(confirmation);
+    } catch (error) {
+      console.log('Error sending verification code:', error.message);
     }
-  }, [isError]);
+  }
 
-
+ 
+  // Login by Phone
+  
+  if (!confirm) {
+    // return (
+    //   <View>
+    //     <Button
+    //       title="Phone Number Sign In"
+    //       onPress={() => signInWithPhoneNumber('+923040743020')}
+    //     />
+    //   </View>
+    // );
+  
   return (
     <ScrollView contentContainerStyle={styles.MainContainer}>
       <View>
@@ -95,13 +93,34 @@ const SignUp = () => {
           <View style={[styles.Input_Field, Username !== '' ? styles.Active_Input_Field : null]}>
             <Image source={Profile} style={[styles.Input_Icon, { tintColor: Username !== '' ? Colors.Black2 : Colors.Grey9 }]} resizeMode='contain' />
             <TextInput
-              placeholder="Name"
+              placeholder="First Name"
               value={Username}
               placeholderTextColor={Colors.Grey9}
               onChangeText={(txt) => { setUsername(txt); }}
               style={styles.User_Input}
             />
           </View>
+          
+          <View style={[styles.Input_Field, Username !== '' ? styles.Active_Input_Field : null]}>
+            <Image source={Profile} style={[styles.Input_Icon, { tintColor: Username !== '' ? Colors.Black2 : Colors.Grey9 }]} resizeMode='contain' />
+            <TextInput
+              placeholder="Last Name"
+              value={Username}
+              placeholderTextColor={Colors.Grey9}
+              onChangeText={(txt) => { setUsername(txt); }}
+              style={styles.User_Input}
+            />
+          </View>
+          
+          <PhoneInput
+          defaultValue={PhoneNumber}
+          defaultCode='PK'
+          placeholder='343-0725591'
+          onChangeFormattedText={(txt) => { setPhoneNumber(txt) }}
+          containerStyle={{ width: '98%', elevation: 1, marginBottom: "3%", height: 60, borderRadius: 12, backgroundColor: '#F4F4F4', alignSelf: 'center', overflow: '', borderWidth: PhoneNumber.length === 0 ? 0 : 1, borderColor: PhoneNumber.length >= 11 ? Colors.Green : Colors.Red }}
+          textContainerStyle={{ backgroundColor: Colors.White4, }}
+          textInputProps={{ fontSize: 14, color: '#000000', padding: '0%', }}
+        />
           <View style={[styles.Input_Field, Email !== '' ? styles.Active_Input_Field : null]}>
             <Image source={Message} style={[styles.Input_Icon, { tintColor: Email !== '' ? Colors.Black2 : Colors.Grey9 }]} resizeMode='contain' />
             <TextInput
@@ -176,7 +195,7 @@ const SignUp = () => {
         </TouchableOpacity>
 
         <View style={styles.SignUp_Btn} >
-          <CustomButton title='Sign Up' onPress={handleRegister} />
+          <CustomButton title='Sign Up'    onPress={() => signInWithPhoneNumber('+923170062609')} />
         </View>
         <View style={styles.Btn_Cont} >
           <Text style={styles.Already_Txt} >Already have an account?  </Text>
@@ -190,4 +209,65 @@ const SignUp = () => {
   );
 };
 
+return (
+  <View>
+   <Otp  confirm={confirm}/>
+
+   {/*
+ <TextInput
+      value={code}
+      onChangeText={(text) => setCode(text)}
+      placeholder="Enter Verification Code"
+    />
+    <Button title="Confirm Code" onPress={() => confirmCode()} />
+*/}
+   
+  </View>
+);
+
+}
+
 export default SignUp;
+
+
+
+
+
+
+// const handleRegister = async () => {
+//   if (!Email || !Password || !Username || !ConfirmPassword ||!PhoneNumber || isChecked === false) {
+//     setIsError('All fields are required.');
+//     return;
+//   }
+//   if (Password !== ConfirmPassword) {
+//     setIsError("Passwords don't match.");
+//     return;
+//   }
+
+//   try {
+//     const userCredential = await auth().createUserWithEmailAndPassword(Email, Password);
+//     const user = userCredential.user;
+//     const uid = user.uid;
+//     setIsError('User account created & signed in!');
+//     // Save user data in Firestore
+//     await firestore().collection('users').doc(uid).set({
+//       username: Username,
+//       email: Email,
+//       // Add other user information as needed
+//     });
+
+//   }
+//   catch (error) {
+//     if (error.code === 'auth/email-already-in-use') {
+//       setIsError('That email address is already in use!');
+//     } else if (error.code === 'auth/invalid-email') {
+//       setIsError('That email address is invalid!');
+//     }
+//   }
+// };
+
+// useEffect(() => {
+//   if (isError === 'User account created & signed in!') {
+//     navigation.navigate('Bottom');
+//   }
+// }, [isError])

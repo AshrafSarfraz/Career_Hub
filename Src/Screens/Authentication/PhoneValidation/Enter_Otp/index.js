@@ -7,11 +7,20 @@ import { Logo1 } from '../../../../Themes/Images';
 import { Fonts } from '../../../../Themes/Fonts';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 
-const Otp = ({ navigation }) => {
-  const route = useRoute();
+const Otp = ({ props }) => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const inputRef = useRef([]);
   const [showError, setShowError] = useState(false);
+  const [code, setCode] = useState('');
+
+  async function confirmCode() {
+    try {
+      await confirm.confirm(code);
+      // Code confirmed successfully, you can add further logic here
+    } catch (error) {
+      console.log('Invalid code:', error.message);
+    }
+  }
 
   const handleOtpChange = (value, index) => {
     setOtp(prevOtp => {
@@ -40,39 +49,6 @@ const Otp = ({ navigation }) => {
     }
   };
 
-//   const handleVerifyOtp = async () => {
-//   // Verify the OTP using Firebase
-//   try {
-//     const confirmation = await confirm.confirm(otp.join(''));
-    // if (confirmation) {
-    //   // The OTP is correct, navigate to the next screen
-    //   navigation.navigate('Login');
-    // } else {
-    //   setShowError(true); // Show an error message if verification fails
-    // }
-//   } catch (error) {
-//     setShowError(true); // Show an error message if there's an issue with OTP verification
-//     console.error('Error verifying OTP:', error);
-//   }
-// };
-const handleVerifyOtp = async () => {
-  // Retrieve the confirmation object and phone number from the navigation parameters
-  const confirmation = route.params.Confirmation;
-  const phoneNumber = route.params.Phone;
-
-  try {
-    await confirmation.confirm(otp.join(''));
-    if (confirmation) {
-      // The OTP is correct, navigate to the next screen
-      navigation.navigate('Login');
-    } else {
-      setShowError(true); // Show an error message if verification fails
-    }
-  } catch (error) {
-    setShowError(true);
-    console.error('Error verifying OTP:', error);
-  }
-};
 
 
 
@@ -81,7 +57,9 @@ const handleVerifyOtp = async () => {
       <CustomHeader title={''} onBackPress={() => { navigation.goBack(); }} />
       <Image source={Logo1} style={styles.Logo} />
       <Text style={styles.digit_Txt}>Enter the 6-digit OTP sent to you at</Text>
-      <Text style={styles.Number}>{route.params.Phone}</Text>
+      {/*
+<Text style={styles.Number}>{route.params.Phone}</Text>
+  */} 
 
       <View style={styles.inputContainer}>
         {otp.map((pin, index) => (
@@ -93,7 +71,7 @@ const handleVerifyOtp = async () => {
               { borderColor: pin ? 'green' : '#959595' },
             ]}
             value={pin}
-            onChangeText={value => handleOtpChange(value, index)}
+            onChangeText={value => {handleOtpChange(value, index),setCode(value)}}
             onKeyPress={event => handleOtpKeyPress(event, index)}
             maxLength={1}
             keyboardType="numeric"
@@ -111,7 +89,7 @@ const handleVerifyOtp = async () => {
         </TouchableOpacity>
       </View>
 
-      <CustomButton title={'Verify OTP'} onPress={handleVerifyOtp} />
+      <CustomButton title={'Verify OTP'} onPress={() => confirmCode(props.confirm)} />
     </ScrollView>
   );
 };

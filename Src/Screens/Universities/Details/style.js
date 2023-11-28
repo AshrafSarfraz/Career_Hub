@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
         elevation: 4,
         borderRadius: 10,
         overflow: "hidden",
-        height: 330
+        height: 300
 
     },
     slideImage: {
@@ -140,6 +140,7 @@ export const styles = StyleSheet.create({
         lineHeight: 20,
         color: Colors.Black,
         fontFamily: Fonts.SF_Medium,
+        width:"94%"
     },
     Schedule_Cont: {
         backgroundColor: Colors.White,
@@ -183,16 +184,19 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         lineHeight: 22,
         color: Colors.Black,
-        fontFamily: Fonts.SF_Medium,
+        fontFamily: Fonts.SF_SemiBold,
         marginVertical: "3%"
     },
     Detail: {
-        fontSize: 15,
+        fontSize: 14,
         lineHeight: 20,
-        color: Colors.Black,
+        color: '#000000',
         fontFamily: Fonts.SF_Regular,
         marginBottom: '3%',
-        width: "100%"
+        width: "100%",
+        height:140,
+        borderRadius:10,
+        paddingBottom:"3%",
     },
     Contact: {
         flexDirection: 'row',
@@ -210,31 +214,42 @@ export const styles = StyleSheet.create({
         marginVertical: "1%",
     },
     Uni_Logo: {
-        width: 60, height: 60,
+        width: 50, height: 50,
         resizeMode: 'contain',
-        marginRight: '2%'
+        marginRight: '1%'
     },
     User: {
         marginLeft: "3%"
     },
 
     OwnerName: {
-        fontSize: 16,
-        lineHeight: 20,
-        color: Colors.Green,
+        fontSize: 12,
+        lineHeight: 18,
+        color: Colors.Black,
         fontFamily: Fonts.SF_Bold,
-        marginRight: "2%"
+        marginLeft: "2%",
+        width:220
 
     },
-    Btn: {
+    Apply_Btn: {
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: 'center',
         backgroundColor: Colors.Green,
         width: '100%',
         padding: '4%',
-        marginVertical: '5%',
         borderRadius: 10
+    },
+    Req_Btn: {
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: 'center',
+        backgroundColor: '#003300',
+        width: '100%',
+        padding: '4%',
+        marginVertical: '5%',
+        borderRadius: 10,
+        marginBottom:"10%"
     },
 
     Rent: {
@@ -245,13 +260,13 @@ export const styles = StyleSheet.create({
     },
 
     Phone_Icon: {
-        width: 60, height: 60,
+        width: 50, height: 50,
     },
     Addmission_Open: {
         color: Colors.Black,
-        fontSize: 20,
+        fontSize: 18,
         fontFamily: Fonts.SF_SemiBold,
-        lineHeight: 26,
+        lineHeight: 24,
     },
     Link: {
         color: Colors.Green,
@@ -261,13 +276,16 @@ export const styles = StyleSheet.create({
         marginVertical:"2%"
     },
     Poster_Cont: {
-
+       width:'100%',
+       height:300,
+       
     },
     Poster: {
-        width: 400,
-        height: 350,
-        resizeMode: 'stretch',
-        alignSelf: "center"
+       width:'100%',
+       height:280,
+       marginVertical:"6%",
+       borderRadius:10,
+  
     },
 
 

@@ -1,14 +1,11 @@
-
-
 import { View, Text, ScrollView, StyleSheet, FlatList, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
 import React, { useState,useEffect } from 'react'
-import { Colors } from '../../../Themes/Colors'
-import { Fonts } from '../../../Themes/Fonts'
-import { Back_Icon, Bookmark, Bookmark1, Search } from '../../../Themes/Images'
+import { Colors } from '../../Themes/Colors'
+import { Fonts } from '../../Themes/Fonts'
+import { Back_Icon, Bookmark, Bookmark1, Search } from '../../Themes/Images'
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import CitiesName from '../../../Components/Alerts/Cities_Names'
-``
+
 
 const University_Name = (props) => {
   const [BtnState, setBtnState] = useState(0)
@@ -16,17 +13,7 @@ const University_Name = (props) => {
   const [itemStates, setItemStates] = useState(items.map(() => true));
   const isFocused = useIsFocused();
   const navigation = useNavigation();
-  const currentDate = new Date();
-  const filteredData = items.filter(item => new Date(item.data.EndingDate) >= currentDate);
-  const [alertVisible, setAlertVisible] = useState(false);
-
-  const showAlert = () => {
-    setAlertVisible(true);
-  };
-
-  const hideAlert = () => {
-    setAlertVisible(false);
-  };
+  
 
   useEffect(() => {
     getItems();
@@ -90,10 +77,10 @@ const University_Name = (props) => {
       </TouchableOpacity>
       {itemStates[index] ? (
         <TouchableOpacity onPress={() => toggleItemState(index)} style={{ width: 30, height: 30, alignSelf: 'flex-end', right: "5%", bottom: "2%" }} >
-          <Image source={Bookmark1} style={styles.Wishlist} />
+          <Image source={Bookmark} style={styles.Wishlist} />
         </TouchableOpacity>
       ) : <TouchableOpacity onPress={() => toggleItemState(index)} style={{ width: 30, height: 30, alignSelf: "flex-end", right: "5%", bottom: "2%" }} >
-        <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
+        <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
       </TouchableOpacity>}
 
     </View>
@@ -121,8 +108,8 @@ const University_Name = (props) => {
         <Image source={Search} style={styles.SearchIcon} />
         <TextInput placeholder='Search here.....' placeholderTextColor={Colors.Grey9} style={styles.Search_Input} />
       </View>
-      <TouchableOpacity onPress={showAlert}  >
-          <Image source={require('../../../Assets/Icons/filter.png')} style={styles.Filter} />
+      <TouchableOpacity onPress={() => {  }}  >
+          <Image source={require('../../Assets/Icons/filter.png')} style={styles.Filter} />
         </TouchableOpacity>
       </View>
       <ScrollView horizontal style={styles.Btn_Cont} showsHorizontalScrollIndicator={false}  >
@@ -145,18 +132,11 @@ const University_Name = (props) => {
         <FlatList
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-          data={filteredData}
+          data={items}
           renderItem={renderItem}
-          keyExtractor={item => item.id.toString()}
-
+          keyExtractor={(item) => item.id}
         />
       </View>
-
-      <CitiesName
-      visible={alertVisible}
-      message="This is a custom alert!"
-      onClose={() => { hideAlert(), navigation.navigate('') }}
-    />
     </ScrollView>
   )
 }
@@ -314,3 +294,200 @@ const styles = StyleSheet.create({
 
 })
 
+
+
+// import React, { useEffect, useState } from 'react';
+// import {
+//   View,
+//   Text,
+//   StyleSheet,
+//   FlatList,
+//   Image,
+//   TouchableOpacity,
+// } from 'react-native';
+// import firestore from '@react-native-firebase/firestore';
+// import { useIsFocused, useNavigation } from '@react-navigation/native';
+
+// const Get_Method = () => {
+  // const isFocused = useIsFocused();
+  // const navigation = useNavigation();
+  // const [items, setItems] = useState([]);
+
+  // useEffect(() => {
+  //   getItems();
+  // }, [isFocused]);
+
+  // const getItems = () => {
+  //   try {
+  //     firestore()
+  //       .collection('items')
+  //       .get()
+  //       .then(querySnapshot => {
+  //         console.log('Total items: ', querySnapshot.size);
+  //         let tempData = [];
+  //         querySnapshot.forEach(documentSnapshot => {
+  //           console.log(
+  //             'Item ID: ',
+  //             documentSnapshot.id,
+  //             documentSnapshot.data(),
+  //           );
+  //           tempData.push({
+  //             id: documentSnapshot.id,
+  //             data: documentSnapshot.data(),
+  //           });
+  //         });
+  //         console.log('Items data:', tempData);
+  //         setItems(tempData);
+  //       })
+  //       .catch(error => {
+  //         console.error('Error getting items from Firestore:', error);
+  //       });
+  //   } catch (error) {
+  //     console.error('Error fetching items:', error);
+  //   }
+  // };
+
+  // const deleteItem = docId => {
+  //   firestore()
+  //     .collection('items')
+  //     .doc(docId)
+  //     .delete()
+  //     .then(() => {
+  //       console.log('Item deleted!');
+  //       getItems();
+  //     })
+  //     .catch(error => {
+  //       console.error('Error deleting item:', error);
+  //     });
+  // };
+
+//   return (
+   
+   
+   
+   
+   
+   
+//     <View style={styles.container}>
+//       <FlatList
+//         data={items}
+//         keyExtractor={(item) => item.id}
+//         renderItem={({ item, index }) => {
+//           return (
+//             <View style={styles.itemView}>
+//               <View style={styles.imageContainer}>
+               
+//               {item.data.imageUrls.map((imageUrl, index) => (
+//                   <Image
+//                     key={index}
+//                     source={{ uri: imageUrl }}
+//                     style={styles.itemImage}
+//                   />
+//                 ))}
+//               </View>
+//               <View style={styles.nameView}>
+//                 <Text style={styles.nameText}>{item.data.name}</Text>
+//                 <Text style={styles.descText}>{item.data.description}</Text>
+//                 <View style={styles.priceView}>
+//                   <Text style={styles.priceText}>
+//                     {'$' + item.data.discountPrice}
+//                   </Text>
+//                   <Text style={styles.discountText}>
+//                     {'$' + item.data.price}
+//                   </Text>
+//                 </View>
+//               </View>
+//               <Image
+//               key={index}
+//               source={{ uri: item.data.imageUrls[1] }}
+//               style={styles.itemImage}
+//             /> 
+//               <View style={{ margin: 10 }}>
+//                 <TouchableOpacity
+//                   onPress={() => {
+//                     navigation.navigate('Edit_Data', {
+//                       data: item.data,
+//                       id: item.id,
+//                     });
+//                   }}>
+//                   <Image
+//                     source={require('../../Assets/Icons/edit.png')}
+//                     style={styles.icon}
+//                   />
+//                 </TouchableOpacity>
+//                 <TouchableOpacity
+//                   onPress={() => {
+//                     deleteItem(item.id);
+//                   }}>
+//                   <Image
+//                     source={require('../../Assets/Icons/remove.png')}
+//                     style={[styles.icon, { marginTop: 20 }]}
+//                   />
+//                 </TouchableOpacity>
+//               </View>
+//             </View>
+//           );
+//         }}
+//       />
+//     </View>
+//   );
+// };
+
+// export default Get_Method;
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//   },
+//   itemView: {
+//     flexDirection: 'row',
+//     width: '90%',
+//     alignSelf: 'center',
+//     backgroundColor: '#fff',
+//     elevation: 4,
+//     marginTop: 10,
+//     borderRadius: 10,
+//     height: 100,
+//     marginBottom: 10,
+//   },
+//   imageContainer: {
+//     flexDirection: 'row',
+//   },
+//   itemImage: {
+//     width: 50,
+//     height: 50,
+//     borderRadius: 5,
+//     margin: 5,
+//   },
+//   nameView: {
+//     width: '43%',
+//     margin: 10,
+//   },
+//   priceView: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   nameText: {
+//     fontSize: 18,
+//     fontWeight: '700',
+//   },
+//   descText: {
+//     fontSize: 14,
+//     fontWeight: '600',
+//   },
+//   priceText: {
+//     fontSize: 18,
+//     color: 'green',
+//     fontWeight: '700',
+//   },
+//   discountText: {
+//     fontSize: 17,
+//     fontWeight: '600',
+//     textDecorationLine: 'line-through',
+//     marginLeft: 5,
+//   },
+//   icon: {
+//     width: 24,
+//     height: 24,
+//   },
+// });

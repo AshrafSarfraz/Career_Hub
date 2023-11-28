@@ -1,53 +1,72 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Linking } from 'react-native'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { useRoute } from '@react-navigation/native'
 import { Back_Icon, Bookmark, Location } from '../../../Themes/Images';
 import { styles } from './style';
 
+import YouTube from 'react-native-youtube-iframe';
+
 
 const Uni_Details = ({ navigation }) => {
   const route = useRoute();
-  const Uni = route.params.Data;
-
+  const item = route.params.item;
   const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollViewRef = useRef(null);
+
+
+  const latitude = 37.7749; 
+  const longitude = -122.4194;
+  const phoneNumber = '923430725591'; // Replace with the phone number you want to dial
+
 
   const handleOpenMaps = () => {
-    const url = `https://www.google.com/maps/search/?api=1&query=${'28.3808'},${'70.3745'}`;
+    const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
     Linking.openURL(url);
-  }
+  };
 
-  // Define an array of slides based on Uni images
-  const slides = [
-    { key: 'slide1', image: Uni.Image1 },
-    { key: 'slide2', image: Uni.Image2 },
-    { key: 'slide3', image: Uni.Image3 },
-  ];
+  const Website = () => {
+      const url = 'https://en.wikipedia.org/wiki/Islamabad';
+      Linking.openURL(url);
+  };
 
-  const renderSlides = ({ item }) => (
+    
+
+    const Contact = () => {
+      const url = `tel:${phoneNumber}`;
+      Linking.openURL(url);
+    };
+
+  const renderSlides = ({ item }) =>{
+    console.log(item,'here is item')
+
+    return(
     <View style={styles.slideContainer}>
-      <Image source={item.image} style={{ width: '100%', height: '100%' }} resizeMode='cover' />
-    </View>
-  );
+      <Image source={{uri : item}} style={{ width: '98%', height: '100%' ,borderRadius:20}} resizeMode='cover' />
+    </View>  )
+  };
 
   const renderPagination = () => (
     <View style={styles.paginationContainer}>
       <ScrollView
+        ref={scrollViewRef}
         horizontal
         contentContainerStyle={styles.paginationScrollView}
         showsHorizontalScrollIndicator={false}
+        onScroll={(event) => {
+          const offset = event.nativeEvent.contentOffset.x;
+          const index = Math.round(offset / screenWidth); //  Assuming screenWidth is the width of your slide
+          setCurrentIndex(index);
+        }}
+        scrollEventThrottle={200}                       //  Adjust the throttle value if needed
       >
-        {slides.map((slide, index) => (
-          <View
-            key={slide.key}
-            style={[
-              styles.paginationDot,
-              index === currentIndex && styles.paginationDotActive,
-            ]} />
-        ))}
+      {item && item.data && item.data.imageUrls && item.data.imageUrls.map((item, index) => (
+        <View key={index} style={[styles.paginationDot, index === currentIndex && styles.paginationDotActive]} />
+      ))}
       </ScrollView>
     </View>
   );
+  
 
   return (
     <ScrollView style={styles.MainContainer}>
@@ -64,7 +83,7 @@ const Uni_Details = ({ navigation }) => {
       </View>
       <AppIntroSlider
         renderItem={renderSlides}
-        data={slides}
+        data={item.data.imageUrls}
         onSlideChange={(index) => setCurrentIndex(index)}
         renderNextButton={() => null}
         renderDoneButton={() => null}
@@ -76,59 +95,76 @@ const Uni_Details = ({ navigation }) => {
       <View style={styles.Uni_Detail}>
         <View style={styles.Title_Cont}>
           <View style={styles.Title_Cont}>
-            <Text style={styles.Title}>{Uni.Title}</Text>
+            <Text style={styles.Title}>{item.data.name}</Text>
           </View>
         </View>
+        <TouchableOpacity onPress={Website}>
         <View style={styles.City_Cont}>
-          <Text style={styles.City_Text}>{Uni.City}</Text>
+          <Text style={styles.City_Text}>{item.data.City}</Text>
         </View>
-        <Text style={styles.Status}>{Uni.Status}</Text>
+       </TouchableOpacity>
+        <Text style={styles.Status}>{item.data.Status}</Text>
         <View style={styles.Address_Cont}>
           <TouchableOpacity onPress={handleOpenMaps}>
             <Image source={Location} style={styles.Address_Img} />
           </TouchableOpacity>
-          <Text style={styles.Address}>{Uni.Location}</Text>
+          <Text style={styles.Address}>{item.data.Location}</Text>
         </View>
         <View style={styles.Schedule_Cont}>
           <View style={styles.Start_Cont} >
             <Text style={styles.Start_Date}>Start Date</Text>
-            <Text style={styles.date} >10-Oct-2023</Text>
+            <Text style={styles.date} >{item.data.StartingDate}</Text>
           </View>
           <View style={styles.End_Cont} >
             <Text style={styles.Start_Date}>End Date</Text>
-            <Text style={styles.date} >24-Nov-2023</Text>
+            <Text style={styles.date} >{item.data.EndingDate}</Text>
           </View>
 
         </View>
         <View style={styles.Desc_Cont}>
           <Text style={styles.Desc}>Description</Text>
-          <Text style={styles.Detail}>{Uni.Description}</Text>
+          <Text style={styles.Detail}>{item.data.description}</Text>
         </View>
-        <TouchableOpacity onPress={() => { navigation.navigate('OwnerProfile') }}>
+        <TouchableOpacity onPress={Contact}>
           <View style={styles.Phone_Cont}>
             <View style={styles.Contact} >
-              <Image source={require('../../../Assets/Images/uni_logo.png')} style={styles.Uni_Logo} />
+              <Image source={{uri: item.data.imageUrls[1] }} style={styles.Uni_Logo} />
               <View style={styles.User}>
-                <Text style={styles.OwnerName}>KFUEIT Administration</Text>
+                <Text style={styles.OwnerName}>Khwaja Fareed University of Engineering 
+                and Information Technology</Text>
               </View>
             </View>
             <Image source={require('../../../Assets/Icons/phone.png')} style={styles.Phone_Icon} />
           </View>
         </TouchableOpacity>
         
-        <Text style={[styles.Addmission_Open,{marginTop:'2%',marginBottom:'-2%'}]} >Addmission Open</Text>
-        <Image source={require('../../../Assets/Images/poster.png')} style={styles.Poster} />
+        <Text style={[styles.Addmission_Open,{marginTop:'3%'}]} >Addmission Open</Text>
+        <Image source={{uri:item.data.imageUrl}} style={styles.Poster} />
      
-        <Text style={styles.Addmission_Open} >How To Apply?</Text>
-        <Text style={styles.Link} >https://www.Kfueit.com.edu.pk</Text>
-        <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('') }}>
-        <Text style={styles.Rent}>Apply Us </Text>
+        
+        
+
+        <Text style={styles.Addmission_Open} >How To Apply</Text>
+        {/*
+  <Image source={require('../../../Assets/Images/video.png')} style={{width:'100%',height:300,borderRadius:20}} />
+      */}
+      
+        <YouTube
+        // videoId="6AClkFS3xkI"
+        videoId={item.data.VideoLink}
+        height={300}
+        play={true}
+        fullscreen={false}
+        loop={false}
+        controls={true}
+      />
+    
+        <TouchableOpacity style={styles.Apply_Btn} onPress={Website}>
+        <Text style={styles.Rent}>Apply Now </Text>
         </TouchableOpacity>
-
-        <Text style={styles.Addmission_Open} >Help For Apply</Text>
-        <Image source={require('../../../Assets/Images/video.png')} style={{width:'100%',height:300,borderRadius:20}} />
-     
-
+        <TouchableOpacity style={styles.Req_Btn} onPress={() => { navigation.navigate('') }}>
+        <Text style={styles.Rent}>Request to Apply</Text>
+        </TouchableOpacity>
 
 
       </View>

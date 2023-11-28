@@ -16,6 +16,8 @@ import Reset from '../../Screens/Authentication/ForgetPassword/Reset';
 import Bottom from '../Bottom_Nav/Bottom_Navigation';
 import Uni_Details from '../../Screens/Universities/Details';
 import University_Name from '../../Screens/Universities/Names/Index';
+import Post_Data from '../../Screens/Admin_Section/Post_Item';
+import Get_Method from '../../Screens/Admin_Section/Get_Method';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,13 +41,12 @@ const Stack_Navigation = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={user ? 'Bottom' : 'Splash_Blank'} screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName={user ? 'Uni_Name' : 'Uni_Name'} screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash_Blank" component={Splash_Blank} />
         <Stack.Screen name="Splash" component={Splash_Screen} />
         <Stack.Screen name="onBoarding" component={OnBoarding} />
         <Stack.Screen name="Login" component={SignInScreen} />
         <Stack.Screen name="Sign_Up" component={SignUp} />
-        <Stack.Screen name="PhoneNo" component={PhoneValidation} />
         <Stack.Screen name="OTP" component={Otp} />
         <Stack.Screen name="Forget" component={ForgetPassword} />
         <Stack.Screen name="GetCode" component={GetCode} />
@@ -53,6 +54,9 @@ const Stack_Navigation = () => {
         <Stack.Screen name="Bottom" component={Bottom} />
         <Stack.Screen name="Uni_Name" component={University_Name} />
         <Stack.Screen name="Uni_Detail" component={Uni_Details} />
+        <Stack.Screen name="Post" component={Post_Data} />
+        <Stack.Screen name="GET" component={Get_Method} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

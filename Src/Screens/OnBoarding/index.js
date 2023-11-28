@@ -32,7 +32,9 @@ const OnBoarding = ({ navigation }) => {
     const isFirstSlide = index === 0;
 
     return (
+
       <View style={[styles.slide, { backgroundColor: item.backgroundColor }]}>
+
         {isFirstSlide ? null : (
           <TouchableOpacity style={styles.prevButton} onPress={handlePrevSlide}>
             <Image source={Back_Icon} style={styles.Back_Icon} />

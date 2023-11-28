@@ -21,24 +21,25 @@ export const styles = StyleSheet.create({
     width: '70%',
     height: '45%',
     borderRadius: 20,
-    marginTop: '20%',
+    marginTop: '15%',
   },
   description: {
     fontSize: 16,
     fontWeight: '500',
     textAlign: 'center',
     fontFamily: Fonts.SF_Medium,
-    color: Colors.Black2,
-    width: '85%',
+    color: Colors.Black,
+    width: 320,
+    height:150,
     lineHeight: 20,
-    marginTop: '2%',
-
+    marginTop: '3%',
+ 
   },
   buttonContainer: {
     height: 50,
     width: '100%',
     justifyContent: 'flex-end',
-    marginTop: '12%',
+    marginTop: '10%',
   },
   prevButton: {
     position: 'absolute',
@@ -53,7 +54,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: '12%',
+    marginTop: '10%',
   },
   paginationDot: {
     width: 8,
