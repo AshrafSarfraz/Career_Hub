@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { Colors } from '../../../../Themes/Colors';
 import { useRoute } from '@react-navigation/native';
@@ -7,16 +7,24 @@ import { Logo1 } from '../../../../Themes/Images';
 import { Fonts } from '../../../../Themes/Fonts';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 
-const Otp = ({ props }) => {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+const Otp = ( props ) => {
+  const [otp, setOtp] = useState(['','','','','','']);
+  const convertedCode = otp.join('');
   const inputRef = useRef([]);
   const [showError, setShowError] = useState(false);
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState(convertedCode);
+  console.log(otp,'.....',code)
 
-  async function confirmCode() {
+  useEffect(() => {
+    const newCode = otp.join('');
+    setCode(newCode);
+  }, [otp]);
+
+  useEffect
+  async function confirmCode(confirm) {
     try {
       await confirm.confirm(code);
-      // Code confirmed successfully, you can add further logic here
+      console.log('login code:', code);
     } catch (error) {
       console.log('Invalid code:', error.message);
     }
@@ -54,7 +62,7 @@ const Otp = ({ props }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.MainCont}>
-      <CustomHeader title={''} onBackPress={() => { navigation.goBack(); }} />
+      <CustomHeader title={''} onBackPress={() => { navigation.navigate('Sign_Up'); }} />
       <Image source={Logo1} style={styles.Logo} />
       <Text style={styles.digit_Txt}>Enter the 6-digit OTP sent to you at</Text>
       {/*
@@ -71,7 +79,7 @@ const Otp = ({ props }) => {
               { borderColor: pin ? 'green' : '#959595' },
             ]}
             value={pin}
-            onChangeText={value => {handleOtpChange(value, index),setCode(value)}}
+            onChangeText={value => {handleOtpChange(value, index)}}
             onKeyPress={event => handleOtpKeyPress(event, index)}
             maxLength={1}
             keyboardType="numeric"

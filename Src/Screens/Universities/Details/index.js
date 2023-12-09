@@ -4,7 +4,6 @@ import AppIntroSlider from 'react-native-app-intro-slider';
 import { useRoute } from '@react-navigation/native'
 import { Back_Icon, Bookmark, Location } from '../../../Themes/Images';
 import { styles } from './style';
-
 import YouTube from 'react-native-youtube-iframe';
 
 
@@ -13,12 +12,10 @@ const Uni_Details = ({ navigation }) => {
   const item = route.params.item;
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollViewRef = useRef(null);
-
-
   const latitude = 37.7749; 
   const longitude = -122.4194;
   const phoneNumber = '923430725591'; // Replace with the phone number you want to dial
-
+   console.log(route.params.item)
 
   const handleOpenMaps = () => {
     const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
@@ -38,7 +35,7 @@ const Uni_Details = ({ navigation }) => {
     };
 
   const renderSlides = ({ item }) =>{
-    console.log(item,'here is item')
+     console.log(item,'here is item')
 
     return(
     <View style={styles.slideContainer}>
@@ -128,7 +125,8 @@ const Uni_Details = ({ navigation }) => {
         <TouchableOpacity onPress={Contact}>
           <View style={styles.Phone_Cont}>
             <View style={styles.Contact} >
-              <Image source={{uri: item.data.imageUrls[1] }} style={styles.Uni_Logo} />
+              <Image source={{uri: item.data.imageUrl }} style={styles.Uni_Logo} />
+
               <View style={styles.User}>
                 <Text style={styles.OwnerName}>Khwaja Fareed University of Engineering 
                 and Information Technology</Text>
@@ -139,7 +137,8 @@ const Uni_Details = ({ navigation }) => {
         </TouchableOpacity>
         
         <Text style={[styles.Addmission_Open,{marginTop:'3%'}]} >Addmission Open</Text>
-        <Image source={{uri:item.data.imageUrl}} style={styles.Poster} />
+        <Image source={{ uri: item.data.imageUrl }} style={styles.Poster} />
+
      
         
         
@@ -153,7 +152,7 @@ const Uni_Details = ({ navigation }) => {
         // videoId="6AClkFS3xkI"
         videoId={item.data.VideoLink}
         height={300}
-        play={true}
+        play={false}
         fullscreen={false}
         loop={false}
         controls={true}

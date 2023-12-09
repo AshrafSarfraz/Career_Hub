@@ -13,6 +13,7 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import { useRoute } from '@react-navigation/native';
 import { Calendar } from 'react-native-calendars';
+
 const EditItem = ({ navigation }) => {
   const route = useRoute();
   const [imageData, setImageData] = useState({
@@ -24,12 +25,14 @@ const EditItem = ({ navigation }) => {
   const [Location, setLocation] = useState(route.params.data.Location);
   const [Longitude, setLongitude] = useState(route.params.data.Longitude);
   const [Latitude, setLatitude] = useState(route.params.data.Latitude);
-   const [description, setDescription] = useState(route.params.data.description);
-   const [StartingDate, setStartingDate] = useState(route.params.data.StartingDate);
-   const [EndingDate, setEndingDate] = useState(route.params.data.EndingDate);
-   const [PhoneNumber,SetPhoneNumber]=useState(route.params.data.PhoneNumber);
-   const [Link,SetLink]=useState(route.params.data.Link);
-   const [ApplyVideo,SetApplyVideo]=useState(route.params.data.ApplyVideo);
+  const [description, setDescription] = useState(route.params.data.description);
+  const [StartingDate, setStartingDate] = useState(route.params.data.StartingDate);
+  const [EndingDate, setEndingDate] = useState(route.params.data.EndingDate);
+  const [PhoneNumber, SetPhoneNumber] = useState(route.params.data.PhoneNumber);
+  const [Link, SetLink] = useState(route.params.data.Link);
+  const [VideoLink, setVideoLink] = useState(route.params.data.VideoLink);
+  const [updateIndices, setUpdateIndices] = useState([]);
+
 
    const onDayPress = (day) => {
     setStartingDate(day.dateString);
@@ -74,6 +77,47 @@ const EditItem = ({ navigation }) => {
     }
   };
 
+  //update Selected Images
+  // ... (previous code remains unchanged)
+
+// Function to update only the last two selected images
+const updateSelectedImages = async () => {
+  try {
+    const ImageUrls = await uploadImages();
+
+    // Update only the last two images
+    const updatedImages = [...imageData.assets];
+    const totalImages = updatedImages.length;
+
+    // Check if there are at least two images to update
+    if (totalImages >= 2) {
+      const lastIndex = totalImages - 1;
+      const secondToLastIndex = totalImages - 2;
+
+      // Update the last image
+      updatedImages[lastIndex].uri = ImageUrls[lastIndex];
+
+      // Update the second to last image
+      updatedImages[secondToLastIndex].uri = ImageUrls[secondToLastIndex];
+
+      // Update the state with the modified images
+      setImageData({ assets: updatedImages });
+
+      // Reset the update indices
+      setUpdateIndices([]);
+    } else {
+      console.warn('There are not enough images to update.');
+    }
+  } catch (error) {
+    console.error('Error updating images:', error);
+  }
+};
+
+// ... (rest of the code remains unchanged)
+
+  
+
+
   const uploadItem = async () => {
     try {
       const newImageUrls = await uploadImages();
@@ -90,6 +134,7 @@ const EditItem = ({ navigation }) => {
         PhoneNumber:PhoneNumber,
         Link:Link,
         imageUrls: newImageUrls,
+        VideoLink:VideoLink
       };
 
       await firestore()
@@ -122,6 +167,7 @@ const EditItem = ({ navigation }) => {
             ))}
           </ScrollView>
         ) : null}
+
 
         <TextInput
         placeholder="Enter Item Name"
@@ -195,6 +241,12 @@ const EditItem = ({ navigation }) => {
     value={Link}
     onChangeText={text => SetLink(text)}
   />
+  <TextInput
+  placeholder="Video Link"
+  style={styles.inputStyle}
+  value={VideoLink}
+  onChangeText={text => setVideoLink(text)}
+/>
   <Text style={styles.Title} >Starting Date</Text>
   <Calendar
   markedDates={{
@@ -220,7 +272,7 @@ onDayPress={onDayPress1}
           onPress={() => {
             openImagePicker();
           }}>
-          <Text>Pick Multiple Images From Gallery</Text>
+          <Text  style={{fontSize:14,color:"#000"}}>Pick Multiple Images From Gallery</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -231,6 +283,14 @@ onDayPress={onDayPress1}
           }}>
           <Text style={{ color: '#Fff' }}>Upload Item</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+        style={styles.uploadBtn}
+        onPress={() => {
+          updateSelectedImages();
+        }}>
+        <Text style={{ fontSize: 14, color: '#000' }}>Update Last 2 Images</Text>
+      </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -263,7 +323,47 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     marginTop: 30,
     alignSelf: 'center',
+    color:"#000000"
   },
+  Input_Cont:{
+    flexDirection:"row",
+    width:"90%",
+     alignSelf:"center",
+     justifyContent:"space-between"
+   },
+  inputStyle1: {
+    width: '48%',
+    height: 55,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 30,
+    alignSelf: 'center',
+    color:'black',
+    fontSize:14
+  },
+  Schdule_Cont:{
+    marginTop:"5%",
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"space-evenly",
+    backgroundColor:"purple",
+    height:70,
+    alignSelf:"center",
+    borderRadius:10,
+    width:"90%"
+   },
+   Dates:{
+    fontSize:16,color:'white',
+    lineHeight:25,
+    fontWeight:"bold"
+   },
+   End:{
+     fontSize:18,color:'black',
+    lineHeight:25,
+    fontWeight:"bold"
+   },
   pickBtn: {
     width: '90%',
     height: 50,

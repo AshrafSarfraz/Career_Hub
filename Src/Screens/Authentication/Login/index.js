@@ -12,7 +12,7 @@ import {
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
+import firestore from '@react-native-firebase/firestore';
 import { Colors } from '../../../Themes/Colors';
 import { Drop, Hide, Lock, Message, Show } from '../../../Themes/Images';
 import CustomButton from '../../../Components/CustomButton/CustomButton';
@@ -29,48 +29,49 @@ const SignInScreen = ({ navigation }) => {
     setIsChecked(!isChecked);
   };
 
-
   // firebase  Auth BY Google
   GoogleSignin.configure({
     webClientId: '499188544934-7je57jquuqs6cv3fjiatagjqv5meo28f.apps.googleusercontent.com',
   });
   async function onGoogleButtonPress() {
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    const { idToken } = await GoogleSignin.signIn();
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    return auth().signInWithCredential(googleCredential);
-  }
+    try {
+      // Check for Play Services
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });     // Get Google Sign-In token
+      const { idToken } = await GoogleSignin.signIn();                               // Create Google Sign-In credentials
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);         // Sign in with Google credentials
+      await auth().signInWithCredential(googleCredential);  
+      navigation.navigate('Bottom')             
+      // Log success
+      console.log('Signed in with Google!');
+    } catch (error) {
+      console.error('Google Sign-In error:', error.message);
+    }}
   // firebase  Auth BY Google
 
 
   // firebase  Auth BY Email/Password
   const handleSignIn = async () => {
     if (!Email || !Password) {
-      setIsError('Please fill in both email and password fields and checkbox.');
+      setIsError('Please fill in both email and password fields.');
       return; // Don't proceed with sign-in
     }
-
-    if (!isChecked) {
-      setIsError('Please check the "Remember me" checkbox.');
-      return; // Don't proceed with sign-in
-    }
-
+   
     try {
-      await auth().signInWithEmailAndPassword(Email, Password);
-      setIsError('User signed in successfully!');
-      navigation.navigate('Bottom');
-    } catch (error) {
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        setIsError('Invalid email or password. Please try again.');
+      const userCredential = await auth().signInWithEmailAndPassword(Email, Password);
+      console.log('User account created & signed in!', userCredential);
+      if (userCredential.user.emailVerified) {
+        Alert.alert('You are verified');
+        navigation.navigate('Bottom')
       } else {
-        setIsError('An error occurred. Please try again later.');
+        Alert.alert('You are not verified ');
+        await auth.currentUser.sendEmailVerification();
+        await auth.signOut();
       }
-    }
-  };
-
-
+    } catch (error) {
+      console.error('Error signing in:', error.message);
+    }};
   // firebase  Auth BY Email/Password
-
+  
   return (
     <ScrollView contentContainerStyle={styles.MainContainer}>
       <View>
@@ -108,18 +109,11 @@ const SignInScreen = ({ navigation }) => {
               </TouchableOpacity>
             }
           </View>
+     
+          
           <View style={styles.Forget_Cont} >
-            <View style={styles.container}>
-              <TouchableOpacity
-                style={[styles.checkbox, isChecked ? styles.checked : null]}
-                onPress={toggleCheckbox}
-              >
-                {isChecked && <Icons name="check" color="white" size={12} />}
-              </TouchableOpacity>
-              <Text style={styles.label}>Remember me</Text>
-            </View>
             <TouchableOpacity style={styles.Forget_Btn} onPress={() => { navigation.navigate('Forget') }}  >
-              <Text style={styles.Forget_Txt} >Forgot Password</Text>
+              <Text style={styles.Forget_Txt} >Forgot Password ?</Text>
             </TouchableOpacity>
           </View>
           {isError ? (
@@ -127,8 +121,7 @@ const SignInScreen = ({ navigation }) => {
           ) : null}
         </View>
         <View style={styles.SignUp_Btn} >
-          <CustomButton title='Sign In' onPress={handleSignIn} />
-
+          <CustomButton title='Sign In'  onPress={() =>{handleSignIn()}}  />
         </View>
         <TouchableOpacity style={styles.Guest} onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))} >
           <Text style={styles.Guest_Btn} >Continue With Google</Text>

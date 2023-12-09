@@ -11,14 +11,97 @@ import CitiesName from '../../../Components/Alerts/Cities_Names'
 ``
 
 const University_Name = (props) => {
-  const [BtnState, setBtnState] = useState(0)
-  const [items, setItems] = useState([]);
-  const [itemStates, setItemStates] = useState(items.map(() => true));
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const currentDate = new Date();
+  const [BtnState, setBtnState] = useState(0)
+  const [items, setItems] = useState([]);
+  const [itemStates, setItemStates] = useState(items.map(() => true));
   const filteredData = items.filter(item => new Date(item.data.EndingDate) >= currentDate);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [alertVisible, setAlertVisible] = useState(false);
+  const [selectedCities, setSelectedCities] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+
+  const filterItems = () => {
+    const filtered = filteredData.filter((item) => {
+      const itemName = item.data.name.toLowerCase();
+      const searchLowerCase = searchQuery.toLowerCase();
+      return itemName.includes(searchLowerCase);
+    });
+    setFilteredItems(filtered);
+  };
+
+  useEffect(() => {
+    filterItems();
+  }, [searchQuery, items]);
+
+
+  const filterDataByButton = () => {
+    let filtered = filteredData;
+  
+    // Filter by selected cities and status simultaneously
+    if (selectedCities.length > 0) {
+      console.log('Filtering by cities:', selectedCities);
+  
+      switch (BtnState) {
+        case 0:
+          console.log('Filtering by All');
+           filtered = filtered.filter(
+      item =>
+        selectedCities.includes(item.data.City) &&
+        (BtnState === 0 || item.data.Status === 'Government ' || item.data.Status === 'Semi-Government' || item.data.Status === 'Private')
+    );
+          break;
+        case 1:
+          console.log('Filtering by Government');
+          filtered = filtered.filter(item => item.data.Status === 'Government ' && selectedCities.includes(item.data.City));
+          break;
+        case 2:
+          console.log('Filtering by Semi-Government');
+          filtered = filtered.filter(item => item.data.Status === 'Semi-Government' && selectedCities.includes(item.data.City));
+          break;
+        case 3:
+          console.log('Filtering by Private');
+          filtered = filtered.filter(item => item.data.Status === 'Private' && selectedCities.includes(item.data.City));
+          break;
+        default:
+          console.log('No additional filtering needed for status');
+          break;
+      }
+    } else {
+      // Filter only by status if no cities are selected
+      switch (BtnState) {
+        case 0:
+          console.log('Filtering by All');
+          break;
+        case 1:
+          console.log('Filtering by Government');
+          filtered = filtered.filter(item => item.data.Status === 'Government ');
+          break;
+        case 2:
+          console.log('Filtering by Semi-Government');
+          filtered = filtered.filter(item => item.data.Status === 'Semi-Government');
+          break;
+        case 3:
+          console.log('Filtering by Private');
+          filtered = filtered.filter(item => item.data.Status === 'Private');
+          break;
+        default:
+          console.log('No additional filtering needed for status');
+          break;
+      }
+    }
+  
+    console.log('Filtered Data:', filtered);
+    return filtered;
+  };
+  
+  useEffect(() => {
+    setFilteredItems(filterDataByButton());
+  }, [BtnState, items, selectedCities]);
+  
 
   const showAlert = () => {
     setAlertVisible(true);
@@ -32,26 +115,40 @@ const University_Name = (props) => {
     getItems();
   }, [isFocused]);
 
+
+
+  const onCitiesSelect = (cities) => {
+    setSelectedCities(cities);
+    console.log('Selected Cities:', cities);
+    console.log('Current Selected Cities State:', selectedCities);
+  };
+  
+  const onSearchInputChange = (text) => {
+    setSearchQuery(text);
+  };
+
+
+
   const getItems = () => {
     try {
       firestore()
         .collection('items')
         .get()
         .then(querySnapshot => {
-          console.log('Total items: ', querySnapshot.size);
+          // console.log('Total items: ', querySnapshot.size);
           let tempData = [];
           querySnapshot.forEach(documentSnapshot => {
-            console.log(
-              'Item ID: ',
-              documentSnapshot.id,
-              documentSnapshot.data(),
-            );
+            // console.log(
+            //   'Item ID: ',
+            //   documentSnapshot.id,
+            //   documentSnapshot.data(),
+            // );
             tempData.push({
               id: documentSnapshot.id,
               data: documentSnapshot.data(),
             });
           });
-          console.log('Items data:', tempData);
+          // console.log('Items data:', tempData);
           setItems(tempData);
         })
         .catch(error => {
@@ -119,7 +216,9 @@ const University_Name = (props) => {
       <View style={styles.Input_With_Filter} >
       <View style={styles.Input_Cont} >
         <Image source={Search} style={styles.SearchIcon} />
-        <TextInput placeholder='Search here.....' placeholderTextColor={Colors.Grey9} style={styles.Search_Input} />
+        <TextInput placeholder='Search here.....' placeholderTextColor={Colors.Grey9} style={styles.Search_Input}  
+        value={searchQuery}
+        onChangeText={(text) => setSearchQuery(text)} />
       </View>
       <TouchableOpacity onPress={showAlert}  >
           <Image source={require('../../../Assets/Icons/filter.png')} style={styles.Filter} />
@@ -130,7 +229,7 @@ const University_Name = (props) => {
           <Text style={[styles.Btn_Txt, BtnState === 0 ? styles.ActiveBtn_Txt : null]} >All</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.Btn, BtnState === 1 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(1) }}>
-          <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Goverment</Text>
+          <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Government</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.Btn, BtnState === 2 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
           <Text style={[styles.Btn_Txt, BtnState == 2 ? styles.ActiveBtn_Txt : null]} >Semi-Goverment</Text>
@@ -139,24 +238,40 @@ const University_Name = (props) => {
           <Text style={[styles.Btn_Txt, BtnState === 3 ? styles.ActiveBtn_Txt : null]} >Private</Text>
         </TouchableOpacity>
       </ScrollView>
+{
+  selectedCities.length>0?
+  <View style={styles.selected_City_}>
+      <Text style={styles.Cities_Name}>
+      Selected : </Text>   
+      <View style={styles.SelectedCitiesContainer}>
+      {selectedCities.map((city, index) => (
+        <View key={index} style={styles.SelectedCityBackground}>
+          <Text style={styles.SelectedCityText}>{city}</Text>
+        </View>
+      ))}
+    </View>
+    </View>:null
+}
+      
 
 
       <View style={styles.FlatList_Cont} >
         <FlatList
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-          data={filteredData}
+          data={filteredItems}
           renderItem={renderItem}
           keyExtractor={item => item.id.toString()}
 
         />
       </View>
-
+     
       <CitiesName
       visible={alertVisible}
       message="This is a custom alert!"
-      onClose={() => { hideAlert(), navigation.navigate('') }}
-    />
+      onClose={() => { hideAlert();}}
+      onCitiesSelect={onCitiesSelect}
+      />
     </ScrollView>
   )
 }
@@ -181,7 +296,6 @@ const styles = StyleSheet.create({
     marginBottom: "2%"
   },
   Back_Txt: {
-
     color: Colors.Green,
     fontFamily: Fonts.SF_Bold,
     lineHeight: 26,
@@ -198,6 +312,95 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: "5%"
   },
+ 
+  Input_With_Filter:{
+    justifyContent:"space-around",
+    flexDirection: "row",
+    borderWidth: 1,
+    elevation: 3,
+    backgroundColor: Colors.White,
+    borderColor: Colors.Black,
+    borderRadius: 10,
+    paddingHorizontal: "2%",
+    marginTop: "3%",
+    alignItems:"center",
+    height:55
+   },
+   Input_Cont: {
+     flexDirection: "row",
+     alignItems: "center",
+   },
+   SearchIcon: {
+     width: 25, height: 25,
+     marginRight: "2%"
+   },
+   Filter:{
+     width: 25, height: 25,
+     marginLeft: "2%"
+   },
+   Search_Input: {
+     width: "70%",
+     color: Colors.Black,
+     fontFamily: Fonts.SF_Medium,
+     fontSize: 14,
+     backgroundColor: Colors.White
+   },
+   Btn_Cont: {
+     marginTop: 20,
+     marginBottom: 10
+   },
+   Btn: {
+     paddingHorizontal: 20,
+     paddingVertical: 12,
+     borderRadius: 8,
+     backgroundColor: Colors.White,
+     marginRight: 10,
+     borderWidth: 0.5,
+     borderColor: Colors.Grey4
+   },
+   ActiveBtn: {
+     backgroundColor: Colors.Green
+   },
+   Btn_Txt: {
+     fontSize: 16,
+     fontFamily: Fonts.SF_SemiBold,
+     lineHeight: 20,
+     color: Colors.Black
+   },
+   ActiveBtn_Txt: {
+     color: Colors.White
+   },
+   selected_City_Container:{
+   marginBottom:"5%",
+   marginTop:'3%'
+   },
+   Cities_Name:{
+    fontSize: 22,
+    lineHeight:28,
+    color: 'red',
+    fontFamily: Fonts.SF_Bold,
+    marginBottom:"1%"
+   },
+   SelectedCitiesContainer:{
+      flexDirection:"row",
+      flexWrap:"wrap",
+      marginBottom:'2%'
+   },
+   SelectedCityBackground:{
+    backgroundColor:Colors.Green,
+    margin:"1%",
+    paddingVertical:"2%",
+    paddingHorizontal:'3%',
+    borderRadius:15
+   },
+   SelectedCityText:{
+    fontSize: 14,
+    lineHeight:18,
+    color: Colors.White,
+    fontFamily: Fonts.SF_Medium,
+   },
+   
+  
   FlatList_Cont: {
     paddingBottom: "10%"
   },
@@ -223,7 +426,6 @@ const styles = StyleSheet.create({
     width: 150,
     borderRadius: 5,
     marginTop: "2%"
-
   },
   City_Text: {
     fontSize: 14,
@@ -252,65 +454,6 @@ const styles = StyleSheet.create({
     marginLeft: "4%",
     width: "60%"
   },
-  Input_With_Filter:{
-   justifyContent:"space-around",
-   flexDirection: "row",
-   borderWidth: 1,
-   elevation: 3,
-   backgroundColor: Colors.White,
-   borderColor: Colors.Black,
-   borderRadius: 10,
-   paddingHorizontal: "2%",
-   marginTop: "3%",
-   alignItems:"center",
-   height:55
-  },
-  Input_Cont: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  SearchIcon: {
-    width: 25, height: 25,
-    marginRight: "2%"
-  },
-  Filter:{
-    width: 25, height: 25,
-    marginLeft: "2%"
-  },
-  Search_Input: {
-    width: "70%",
-    color: Colors.Black,
-    fontFamily: Fonts.SF_Medium,
-    fontSize: 14,
-    backgroundColor: Colors.White
-  },
-  Btn_Cont: {
-    marginTop: 20,
-    marginBottom: 30
-
-  },
-  Btn: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
-    backgroundColor: Colors.White,
-    marginRight: 10,
-    borderWidth: 0.5,
-    borderColor: Colors.Grey4
-  },
-  ActiveBtn: {
-    backgroundColor: Colors.Green
-  },
-  Btn_Txt: {
-    fontSize: 16,
-    fontFamily: Fonts.SF_SemiBold,
-    lineHeight: 20,
-    color: Colors.Black
-  },
-  ActiveBtn_Txt: {
-    color: Colors.White
-  }
-
 
 })
 

@@ -1,3 +1,5 @@
+
+
 import { View, Text, ScrollView, StyleSheet, FlatList, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
 import React, { useState,useEffect } from 'react'
 import { Colors } from '../../Themes/Colors'
@@ -5,19 +7,117 @@ import { Fonts } from '../../Themes/Fonts'
 import { Back_Icon, Bookmark, Bookmark1, Search } from '../../Themes/Images'
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import CitiesName from '../../Components/Alerts/Cities_Names'
+``
 
-
-const University_Name = (props) => {
+const Get_Data = (props) => {
+  const isFocused = useIsFocused();
+  const navigation = useNavigation();
+  const currentDate = new Date();
   const [BtnState, setBtnState] = useState(0)
   const [items, setItems] = useState([]);
   const [itemStates, setItemStates] = useState(items.map(() => true));
-  const isFocused = useIsFocused();
-  const navigation = useNavigation();
+  const filteredData = items;
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [selectedCities, setSelectedCities] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filterItems = () => {
+    const filtered = filteredData.filter((item) => {
+      const itemName = item.data.name.toLowerCase();
+      const searchLowerCase = searchQuery.toLowerCase();
+      return itemName.includes(searchLowerCase);
+    });
+    setFilteredItems(filtered);
+  };
+
+  useEffect(() => {
+    filterItems();
+  }, [searchQuery, items]);
+
+
+  const filterDataByButton = () => {
+    let filtered = filteredData;
   
+    // Filter by selected cities and status simultaneously
+    if (selectedCities.length > 0) {
+      // console.log('Filtering by cities:', selectedCities);
+  
+      switch (BtnState) {
+        case 0:
+          // console.log('Filtering by All');
+           filtered = filtered.filter(
+      item =>
+        selectedCities.includes(item.data.City) &&
+        (BtnState === 0 || item.data.Status === 'Government ' || item.data.Status === 'Semi-Government' || item.data.Status === 'Private')
+    );
+          break;
+        case 1:
+          filtered = filtered.filter(item => item.data.Status === 'Government ' && selectedCities.includes(item.data.City));
+          break;
+        case 2:
+          filtered = filtered.filter(item => item.data.Status === 'Semi-Government' && selectedCities.includes(item.data.City));
+          break;
+        case 3:
+          filtered = filtered.filter(item => item.data.Status === 'Private' && selectedCities.includes(item.data.City));
+          break;
+        default:
+          break;
+      }
+    } else {
+      // Filter only by status if no cities are selected
+      switch (BtnState) {
+        case 0:
+          break;
+        case 1:
+          filtered = filtered.filter(item => item.data.Status === 'Government ');
+          break;
+        case 2:
+          filtered = filtered.filter(item => item.data.Status === 'Semi-Government');
+          break;
+        case 3:
+          filtered = filtered.filter(item => item.data.Status === 'Private');
+          break;
+        default:
+          break;
+      }
+    }
+  
+    // console.log('Filtered Data:', filtered);
+    return filtered;
+  };
+  
+  useEffect(() => {
+    setFilteredItems(filterDataByButton());
+  }, [BtnState, items, selectedCities]);
+  
+
+  const showAlert = () => {
+    setAlertVisible(true);
+  };
+
+  const hideAlert = () => {
+    setAlertVisible(false);
+  };
 
   useEffect(() => {
     getItems();
   }, [isFocused]);
+
+
+
+  const onCitiesSelect = (cities) => {
+    setSelectedCities(cities);
+    // console.log('Selected Cities:', cities);
+    // console.log('Current Selected Cities State:', selectedCities);
+  };
+  
+  const onSearchInputChange = (text) => {
+    setSearchQuery(text);
+  };
+
+
 
   const getItems = () => {
     try {
@@ -25,20 +125,20 @@ const University_Name = (props) => {
         .collection('items')
         .get()
         .then(querySnapshot => {
-          console.log('Total items: ', querySnapshot.size);
+          // console.log('Total items: ', querySnapshot.size);
           let tempData = [];
           querySnapshot.forEach(documentSnapshot => {
-            console.log(
-              'Item ID: ',
-              documentSnapshot.id,
-              documentSnapshot.data(),
-            );
+            // console.log(
+            //   'Item ID: ',
+            //   documentSnapshot.id,
+            //   documentSnapshot.data(),
+            // );
             tempData.push({
               id: documentSnapshot.id,
               data: documentSnapshot.data(),
             });
           });
-          console.log('Items data:', tempData);
+          // console.log('Items data:', tempData);
           setItems(tempData);
         })
         .catch(error => {
@@ -66,7 +166,7 @@ const University_Name = (props) => {
   const renderItem = ({ item, index }) => (
     <View style={styles.Cart}>
       <TouchableOpacity onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
-        <ImageBackground source={{ uri: item.data.imageUrls[1] }} style={styles.Product_Img} imageStyle={{ borderRadius: 10, alignItems: 'center' }} resizeMode='cover'>
+        <ImageBackground source={{ uri: item.data.imageUrls[0] }} style={styles.Product_Img} imageStyle={{ borderRadius: 10, alignItems: 'center' }} resizeMode='cover'>
         </ImageBackground>
       </TouchableOpacity>
       <TouchableOpacity style={styles.Detail_cont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
@@ -75,14 +175,29 @@ const University_Name = (props) => {
           <Text style={styles.City_Text}>{item.data.City}</Text>
         </View>
       </TouchableOpacity>
-      {itemStates[index] ? (
-        <TouchableOpacity onPress={() => toggleItemState(index)} style={{ width: 30, height: 30, alignSelf: 'flex-end', right: "5%", bottom: "2%" }} >
-          <Image source={Bookmark} style={styles.Wishlist} />
-        </TouchableOpacity>
-      ) : <TouchableOpacity onPress={() => toggleItemState(index)} style={{ width: 30, height: 30, alignSelf: "flex-end", right: "5%", bottom: "2%" }} >
-        <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
-      </TouchableOpacity>}
-
+      <View style={{right:'7%'}}  >
+      <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('Edit_Uni_Details', {
+          data: item.data,
+          id: item.id,
+        });
+      }}>
+      <Image
+        source={require('../../Assets/Icons/edit.png')}
+        style={[styles.icon, {width:25,height:25,marginBottom:'85%' ,left:'10%' }]}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        deleteItem(item.id);
+      }}>
+      <Image
+        source={require('../../Assets/Icons/remove.png')}
+        style={[styles.icon, { width:35,height:35,resizeMode:"contain"   }]}
+      />
+    </TouchableOpacity>
+    </View>
     </View>
   );
 
@@ -106,9 +221,11 @@ const University_Name = (props) => {
       <View style={styles.Input_With_Filter} >
       <View style={styles.Input_Cont} >
         <Image source={Search} style={styles.SearchIcon} />
-        <TextInput placeholder='Search here.....' placeholderTextColor={Colors.Grey9} style={styles.Search_Input} />
+        <TextInput placeholder='Search here.....' placeholderTextColor={Colors.Grey9} style={styles.Search_Input}  
+        value={searchQuery}
+        onChangeText={(text) => setSearchQuery(text)} />
       </View>
-      <TouchableOpacity onPress={() => {  }}  >
+      <TouchableOpacity onPress={showAlert}  >
           <Image source={require('../../Assets/Icons/filter.png')} style={styles.Filter} />
         </TouchableOpacity>
       </View>
@@ -117,7 +234,7 @@ const University_Name = (props) => {
           <Text style={[styles.Btn_Txt, BtnState === 0 ? styles.ActiveBtn_Txt : null]} >All</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.Btn, BtnState === 1 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(1) }}>
-          <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Goverment</Text>
+          <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Government</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.Btn, BtnState === 2 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
           <Text style={[styles.Btn_Txt, BtnState == 2 ? styles.ActiveBtn_Txt : null]} >Semi-Goverment</Text>
@@ -126,22 +243,43 @@ const University_Name = (props) => {
           <Text style={[styles.Btn_Txt, BtnState === 3 ? styles.ActiveBtn_Txt : null]} >Private</Text>
         </TouchableOpacity>
       </ScrollView>
+{
+  selectedCities.length>0?
+  <View style={styles.selected_City_}> 
+      <View style={styles.SelectedCitiesContainer}>
+      {selectedCities.map((city, index) => (
+        <View key={index} style={styles.SelectedCityBackground}>
+          <Text style={styles.SelectedCityText}>{city}</Text>
+        </View>
+      ))}
+    </View>
+    </View>:null
+}
+      
 
 
       <View style={styles.FlatList_Cont} >
         <FlatList
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-          data={items}
+          data={filteredItems}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id.toString()}
+
         />
       </View>
+     
+      <CitiesName
+      visible={alertVisible}
+      message="This is a custom alert!"
+      onClose={() => { hideAlert();}}
+      onCitiesSelect={onCitiesSelect}
+      />
     </ScrollView>
   )
 }
 
-export default University_Name
+export default Get_Data
 
 const styles = StyleSheet.create({
   MainCont: {
@@ -161,7 +299,6 @@ const styles = StyleSheet.create({
     marginBottom: "2%"
   },
   Back_Txt: {
-
     color: Colors.Green,
     fontFamily: Fonts.SF_Bold,
     lineHeight: 26,
@@ -178,6 +315,95 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: "5%"
   },
+ 
+  Input_With_Filter:{
+    justifyContent:"space-around",
+    flexDirection: "row",
+    borderWidth: 1,
+    elevation: 3,
+    backgroundColor: Colors.White,
+    borderColor: Colors.Black,
+    borderRadius: 10,
+    paddingHorizontal: "2%",
+    marginTop: "3%",
+    alignItems:"center",
+    height:55
+   },
+   Input_Cont: {
+     flexDirection: "row",
+     alignItems: "center",
+   },
+   SearchIcon: {
+     width: 25, height: 25,
+     marginRight: "2%"
+   },
+   Filter:{
+     width: 25, height: 25,
+     marginLeft: "2%"
+   },
+   Search_Input: {
+     width: "70%",
+     color: Colors.Black,
+     fontFamily: Fonts.SF_Medium,
+     fontSize: 14,
+     backgroundColor: Colors.White
+   },
+   Btn_Cont: {
+     marginTop: 20,
+     marginBottom: 10
+   },
+   Btn: {
+     paddingHorizontal: 20,
+     paddingVertical: 12,
+     borderRadius: 8,
+     backgroundColor: Colors.White,
+     marginRight: 10,
+     borderWidth: 0.5,
+     borderColor: Colors.Grey4
+   },
+   ActiveBtn: {
+     backgroundColor: Colors.Green
+   },
+   Btn_Txt: {
+     fontSize: 16,
+     fontFamily: Fonts.SF_SemiBold,
+     lineHeight: 20,
+     color: Colors.Black
+   },
+   ActiveBtn_Txt: {
+     color: Colors.White
+   },
+   selected_City_Container:{
+   marginBottom:"5%",
+   marginTop:'3%'
+   },
+   Cities_Name:{
+    fontSize: 22,
+    lineHeight:28,
+    color: 'red',
+    fontFamily: Fonts.SF_Bold,
+    marginBottom:"1%"
+   },
+   SelectedCitiesContainer:{
+      flexDirection:"row",
+      flexWrap:"wrap",
+      marginBottom:'2%'
+   },
+   SelectedCityBackground:{
+    backgroundColor:Colors.Green,
+    margin:"1%",
+    paddingVertical:"2%",
+    paddingHorizontal:'3%',
+    borderRadius:15
+   },
+   SelectedCityText:{
+    fontSize: 14,
+    lineHeight:18,
+    color: Colors.White,
+    fontFamily: Fonts.SF_Medium,
+   },
+   
+  
   FlatList_Cont: {
     paddingBottom: "10%"
   },
@@ -203,7 +429,6 @@ const styles = StyleSheet.create({
     width: 150,
     borderRadius: 5,
     marginTop: "2%"
-
   },
   City_Text: {
     fontSize: 14,
@@ -232,262 +457,6 @@ const styles = StyleSheet.create({
     marginLeft: "4%",
     width: "60%"
   },
-  Input_With_Filter:{
-   justifyContent:"space-around",
-   flexDirection: "row",
-   borderWidth: 1,
-   elevation: 3,
-   backgroundColor: Colors.White,
-   borderColor: Colors.Black,
-   borderRadius: 10,
-   paddingHorizontal: "2%",
-   marginTop: "3%",
-   alignItems:"center",
-   height:55
-  },
-  Input_Cont: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  SearchIcon: {
-    width: 25, height: 25,
-    marginRight: "2%"
-  },
-  Filter:{
-    width: 25, height: 25,
-    marginLeft: "2%"
-  },
-  Search_Input: {
-    width: "70%",
-    color: Colors.Black,
-    fontFamily: Fonts.SF_Medium,
-    fontSize: 14,
-    backgroundColor: Colors.White
-  },
-  Btn_Cont: {
-    marginTop: 20,
-    marginBottom: 30
-
-  },
-  Btn: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
-    backgroundColor: Colors.White,
-    marginRight: 10,
-    borderWidth: 0.5,
-    borderColor: Colors.Grey4
-  },
-  ActiveBtn: {
-    backgroundColor: Colors.Green
-  },
-  Btn_Txt: {
-    fontSize: 16,
-    fontFamily: Fonts.SF_SemiBold,
-    lineHeight: 20,
-    color: Colors.Black
-  },
-  ActiveBtn_Txt: {
-    color: Colors.White
-  }
-
 
 })
 
-
-
-// import React, { useEffect, useState } from 'react';
-// import {
-//   View,
-//   Text,
-//   StyleSheet,
-//   FlatList,
-//   Image,
-//   TouchableOpacity,
-// } from 'react-native';
-// import firestore from '@react-native-firebase/firestore';
-// import { useIsFocused, useNavigation } from '@react-navigation/native';
-
-// const Get_Method = () => {
-  // const isFocused = useIsFocused();
-  // const navigation = useNavigation();
-  // const [items, setItems] = useState([]);
-
-  // useEffect(() => {
-  //   getItems();
-  // }, [isFocused]);
-
-  // const getItems = () => {
-  //   try {
-  //     firestore()
-  //       .collection('items')
-  //       .get()
-  //       .then(querySnapshot => {
-  //         console.log('Total items: ', querySnapshot.size);
-  //         let tempData = [];
-  //         querySnapshot.forEach(documentSnapshot => {
-  //           console.log(
-  //             'Item ID: ',
-  //             documentSnapshot.id,
-  //             documentSnapshot.data(),
-  //           );
-  //           tempData.push({
-  //             id: documentSnapshot.id,
-  //             data: documentSnapshot.data(),
-  //           });
-  //         });
-  //         console.log('Items data:', tempData);
-  //         setItems(tempData);
-  //       })
-  //       .catch(error => {
-  //         console.error('Error getting items from Firestore:', error);
-  //       });
-  //   } catch (error) {
-  //     console.error('Error fetching items:', error);
-  //   }
-  // };
-
-  // const deleteItem = docId => {
-  //   firestore()
-  //     .collection('items')
-  //     .doc(docId)
-  //     .delete()
-  //     .then(() => {
-  //       console.log('Item deleted!');
-  //       getItems();
-  //     })
-  //     .catch(error => {
-  //       console.error('Error deleting item:', error);
-  //     });
-  // };
-
-//   return (
-   
-   
-   
-   
-   
-   
-//     <View style={styles.container}>
-//       <FlatList
-//         data={items}
-//         keyExtractor={(item) => item.id}
-//         renderItem={({ item, index }) => {
-//           return (
-//             <View style={styles.itemView}>
-//               <View style={styles.imageContainer}>
-               
-//               {item.data.imageUrls.map((imageUrl, index) => (
-//                   <Image
-//                     key={index}
-//                     source={{ uri: imageUrl }}
-//                     style={styles.itemImage}
-//                   />
-//                 ))}
-//               </View>
-//               <View style={styles.nameView}>
-//                 <Text style={styles.nameText}>{item.data.name}</Text>
-//                 <Text style={styles.descText}>{item.data.description}</Text>
-//                 <View style={styles.priceView}>
-//                   <Text style={styles.priceText}>
-//                     {'$' + item.data.discountPrice}
-//                   </Text>
-//                   <Text style={styles.discountText}>
-//                     {'$' + item.data.price}
-//                   </Text>
-//                 </View>
-//               </View>
-//               <Image
-//               key={index}
-//               source={{ uri: item.data.imageUrls[1] }}
-//               style={styles.itemImage}
-//             /> 
-//               <View style={{ margin: 10 }}>
-//                 <TouchableOpacity
-//                   onPress={() => {
-//                     navigation.navigate('Edit_Data', {
-//                       data: item.data,
-//                       id: item.id,
-//                     });
-//                   }}>
-//                   <Image
-//                     source={require('../../Assets/Icons/edit.png')}
-//                     style={styles.icon}
-//                   />
-//                 </TouchableOpacity>
-//                 <TouchableOpacity
-//                   onPress={() => {
-//                     deleteItem(item.id);
-//                   }}>
-//                   <Image
-//                     source={require('../../Assets/Icons/remove.png')}
-//                     style={[styles.icon, { marginTop: 20 }]}
-//                   />
-//                 </TouchableOpacity>
-//               </View>
-//             </View>
-//           );
-//         }}
-//       />
-//     </View>
-//   );
-// };
-
-// export default Get_Method;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   itemView: {
-//     flexDirection: 'row',
-//     width: '90%',
-//     alignSelf: 'center',
-//     backgroundColor: '#fff',
-//     elevation: 4,
-//     marginTop: 10,
-//     borderRadius: 10,
-//     height: 100,
-//     marginBottom: 10,
-//   },
-//   imageContainer: {
-//     flexDirection: 'row',
-//   },
-//   itemImage: {
-//     width: 50,
-//     height: 50,
-//     borderRadius: 5,
-//     margin: 5,
-//   },
-//   nameView: {
-//     width: '43%',
-//     margin: 10,
-//   },
-//   priceView: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-//   nameText: {
-//     fontSize: 18,
-//     fontWeight: '700',
-//   },
-//   descText: {
-//     fontSize: 14,
-//     fontWeight: '600',
-//   },
-//   priceText: {
-//     fontSize: 18,
-//     color: 'green',
-//     fontWeight: '700',
-//   },
-//   discountText: {
-//     fontSize: 17,
-//     fontWeight: '600',
-//     textDecorationLine: 'line-through',
-//     marginLeft: 5,
-//   },
-//   icon: {
-//     width: 24,
-//     height: 24,
-//   },
-// });

@@ -1,77 +1,211 @@
-import React from 'react';
-import { View, Text, Modal, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { Colors } from '../../Themes/Colors';
-import {  Wallet } from '../../Themes/Images';
+import React, { useState } from 'react';
+import { View,ScrollView , Text, Modal, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { Fonts } from '../../Themes/Fonts';
+import { Colors } from '../../Themes/Colors';
 
-const CitiesName = ({ visible, message, onClose }) => {
+
+const CitiesName = ({ visible, onClose,  onCitiesSelect }) => {
+  const [selectedCities, setSelectedCities] = useState([]);
+
+  // Array of city names
+  const cities = [
+    'Islamabad ',
+    'Ahmedpur East',
+    'Arif Wala',
+    'Attock',
+    'Bahawalnagar',
+    'Bahawalpur',
+    'Bhalwal',
+    'Bhakkar',
+    'Burewala',
+    'Charsadda',
+    'Chakwal',
+    'Chaman',
+    'Chiniot',
+    'Chishtian',
+    'Dadu',
+    'Daharki',
+    'Dera Ghazi Khan',
+    'Dera Ismail Khan',
+    'Faisalabad',
+    'Ferozwala',
+    'Ghotki',
+    'Gojra',
+    'Gujranwala',
+    'Gujranwala Cantonment',
+    'Gujrat',
+    'Haroonabad',
+    'Hasilpur',
+    'Hafizabad',
+    'Hyderabad',
+    'Hub',
+    'Islamabad',
+    'Jacobabad',
+    'Jaranwala',
+    'Jatoi',
+    'Jhang',
+    'Jhelum',
+    'Kabal',
+    'Kamalia',
+    'Kandhkot',
+    'Kasur',
+    'Khanewal',
+    'Khanpur',
+    'Khairpur',
+    'Khuzdar',
+    'Khushab',
+    'Kohat',
+    'Kot Addu',
+    'Kot Abdul Malik',
+    'Kotri',
+    'lahore',
+    'Larkana',
+    'Layyah',
+    'Lodhran',
+    'Mandi Bahauddin',
+    'Mansehra',
+    'Mardan',
+    'Mianwali',
+    'Mirpur',
+    'Mirpur Khas',
+    'Mirpur Mathelo',
+    'Mingora',
+    'Multan',
+    'Muridke',
+    'Muzaffargarh',
+    'Muzaffarabad',
+    'Narowal',
+    'Nawabshah',
+    'Nowshera',
+    'Okara',
+    'Pakpattan',
+    'Peshawar',
+    'Quetta',
+    'Rahim Yar Khan',
+    'Rawalpindi',
+    'Sadiqabad',
+    'Sahiwal',
+    'Samundri',
+    'Sargodha',
+    'Shahdadkot',
+    'Sheikhupura',
+    'Shikarpur',
+    'Sialkot',
+    'Sukkur',
+    'Swabi',
+    'Tando Adam',
+    'Tando Allahyar',
+    'Tando Muhammad Khan',
+    'Taxila',
+    'Turbat',
+    'Umerkot',
+    'Vehari',
+    'Wah Cantonment',
+    'Wazirabad',
+    // Add more cities as needed
+  ];
+  
+  
+
+  // Function to handle city click
+  const handleCityClick = (city) => {
+    // Check if the city is already selected
+    if (selectedCities.includes(city)) {
+      // Remove the city from the selected list
+      setSelectedCities(selectedCities.filter((selectedCity) => selectedCity !== city));
+    } else {
+      // Add the city to the selected list
+      setSelectedCities([...selectedCities, city]);
+    }
+  };
+
   return (
     <Modal transparent={true} visible={visible} animationType="fade">
-      <View style={styles.overlay}>
+      <ScrollView contentContainerStyle={styles.overlay}>
         <View style={styles.alertContainer}>
-    
-          <TouchableOpacity style={styles.okButton} onPress={onClose}>
-            <Text style={styles.okButtonText}>View Booking</Text>
+          <View style={{}} >  
+            <Text style={styles.List_Txt} >List of Cities</Text>
+           <View style={styles.FlatList_Cont} > 
+            <FlatList 
+            showsVerticalScrollIndicator={false}
+            numColumns={3}
+              data={cities}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+             
+                <TouchableOpacity
+                  onPress={() => handleCityClick(item)}
+                  style={{
+                    backgroundColor: selectedCities.includes(item) ? 'green' : 'white',
+                    borderRadius: 10,
+                    borderWidth:1,
+                    margin:'1.5%',
+                    paddingVertical:"2%",
+                    alignItems:"center",
+                    justifyContent:"center",
+                    width:"30%",
+                    paddingVertical:"2%"
+                  }}
+                >
+                  <Text  style={{color:selectedCities.includes(item) ? '#FFFFFF' : 'black',textAlign:"center",fontSize:14}} >{item}</Text>
+                </TouchableOpacity>
+              )}
+            />
+            </View>
+
+          </View>
+
+          <TouchableOpacity style={styles.Done_Button} onPress={() => { onClose(); onCitiesSelect(selectedCities); }}>
+            <Text style={styles.okButtonText}>Selected</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   overlay: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex:1
   },
   alertContainer: {
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: '5%',
-    width: '90%',
-    
+    padding: '2%',
+    width:'94%',
+    marginTop:'5%'
+   
   },
-  Logo:{
-       width:250,height:250,
-       alignSelf:'center'
-    },
-    Txt:{
-      fontSize:22,
-      fontFamily:Fonts.SF_Bold,
-      color:Colors.Black,
-      lineHeight:28,
-      marginVertical:'4%',
-      marginBottom:"8%",
-      textAlign:"center"
-    },
-  okButton: {
-   borderWidth:1,
-   paddingVertical:"2%",
-   paddingHorizontal:"3%",
-   borderRadius:10
-
+  Done_Button: {
+    borderRadius: 10,
+    height:55,
+    alignItems:"center",
+    justifyContent:"center",
+    marginVertical:"3%",
+    backgroundColor:Colors.Green,
+    top:'1%'
   },
   okButtonText: {
-    color: Colors.Black,
-    fontSize: 14,
-    lineHeight:18,
-    fontFamily:Fonts.SF_Bold
-  },
-  cityItem: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#fff',
-  },
-  selectedCityItem: {
-    backgroundColor: 'green',
-  },
-  cityText: {
-    fontSize: 16,
     color: 'black',
+    fontSize: 16,
+    color:Colors.White,
+    lineHeight:20
   },
+  List_Txt:{
+    color: 'black',
+    fontSize: 20,
+    marginVertical:'3%',
+    alignSelf:"center",
+    fontFamily:Fonts.SF_Bold,
+    fontWeight:'500'
+  },
+  FlatList_Cont:{
+    height:400,
+   
+  }
 });
 
 export default CitiesName;

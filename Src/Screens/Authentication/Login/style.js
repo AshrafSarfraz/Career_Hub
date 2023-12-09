@@ -142,7 +142,8 @@ export const styles = StyleSheet.create({
     Forget_Cont:{
      flexDirection:'row',
      alignItems:'center',
-     justifyContent:'space-between'
+     justifyContent:"flex-end"
+     
     },
     Forget_Btn:{
   

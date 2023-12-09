@@ -9,7 +9,6 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import DocumentPicker from 'react-native-document-picker';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
@@ -31,7 +30,7 @@ const Post_Data = ({navigation}) => {
   const [PhoneNumber, setPhoneNumber] = useState('');
   const [Link, setLink] = useState('');
   const [VideoLink, setVideoLink] = useState('');
-  const [showVideoPreview, setShowVideoPreview] = useState(false);
+ 
 
   const onDayPress = (day) => {
     setStartingDate(day.dateString);
@@ -102,20 +101,12 @@ const uploadImage = async (imageUrl = null) => {
     await reference.putFile(imageData.path);
     const url = await reference.getDownloadURL();
     console.log(url);
-     // uploadItem(imageUrl || url);
+     uploadItem(imageUrl || url);
   }
 };
 // Upload Single Image
 
-const uploadVideo = async () => {
-  if (ApplyVideo) {
-    const reference = storage().ref(ApplyVideo.fileName);
-    await reference.putFile(ApplyVideo.uri);
-    const url = await reference.getDownloadURL();
-    console.log(url);
-    // uploadItem(null, url, null);
-  }
-};
+
 
 
  //Upload Multiple Images in Firebase 
@@ -129,7 +120,7 @@ const uploadVideo = async () => {
   try {
     const downloadURLs = await Promise.all(uploadTasks);
     console.log(downloadURLs);
-    uploadItem(downloadURLs[0],downloadURLs);
+    uploadItem(null,downloadURLs);
   } catch (error) {
     console.error('Error uploading images:', error);
   }
@@ -154,7 +145,7 @@ const uploadVideo = async () => {
         Link: Link,
         VideoLink:VideoLink,
         imageUrls: imageUrls || [],
-        imageUrl: imageUrl|| '',
+        // imageUrl: imageUrl|| '',
       });
   
       console.log('Item added!');
@@ -302,14 +293,16 @@ const uploadVideo = async () => {
       <Text style={styles.selected_Date}  >Selected Date: {EndingDate}</Text>
     </View>
        
-    
-        <TouchableOpacity
+    {/*
+ <TouchableOpacity
         style={styles.pickBtn}
         onPress={() => {
           requestCameraPermission();
         }}>
         <Text style={styles.BtnTxt} >Pick Posters</Text>
-      </TouchableOpacity>    
+      </TouchableOpacity>  
+    */}
+         
       
      
 
@@ -326,11 +319,19 @@ const uploadVideo = async () => {
           style={styles.uploadBtn}
           onPress={() => { 
             uploadMultipleImages();
-            uploadImage();
+            // uploadImage();
             navigation.navigate('GET')
           }}>
           <Text style={{ color: '#Fff' }}>Upload Item</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+        style={styles.uploadBtn}
+        onPress={() => { 
+          navigation.navigate('GET')
+        }}>
+        <Text style={{ color: '#Fff' }}>Get Data</Text>
+      </TouchableOpacity>
       </View>
     </ScrollView>
   );
