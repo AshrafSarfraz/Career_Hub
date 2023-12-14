@@ -63,7 +63,7 @@ const SignInScreen = ({ navigation }) => {
         Alert.alert('You are verified');
         navigation.navigate('Bottom')
       } else {
-        Alert.alert('You are not verified ');
+        Alert.alert('You are not verified So Please check your Gmail for verification');
         await auth.currentUser.sendEmailVerification();
         await auth.signOut();
       }

@@ -9,7 +9,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.MainCont} >
 
-      <ImageBackground source={HeaderHome} style={styles.Header} imageStyle={{ width: "100%", height: 300, resizeMode: "contain", top: "-30%" }}>
+      <ImageBackground source={HeaderHome} style={styles.Header} imageStyle={{ width: "100%", height: 300, resizeMode:"contain" }}>
         <View style={styles.Logo_Cont} >
           <TouchableOpacity onPress={() => { navigation.openDrawer() }} >
             <Image source={Menu} style={styles.Menu} />

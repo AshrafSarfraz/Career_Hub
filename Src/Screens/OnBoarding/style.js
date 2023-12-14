@@ -23,14 +23,18 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: '15%',
   },
+  Title:{
+    fontSize: 20,
+    textAlign: 'center',
+    fontFamily: Fonts.SF_Black,
+    color: Colors.Black,
+    lineHeight: 26,
+  },
   description: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 14,
     textAlign: 'center',
     fontFamily: Fonts.SF_Medium,
     color: Colors.Black,
-    width: 320,
-    height:150,
     lineHeight: 20,
     marginTop: '3%',
  
@@ -54,7 +58,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: '10%',
+    marginVertical: '4%',
   },
   paginationDot: {
     width: 8,

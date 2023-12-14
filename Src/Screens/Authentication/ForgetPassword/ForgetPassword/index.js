@@ -1,4 +1,4 @@
-import { View, Image, TextInput } from 'react-native';
+import { View, Image, TextInput, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { Colors } from '../../../../Themes/Colors';
 import CustomHeader from '../../../../Components/CustomHeader/CustomHeader';
@@ -12,14 +12,20 @@ const ForgetPassword = ({ navigation }) => {
   const [email, setEmail] = useState('');
 
   const sendPasswordResetEmail = async () => {
-    try {
-      await auth().sendPasswordResetEmail(email);
-      // Password reset email sent successfully
-      console.log('Password reset email sent successfully');
-    } catch (error) {
-      console.error('Error sending password reset email:', error.message);
+    if (email === '') {
+      Alert.alert('Enter your email');
+    } else {
+      try {
+        await auth().sendPasswordResetEmail(email);
+        Alert.alert('Password Reset', 'Please check your email for password reset instructions');
+        navigation.navigate('Login')
+      } catch (error) {
+        console.error('Error sending password reset email:', error.message);
+        Alert.alert('Error', 'Failed to send password reset email. Please try again.');
+      }
     }
   };
+  
 
   return (
     <View style={styles.MainCont} >

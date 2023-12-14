@@ -22,10 +22,11 @@ const Get_Data = (props) => {
   const [alertVisible, setAlertVisible] = useState(false);
   const [selectedCities, setSelectedCities] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-
+console.log(items)
   const filterItems = () => {
     const filtered = filteredData.filter((item) => {
-      const itemName = item.data.name.toLowerCase();
+      // Check if item.data is defined before accessing item.data.name
+      const itemName = (item.data && item.data.name) ? item.data.name.toLowerCase() : '';
       const searchLowerCase = searchQuery.toLowerCase();
       return itemName.includes(searchLowerCase);
     });
@@ -35,8 +36,7 @@ const Get_Data = (props) => {
   useEffect(() => {
     filterItems();
   }, [searchQuery, items]);
-
-
+  
   const filterDataByButton = () => {
     let filtered = filteredData;
   
@@ -50,11 +50,11 @@ const Get_Data = (props) => {
            filtered = filtered.filter(
       item =>
         selectedCities.includes(item.data.City) &&
-        (BtnState === 0 || item.data.Status === 'Government ' || item.data.Status === 'Semi-Government' || item.data.Status === 'Private')
+        (BtnState === 0 || item.data.Status === 'Government' || item.data.Status === 'Semi-Government' || item.data.Status === 'Private')
     );
           break;
         case 1:
-          filtered = filtered.filter(item => item.data.Status === 'Government ' && selectedCities.includes(item.data.City));
+          filtered = filtered.filter(item => item.data.Status === 'Government' && selectedCities.includes(item.data.City));
           break;
         case 2:
           filtered = filtered.filter(item => item.data.Status === 'Semi-Government' && selectedCities.includes(item.data.City));
@@ -71,7 +71,7 @@ const Get_Data = (props) => {
         case 0:
           break;
         case 1:
-          filtered = filtered.filter(item => item.data.Status === 'Government ');
+          filtered = filtered.filter(item => item.data.Status === 'Government');
           break;
         case 2:
           filtered = filtered.filter(item => item.data.Status === 'Semi-Government');
@@ -87,20 +87,16 @@ const Get_Data = (props) => {
     // console.log('Filtered Data:', filtered);
     return filtered;
   };
-  
   useEffect(() => {
     setFilteredItems(filterDataByButton());
   }, [BtnState, items, selectedCities]);
   
-
   const showAlert = () => {
     setAlertVisible(true);
   };
-
   const hideAlert = () => {
     setAlertVisible(false);
   };
-
   useEffect(() => {
     getItems();
   }, [isFocused]);
@@ -111,8 +107,7 @@ const Get_Data = (props) => {
     setSelectedCities(cities);
     // console.log('Selected Cities:', cities);
     // console.log('Current Selected Cities State:', selectedCities);
-  };
-  
+  }; 
   const onSearchInputChange = (text) => {
     setSearchQuery(text);
   };
@@ -122,7 +117,7 @@ const Get_Data = (props) => {
   const getItems = () => {
     try {
       firestore()
-        .collection('items')
+        .collection('Education')
         .get()
         .then(querySnapshot => {
           // console.log('Total items: ', querySnapshot.size);
@@ -151,7 +146,7 @@ const Get_Data = (props) => {
 
   const deleteItem = docId => {
     firestore()
-      .collection('items')
+      .collection('Education')
       .doc(docId)
       .delete()
       .then(() => {
@@ -166,8 +161,32 @@ const Get_Data = (props) => {
   const renderItem = ({ item, index }) => (
     <View style={styles.Cart}>
       <TouchableOpacity onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
-        <ImageBackground source={{ uri: item.data.imageUrls[0] }} style={styles.Product_Img} imageStyle={{ borderRadius: 10, alignItems: 'center' }} resizeMode='cover'>
-        </ImageBackground>
+      <ImageBackground
+  source={
+    item.data && item.data.user && item.data.user[0]
+      ? { uri: item.data.user[0] }
+      : require('../../Assets/Images/uni_logo.png')
+  }
+  style={styles.Product_Img}
+  imageStyle={{ borderRadius: 10, alignItems: 'center' }}
+  resizeMode='cover'
+>
+</ImageBackground>
+<Image source={
+  item.data && item.data.user && item.data.user[0]
+    ? { uri: item.data.poster[0] }
+    : require('../../Assets/Images/uni_logo.png')
+}
+style={[styles.icon, { width:35,height:35,resizeMode:"contain"   }]}
+/>
+<Image source={
+  item.data && item.data.user && item.data.user[0]
+    ? { uri: item.data.uni[0] }
+    : require('../../Assets/Images/uni_logo.png')
+}
+style={[styles.icon, { width:35,height:35,resizeMode:"contain"   }]}
+/>
+
       </TouchableOpacity>
       <TouchableOpacity style={styles.Detail_cont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
         <Text style={styles.Title}>{item.data.name}</Text>

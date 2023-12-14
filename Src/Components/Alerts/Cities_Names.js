@@ -9,7 +9,7 @@ const CitiesName = ({ visible, onClose,  onCitiesSelect }) => {
 
   // Array of city names
   const cities = [
-    'Islamabad ',
+    'Islamabad',
     'Ahmedpur East',
     'Arif Wala',
     'Attock',
@@ -58,7 +58,7 @@ const CitiesName = ({ visible, onClose,  onCitiesSelect }) => {
     'Kot Addu',
     'Kot Abdul Malik',
     'Kotri',
-    'lahore',
+    'Lahore',
     'Larkana',
     'Layyah',
     'Lodhran',

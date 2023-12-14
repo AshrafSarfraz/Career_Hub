@@ -64,6 +64,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: Colors.Black2,
+    height:50
   },
   Password_Field: {
     flexDirection: 'row',

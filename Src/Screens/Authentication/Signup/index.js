@@ -135,8 +135,8 @@ const SignUp = () => {
               defaultCode='PK'
               placeholder='343-0725591'
               onChangeFormattedText={(txt) => { setPhoneNumber(txt) }}
-              containerStyle={{ width: '98%', elevation: 1, marginBottom: "3%", height: 60, borderRadius: 12, backgroundColor: '#F4F4F4', alignSelf: 'center', overflow: '', borderWidth: PhoneNumber.length === 0 ? 0 : 1, borderColor: PhoneNumber.length >= 11 ? Colors.Green : Colors.Red }}
-              textContainerStyle={{ backgroundColor: Colors.White4, }}
+              containerStyle={{ width: '100%',  marginBottom: "3%", height: 65,elevation:1, borderRadius: 10, alignSelf: 'center', overflow:'hidden'  , backgroundColor : PhoneNumber.length === 0 ? '#F4F4F4' : "#FFFFFF", borderWidth: PhoneNumber.length === 0 ? 0 : 2, borderColor: PhoneNumber.length >= 11 ? Colors.Green : Colors.Red }}
+              textContainerStyle={{ backgroundColor : PhoneNumber.length === 0 ? '#F4F4F4' : "#FFFFFF",}}
               textInputProps={{ fontSize: 14, color: '#000000', padding: '0%', }}
             />
             <View style={[styles.Input_Field, Email !== '' ? styles.Active_Input_Field : null]}>

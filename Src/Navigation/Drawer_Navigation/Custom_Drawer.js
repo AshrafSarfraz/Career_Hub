@@ -125,7 +125,11 @@ function CustomDrawerContent(props) {
           onPress={() =>{props.navigation.navigate('Navigator')}}
         /> */}
         <View style={{ backgroundColor: Colors.Green, borderBottomWidth: 1, borderColor: Colors.Grey4, top: '-1%' }} >
-          <Image source={{uri:userInfo.photo}} style={[styles.UserImg]} />
+        {(userInfo) ?
+          <Image source={{ uri: userInfo.photo }} style={[styles.UserImg]} />
+        : <Image source={require('../../Assets/Images/uni_logo.png')} style={[styles.UserImg]} />}
+      
+        
           {userData ? 
             ( <Text style={styles.UserName} >{userData.Username} {userData.Lastname}</Text>):
             (  (userInfo && userInfo.name ? <Text style={styles.UserName}>{userInfo.name}</Text> : null))}

@@ -8,11 +8,7 @@ import Splash_Screen from '../../Screens/Authentication/Splash_Screens/Splash_Sc
 import OnBoarding from '../../Screens/OnBoarding';
 import SignInScreen from '../../Screens/Authentication/Login';
 import SignUp from '../../Screens/Authentication/Signup';
-import PhoneValidation from '../../Screens/Authentication/PhoneValidation/VerifyNumber';
-import Otp from '../../Screens/Authentication/PhoneValidation/Enter_Otp';
 import ForgetPassword from '../../Screens/Authentication/ForgetPassword/ForgetPassword';
-import GetCode from '../../Screens/Authentication/ForgetPassword/GetCode';
-import Reset from '../../Screens/Authentication/ForgetPassword/Reset';
 import Bottom from '../Bottom_Nav/Bottom_Navigation';
 import Uni_Details from '../../Screens/Universities/Details';
 import University_Name from '../../Screens/Universities/Names/Index';
@@ -48,15 +44,18 @@ const Stack_Navigation = () => {
         <Stack.Screen name="onBoarding" component={OnBoarding} />
         <Stack.Screen name="Login" component={SignInScreen} />
         <Stack.Screen name="Sign_Up" component={SignUp} />
+        <Stack.Screen name="Forget" component={ForgetPassword} />
         <Stack.Screen name="Bottom" component={Bottom} />
         <Stack.Screen name="Uni_Name" component={University_Name} />
         <Stack.Screen name="Uni_Detail" component={Uni_Details} />
+        <Stack.Screen name="Post_Data" component={Post_Data} />
+        <Stack.Screen name="Get_Data" component={Get_Data} />
 
       {/*
          <Stack.Screen name="OTP" component={Otp} />
-         <Stack.Screen name="Forget" component={ForgetPassword} />
-        <Stack.Screen name="GetCode" component={GetCode} />
+          <Stack.Screen name="GetCode" component={GetCode} />
         <Stack.Screen name="Reset" component={Reset} />
+    
   */} 
 
 

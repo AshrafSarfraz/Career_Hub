@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native"
 import { Colors } from "../../../../Themes/Colors"
+import { Fonts } from "../../../../Themes/Fonts"
 
 
 export const styles=StyleSheet.create({
@@ -26,17 +27,15 @@ export const styles=StyleSheet.create({
       backgroundColor:Colors.White,
       borderWidth:1,
       borderColor:Colors.Black,
-      borderRadius: 18,
+      borderRadius: 10,
       paddingHorizontal: 15,
       paddingVertical: 6,
       height:60,
-  
     },
     Active_Input_Field:{
-       borderWidth:1,
+       borderWidth:2,
        borderColor:Colors.Green,
        backgroundColor:Colors.White
-  
     },
     Input_Icon: {
       width: 20,
@@ -47,10 +46,11 @@ export const styles=StyleSheet.create({
     User_Input: {
       fontSize: 16,
       color: Colors.Black2,
+      lineHeight:20,
+      fontFamily:Fonts.SF_Medium
     },
     Footer:{
       flex:0.2,
-     
       justifyContent:'flex-end'
     }
 })

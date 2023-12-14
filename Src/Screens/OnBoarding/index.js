@@ -32,18 +32,17 @@ const OnBoarding = ({ navigation }) => {
     const isFirstSlide = index === 0;
 
     return (
-
       <View style={[styles.slide, { backgroundColor: item.backgroundColor }]}>
-
         {isFirstSlide ? null : (
           <TouchableOpacity style={styles.prevButton} onPress={handlePrevSlide}>
             <Image source={Back_Icon} style={styles.Back_Icon} />
           </TouchableOpacity>
         )}
-
         <Image source={item.image} style={styles.image} resizeMode="contain" />
-
+        <View  style={{height:170, justifyContent:"center",alignItems:"center",width:"90%",}} >
+        <Text style={styles.Title}>{item.Title}</Text>
         <Text style={styles.description}>{item.text}</Text>
+        </View>
         <View style={styles.paginationContainer}>
           {SlidesData.map((slide, ind) => (
             <View

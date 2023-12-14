@@ -3,23 +3,24 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
-  PermissionsAndroid,
   Image,
-  ScrollView,
+  ScrollView,TextInput
 } from 'react-native';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import { Calendar } from 'react-native-calendars'
-
+import { Calendar } from 'react-native-calendars';
+import { Fonts } from '../../Themes/Fonts';
+import { Colors } from '../../Themes/Colors';
 
 const Post_Data = ({navigation}) => {
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [imageData, setImageData] = useState(null);
+  const [Logo, setLogo] = useState([]);
+  const [posterImages, setPosterImages] = useState([]);
+  const [uniImages, setUniImages] = useState([]);
   const [name, setName] = useState('');
   const [City, setCity] = useState('');
+  const [City_Link, setCity_Link] = useState('');
   const [Status, setStatus] = useState('');
   const [Location, setLocation] = useState('');
   const [Longitude, setLongitude] = useState('');
@@ -29,8 +30,8 @@ const Post_Data = ({navigation}) => {
   const [EndingDate, setEndingDate] = useState('2000-01-01');
   const [PhoneNumber, setPhoneNumber] = useState('');
   const [Link, setLink] = useState('');
+  const [Type, setType] = useState('');
   const [VideoLink, setVideoLink] = useState('');
- 
 
   const onDayPress = (day) => {
     setStartingDate(day.dateString);
@@ -40,100 +41,53 @@ const Post_Data = ({navigation}) => {
     setEndingDate(day.dateString);
   };
 
-  // Pick Multiple Images
-  const openImagePicker = () => {
-    ImageCropPicker.openPicker({
-      multiple: true,
-      waitAnimationEnd: false,
-      includeExif: true,
-      forceJpg: true,
-    })
-      .then(images => {
-        console.log(images);
-        setSelectedImages(images);
-      })
-      .catch(error => {
-        console.log(error);
+
+
+  const openImagePicker = async (setImage) => {
+    try {
+      const results = await ImageCropPicker.openPicker({
+        mediaType: 'photo',
+        multiple: true,
       });
+
+      if (!results.didCancel) {
+        setImage(results.map((result) => result.path));
+      }
+    } catch (error) {
+      console.error('Error picking images:', error);
+    }
   };
 
-  // Pick Video
- 
-
-  
- // upload Single Image
- const requestCameraPermission = async () => {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.CAMERA,
-      {
-        title: 'Cool Photo App Camera Permission',
-        message:
-          'Cool Photo App needs access to your camera ' +
-          'so you can take awesome pictures.',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('You can use the camera');
-      openGallery();
-    } else {
-      console.log('Camera permission denied');
-    }
-  } catch (err) {
-    console.warn(err);
-  }
-};
-
-const openGallery = async () => {
-  const result = await ImageCropPicker.openPicker({ mediaType: 'photo' });
-  if (!result.didCancel) {
-    console.log(result);
-    setImageData(result);
-  }
-};
-
-const uploadImage = async (imageUrl = null) => {
-  if (imageData) {
-    const reference = storage().ref(imageData.path);
-    await reference.putFile(imageData.path);
-    const url = await reference.getDownloadURL();
-    console.log(url);
-     uploadItem(imageUrl || url);
-  }
-};
-// Upload Single Image
-
-
-
-
- //Upload Multiple Images in Firebase 
- const uploadMultipleImages = async () => {
-  const uploadTasks = selectedImages.map(async image => {
-    const reference = storage().ref(image.path);
-    await reference.putFile(image.path);
-    return reference.getDownloadURL();
-  });
-
-  try {
-    const downloadURLs = await Promise.all(uploadTasks);
-    console.log(downloadURLs);
-    uploadItem(null,downloadURLs);
-  } catch (error) {
-    console.error('Error uploading images:', error);
-  }
-};
-
-
-  // Upload OverAll Item in Which image Url Used to Send and Get Item
-
-  const uploadItem = async (imageUrl, imageUrls) => {
+  const uploadImages = async (images, categoryName) => {
     try {
-      await firestore().collection('items').add({
+      const uploadTasks = images.map(async (image, index) => {
+        const imageName = `${categoryName}_${index}.jpg`;
+        const reference = storage().ref(imageName);
+        await reference.putFile(image);
+        return reference.getDownloadURL();
+      });
+
+      const downloadURLs = await Promise.all(uploadTasks);
+      return downloadURLs;
+    } catch (error) {
+      console.error('Error uploading images:', error);
+    }
+  };
+
+  const handleUpload = async () => {
+    const LogoImageUrls = await uploadImages(Logo, 'Logo');
+    const posterImageUrls = await uploadImages(posterImages, 'Poster');
+    const uniImageUrls = await uploadImages(uniImages, 'Uni');
+
+    // Store the image URLs in Firestore
+    try {
+      await firestore().collection('Education').doc().set({
+        Logo: LogoImageUrls,
+        poster: posterImageUrls,
+        uni: uniImageUrls,
         name: name,
         City: City,
+        City_Link:City_Link,
         Status: Status,
         Location: Location,
         Longitude: Longitude,
@@ -144,196 +98,190 @@ const uploadImage = async (imageUrl = null) => {
         PhoneNumber: PhoneNumber,
         Link: Link,
         VideoLink:VideoLink,
-        imageUrls: imageUrls || [],
-        // imageUrl: imageUrl|| '',
+        Type:Type
+        
       });
-  
-      console.log('Item added!');
+
+      console.log('Images uploaded successfully!');
     } catch (error) {
-      console.error('Error adding item to Firestore:', error);
+      console.error('Error storing images in Firestore:', error);
     }
   };
-  
+
+  const renderImages = (images, label) => {
+    return (
+      <View style={styles.imageContainer}>
+        <Text style={styles.imageLabel}>{label}</Text>
+        {images.map((image, index) => (
+          <Image key={index} source={{ uri: image }} style={styles.image} />
+        ))}
+      </View>
+    );
+  };
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Post_Data With Images ' Single ' and 'Multiple'</Text>
-        </View>
-        {imageData !== null ? (
-          <Image source={{ uri: imageData.path }} style={styles.imageStyle} />
-        ) : null} 
-
-        {selectedImages.length > 0 && (
-          <View>
-            <Text>Selected Images:</Text>
-            {selectedImages.map((image, index) => (
-              <Image
-                key={index}
-                source={{ uri: image.path }}
-                style={styles.multiImageStyle}
-              />
-            ))}
-          </View>
-        )}
-
-
-       
-        <TextInput
-          placeholder="University Name"
-          placeholderTextColor={'#666666'}
-          style={styles.inputStyle}
-          value={name}
-          onChangeText={text => setName(text)}
-        />
-        <TextInput
-          placeholder="City Name"
-          placeholderTextColor={'#666666'}
-          style={styles.inputStyle}
-          value={City}
-          onChangeText={text => setCity(text)}
-        />
-        <TextInput
-          placeholder="Goverment, Private, Semi-Gov"
-          placeholderTextColor={'#666666'}
-          style={styles.inputStyle}
-          value={Status}
-          onChangeText={text => setStatus(text)}
-        />
-        <TextInput
-          placeholder="Location (Address)"
-          placeholderTextColor={'#666666'}
-          style={styles.inputStyle}
-          value={Location}
-          onChangeText={text => setLocation(text)}
-        />
-        <View  style={styles.Input_Cont}>
-        <TextInput
-          placeholder="Longitude"
-          placeholderTextColor={'#666666'}
-          style={styles.inputStyle1}
-          value={Longitude}
-          onChangeText={text => setLongitude(text)}
-        />
-        <TextInput
-        placeholder="Latitude"
-        placeholderTextColor={'#666666'}
-        style={styles.inputStyle1}
-        value={Latitude}
-        onChangeText={text => setLatitude(text)}
-      />
-
-
-        </View>
+    <View style={styles.header}>
+    <Text style={styles.headerText}>Post_Data</Text>
+    </View>
+    <View style={styles. Body_container}>
     
-
-        <View style={styles.Schdule_Cont}>
-        <View style={{alignItems:"center"}}>
-        <Text style={styles.End} >Starting Date</Text>
-        <Text style={styles.Dates}>{StartingDate}</Text>
-        </View>
-        <View style={{alignItems:"center"}}>
-        <Text style={styles.End} >Ending Date</Text>
-        <Text style={styles.Dates}>{EndingDate}</Text>
-        </View>
-       
-        </View>
-
-        <TextInput
-          placeholder="Enter Item Description"
-          placeholderTextColor={'#666666'}
-          style={styles.inputStyle}
-          value={description}
-          onChangeText={text => setDescription(text)}
-        />
-        <TextInput
-        placeholder="Enter Administration Number"
-        placeholderTextColor={'#666666'}
-        style={styles.inputStyle}
-        value={PhoneNumber}
-        onChangeText={text => setPhoneNumber(text)}
-      />
-      <TextInput
-      placeholder="Link"
-      placeholderTextColor={'#666666'}
+    <TextInput
+      placeholder="University Name"
+      placeholderTextColor={'#7F7F7F'}
       style={styles.inputStyle}
-      value={Link}
-      onChangeText={text => setLink(text)}
+      value={name}
+      onChangeText={text => setName(text)}
     />
     <TextInput
-    placeholder="Video Link"
-    placeholderTextColor={'#666666'}
-    style={styles.inputStyle}
-    value={VideoLink}
-    onChangeText={text => setVideoLink(text)}
-  />
-
-        <Text style={styles.Title} >Starting Date</Text>
-        <Calendar
-        markedDates={{
-          [StartingDate]: { selected: true, marked: true },
-        }}
-        onDayPress={onDayPress}
-      />
-
-      <View style={{ marginTop: 20 }}>
-        <Text>Selected Date: {StartingDate}</Text>
-      </View>
-      <Text style={styles.Title}>Ending Date</Text>
-
-      <Calendar
-      markedDates={{
-        [EndingDate]: { selected: true, marked: true },
-      }}
-      onDayPress={onDayPress1}
+      placeholder="City Name"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={City}
+      onChangeText={text => setCity(text)}
     />
-
-    <View style={{ marginTop: 20 }}>
-      <Text style={styles.selected_Date}  >Selected Date: {EndingDate}</Text>
+    <TextInput
+      placeholder="Government, Private, Semi-Government"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={Status}
+      onChangeText={text => setStatus(text)}
+    />
+    <TextInput
+      placeholder="Location (Address)"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={Location}
+      onChangeText={text => setLocation(text)}
+    />
+    <View  style={styles.Input_Cont}>
+    <TextInput
+      placeholder="Longitude"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle1}
+      value={Longitude}
+      onChangeText={text => setLongitude(text)}
+    />
+    <TextInput
+    placeholder="Latitude"
+    placeholderTextColor={'#7F7F7F'}
+    style={styles.inputStyle1}
+    value={Latitude}
+    onChangeText={text => setLatitude(text)}
+  />
     </View>
-       
-    {/*
- <TouchableOpacity
-        style={styles.pickBtn}
-        onPress={() => {
-          requestCameraPermission();
-        }}>
-        <Text style={styles.BtnTxt} >Pick Posters</Text>
-      </TouchableOpacity>  
-    */}
-         
-      
+    
+  
+    <TextInput
+      placeholder="Enter Item Description"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={description}
+      onChangeText={text => setDescription(text)}
+    />
+    <TextInput
+    placeholder="Enter Administration Number"
+    placeholderTextColor={'#7F7F7F'}
+    style={styles.inputStyle}
+    value={PhoneNumber}
+    onChangeText={text => setPhoneNumber(text)}
+  />
+  <TextInput
+  placeholder="Apply_Link"
+  placeholderTextColor={'#7F7F7F'}
+  style={styles.inputStyle}
+  value={Link}
+  onChangeText={text => setLink(text)}
+  />
+  <TextInput
+  placeholder="Video_Link"
+  placeholderTextColor={'#7F7F7F'}
+  style={styles.inputStyle}
+  value={VideoLink}
+  onChangeText={text => setVideoLink(text)}
+  />
+  <TextInput
+  placeholder="City_Link"
+  placeholderTextColor={'#7F7F7F'}
+  style={styles.inputStyle}
+  value={City_Link}
+  onChangeText={text => setCity_Link(text)}
+  />
+  <TextInput
+  placeholder="University-Type"
+  placeholderTextColor={'#7F7F7F'}
+  style={styles.inputStyle}
+  value={Type}
+  onChangeText={text => setType(text)}
+  />
+  <View style={styles.Schdule_Cont}>
+  <View style={{alignItems:"center"}}>
+  <Text style={styles.End} >Starting Date</Text>
+  <Text style={styles.Dates}>{StartingDate}</Text>
+  </View>
+  <View style={{alignItems:"center"}}>
+  <Text style={styles.End} >Ending Date</Text>
+  <Text style={styles.Dates}>{EndingDate}</Text>
+  </View>
+ 
+  </View>
+  
+    <Text style={styles.Title} >Starting Date</Text>
+    <Calendar
+    markedDates={{
+      [StartingDate]: { selected: true, marked: true },
+    }}
+    onDayPress={onDayPress}
+  />
+  
+  <View style={{ marginTop: 20 }}>
+    <Text>Selected Date: {StartingDate}</Text>
+  </View>
+  <Text style={styles.Title}>Ending Date</Text>
+  
+  <Calendar
+  markedDates={{
+    [EndingDate]: { selected: true, marked: true },
+  }}
+  onDayPress={onDayPress1}
+  />
+  
+  <View style={{ marginTop: 20 }}>
+  <Text>Selected Date: {EndingDate}</Text>
+  </View>   
+  
+
+  {renderImages( Logo, 'Logo')}
+  {renderImages(posterImages, 'Poster_Images')}
+  {renderImages(uniImages, 'Uni_Images')}
+
      
+      <TouchableOpacity
+        style={styles.pickBtn}
+        onPress={() => openImagePicker(setLogo)}>
+        <Text style={styles.Picker_Txt}>Pick Uni_Logo</Text>
+      </TouchableOpacity>
 
-         <TouchableOpacity
-          style={styles.pickBtn}
-          onPress={() => {
-            openImagePicker();
-          }}>
-          <Text style={styles.BtnTxt} >Pick Multiple Images</Text>
-        </TouchableOpacity>
-      
+     
+      <TouchableOpacity
+        style={styles.pickBtn}
+        onPress={() => openImagePicker(setPosterImages)}>
+        <Text style={styles.Picker_Txt}>Pick Poster</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.pickBtn}
+        onPress={() => openImagePicker(setUniImages)}>
+        <Text style={styles.Picker_Txt}>Pick Uni-Images</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.uploadBtn} onPress={handleUpload}>
+        <Text style={{ color: '#FFF' }}>Upload Data</Text>
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.uploadBtn}
-          onPress={() => { 
-            uploadMultipleImages();
-            // uploadImage();
-            navigation.navigate('GET')
-          }}>
-          <Text style={{ color: '#Fff' }}>Upload Item</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-        style={styles.uploadBtn}
-        onPress={() => { 
-          navigation.navigate('GET')
-        }}>
-        <Text style={{ color: '#Fff' }}>Get Data</Text>
+      <TouchableOpacity style={styles.uploadBtn} onPress={()=>{navigation.navigate('Get_Data')}}>
+        <Text style={{ color: '#FFF' }}>Get All Data</Text>
       </TouchableOpacity>
       </View>
-    </ScrollView>
+      </ScrollView>
   );
 };
 
@@ -341,73 +289,79 @@ export default Post_Data;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor:'white'
-  },
-  header: {
+    backgroundColor:'white',
+    },
+    Body_container: {
+      flex: 1,
+      backgroundColor:'white',
+      padding:10
+      },
+    header: {
     height: 60,
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: Colors.Green,
     elevation: 5,
-    paddingLeft: 20,
+    paddingLeft: 10,
     justifyContent: 'center',
-  },
-  headerText: {
+    },
+    headerText: {
     fontSize: 18,
     fontWeight: '700',
-  },
-  inputStyle: {
-    width: '90%',
+    color:Colors.White
+    },
+    inputStyle: {
+    width: '100%',
+    height: 50,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor:'#000000',
+    paddingHorizontal: 20,
+    marginTop: 15,
+    alignSelf: 'center',
+    color:'black',
+    fontSize:14,
+    height:50
+    },
+    Input_Cont:{
+    flexDirection:"row",
+    width:"100%",
+    alignSelf:"center",
+    justifyContent:"space-between"
+    },
+    inputStyle1: {
+    width: '48%',
     height: 50,
     borderRadius: 10,
     borderWidth: 0.5,
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 30,
+    marginTop: 10,
     alignSelf: 'center',
     color:'black',
     fontSize:14
-  },
-   Input_Cont:{
+    },
+    Schdule_Cont:{
+    marginTop:10,
     flexDirection:"row",
-    width:"90%",
-     alignSelf:"center",
-     justifyContent:"space-between"
-   },
-  inputStyle1: {
-    width: '48%',
-    height: 55,
-    borderRadius: 10,
-    borderWidth: 0.5,
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginTop: 30,
-    alignSelf: 'center',
-    color:'black',
-    fontSize:14
-  },
-  Schdule_Cont:{
-   marginTop:"5%",
-   flexDirection:"row",
-   alignItems:"center",
-   justifyContent:"space-evenly",
-   backgroundColor:"purple",
-   height:70,
-   alignSelf:"center",
-   borderRadius:10,
-   width:"90%"
-  },
-  Dates:{
-   fontSize:16,color:'white',
-   lineHeight:25,
-   fontWeight:"bold"
-  },
-  End:{
-    fontSize:18,color:'black',
-   lineHeight:25,
-   fontWeight:"bold"
-  },
-  pickBtn: {
+    alignItems:"center",
+    justifyContent:"space-evenly",
+    backgroundColor:Colors.Green,
+    height:70,
+    alignSelf:"center",
+    borderRadius:10,
+    width:"100%"
+    },
+    Dates:{
+    fontSize:16,color:'black',
+    lineHeight:25,
+    fontFamily:Fonts.SF_SemiBold
+    },
+    End:{
+    fontSize:18,color:'#FFFFFF',
+    lineHeight:25,
+    fontFamily:Fonts.SF_Black
+    },
+    pickBtn: {
     width: '90%',
     height: 50,
     borderWidth: 0.5,
@@ -416,8 +370,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
-  },
-  uploadBtn: {
+    },
+    uploadBtn: {
     backgroundColor: '#5246f2',
     width: '90%',
     height: 50,
@@ -427,15 +381,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 70,
-  },
-  imageStyle: {
+    },
+    imageStyle: {
     width: '90%',
     height: 200,
     borderRadius: 10,
     alignSelf: 'center',
     marginTop: 20,
-  },
-  pickBtn: {
+    },
+    pickBtn: {
     width: '90%',
     height: 50,
     borderWidth: 0.5,
@@ -444,32 +398,64 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
-  },
-  multiImageStyle: {
+    },
+    multiImageStyle: {
     width: 150,
     height: 150,
     borderRadius: 10,
     alignSelf: 'center',
     marginTop: 20,
-  },
-  Title:{
+    },
+    Title:{
     fontSize:24,color:'black',
     lineHeight:30,
     fontWeight:"bold",
     marginVertical:"5%",
     alignSelf:"center"
+    },
+  imageContainer: {
+    margin: 10,
+    
   },
-  BtnTxt:{
-    fontSize:14,color:'black',
-    lineHeight:30,
-    fontWeight:"bold",
-    alignSelf:"center"
+  imageLabel: {
+    fontSize: 18,
+    fontFamily:Fonts.SF_SemiBold,
+    color:"#000",
+    marginBottom: 10,
+   
   },
-  videoStyle: {
-    width: '90%',
-    height: 200,
+  image: {
+    width: 150,
+    height:150,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  pickBtn: {
+    width: '100%',
+    height: 50,
+    borderWidth: 0.5,
     borderRadius: 10,
     alignSelf: 'center',
-    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    backgroundColor:Colors.Green
   },
+  uploadBtn: {
+    backgroundColor: 'red',
+    width: '100%',
+    height: 50,
+    borderRadius: 10,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical:20
+  },
+  Picker_Txt:{
+    color:Colors.White,
+    fontSize:14,
+    fontWeight:'500',
+    fontFamily:Fonts.SF_SemiBold
+  }
 });
+
