@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 import {
   DrawerContentScrollView,
@@ -18,15 +18,14 @@ import { Colors } from '../../Themes/Colors';
 function CustomDrawerContent(props) {
   const [ButtonState, setButtonState] = useState(1)
   const [userData, setUserData] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(async (user) => {
       if (user) {
         const userId = user.uid;
-        // Retrieve user data from Firestore
         try {
           const userDocument = await firestore().collection('users').doc(userId).get();
-  
           if (userDocument.exists) {
             const userDataFromFirestore = userDocument.data();
             setUserData(userDataFromFirestore);
@@ -41,12 +40,8 @@ function CustomDrawerContent(props) {
         setUserData(null);
       }
     });
-  
-    return () => unsubscribe(); // Cleanup function to unsubscribe from the onAuthStateChanged listener
+    return () => unsubscribe(); 
   }, []);
-
-
-  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     checkGoogleSignIn();
@@ -56,15 +51,13 @@ function CustomDrawerContent(props) {
     try {
       await GoogleSignin.hasPlayServices();
       const isSignedIn = await GoogleSignin.isSignedIn();
-
       if (isSignedIn) {
         const currentUser = await GoogleSignin.getCurrentUser();
         setUserInfo(currentUser.user);
       }
     } catch (error) {
       console.error('Error checking Google Sign-In:', error.message);
-    }
-  };
+    }};
 
 
   const handleSignOut = async () => {
@@ -85,54 +78,39 @@ function CustomDrawerContent(props) {
       // Handle the error appropriately
     }
   };
-  
-// const handleSignOut = async () => {
-//   try {
-//     // Check if a user is signed in before attempting to sign out
-//     const user = auth().currentUser;
 
-//     if (user) {
-//       GoogleSignin.configure({
-      //   webClientId: '499188544934-7je57jquuqs6cv3fjiatagjqv5meo28f.apps.googleusercontent.com',
-      // });
-      
-//       // Sign out from Firebase
-//       await auth().signOut();
 
-//       // Sign out from Google if using Google Sign-In
-//       await GoogleSignin.signOut();
-
-//       // After successful signout, navigate to the login screen or any other screen as needed
-//       props.navigation.navigate('Login');
-//     } else {
-//       console.warn('No user currently signed in');
-//     }
-//   } catch (error) {
-//     console.error('Error signing out:', error.message);
-//     // You can log or display the error message to understand the issue
-//   }
-// };
-
-  
 
   return (
     <View style={styles.DrawerCont}>
       <DrawerContentScrollView {...props}>
+
+
         {/* <DrawerItemList {...props} /> */}
         {/* <DrawerItem
           style={styles.Btn1}
           label="Help"
           onPress={() =>{props.navigation.navigate('Navigator')}}
         /> */}
-        <View style={{ backgroundColor: Colors.Green, borderBottomWidth: 1, borderColor: Colors.Grey4, top: '-1%' }} >
-        {(userInfo) ?
-          <Image source={{ uri: userInfo.photo }} style={[styles.UserImg]} />
-        : <Image source={require('../../Assets/Images/uni_logo.png')} style={[styles.UserImg]} />}
-      
-        
-          {userData ? 
-            ( <Text style={styles.UserName} >{userData.Username} {userData.Lastname}</Text>):
-            (  (userInfo && userInfo.name ? <Text style={styles.UserName}>{userInfo.name}</Text> : null))}
+
+
+        <View style={{ backgroundColor: Colors.Green, borderBottomWidth: 1, borderColor: Colors.Grey4, top: '-1%' }}>
+          
+        {(userData && userData.userImage || userInfo && userInfo.photo) ? (
+          <View>  
+        {userData ? (
+            <Image source={{ uri: userData.userImage }} style={[styles.UserImg]} />) : (
+        (userInfo ?
+            <Image source={{ uri: userInfo.photo }} style={[styles.UserImg]} /> : null)
+          )}
+          </View>):
+           (<Image source={require('../../Assets/Images/uni_logo.png')} style={[styles.UserImg]} /> )
+        }
+
+          {userData ? (
+            <Text style={styles.UserName}>{userData.Username} {userData.Lastname}</Text>) : (
+            (userInfo && userInfo.name ? <Text style={styles.UserName}>{userInfo.name}</Text> : null)
+          )}
         </View>
         <View style={{ padding: '4%' }} >
           <TouchableOpacity onPress={() => { setButtonState(1), props.navigation.navigate('HomeScreen') }} style={[styles.ButtonStyle, ButtonState === 1 ? styles.ActiveButton : null]} >
@@ -160,7 +138,7 @@ function CustomDrawerContent(props) {
             <Text style={[styles.Label, ButtonState === 3 ? styles.ActiveButtonTxt : null]} >Terms & Privay Policy</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => { setButtonState(4),handleSignOut() }} style={[styles.ButtonStyle, ButtonState === 4 ? styles.ActiveButton : null]} >
+          <TouchableOpacity onPress={() => { setButtonState(4), handleSignOut() }} style={[styles.ButtonStyle, ButtonState === 4 ? styles.ActiveButton : null]} >
             {ButtonState === 4 ?
               <Image source={Logout} style={[styles.HomeIcon, { tintColor: '#FFFFFF' }]} />
               :

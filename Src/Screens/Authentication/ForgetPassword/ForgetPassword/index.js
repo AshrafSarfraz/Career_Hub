@@ -7,9 +7,19 @@ import { Message } from '../../../../Themes/Images';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import { styles } from './style';
 import auth from '@react-native-firebase/auth';
+import SuccessAlert from '../../../../Components/Alerts/Success_Alert';
 
 const ForgetPassword = ({ navigation }) => {
   const [email, setEmail] = useState('');
+  const [alertVisible, setAlertVisible] = useState(false);
+
+  const showAlert = () => {
+    setAlertVisible(true);
+  };
+
+  const hideAlert = () => {
+    setAlertVisible(false);
+  };
 
   const sendPasswordResetEmail = async () => {
     if (email === '') {
@@ -17,8 +27,7 @@ const ForgetPassword = ({ navigation }) => {
     } else {
       try {
         await auth().sendPasswordResetEmail(email);
-        Alert.alert('Password Reset', 'Please check your email for password reset instructions');
-        navigation.navigate('Login')
+        showAlert()
       } catch (error) {
         console.error('Error sending password reset email:', error.message);
         Alert.alert('Error', 'Failed to send password reset email. Please try again.');
@@ -50,6 +59,12 @@ const ForgetPassword = ({ navigation }) => {
       <View style={styles.Footer} >
         <CustomButton title={'Continue'} onPress={sendPasswordResetEmail} />
       </View>
+
+      <SuccessAlert
+      visible={alertVisible}
+      message="This is a custom alert!"
+      onClose={() => { hideAlert(), navigation.navigate('Login') }}
+    />
     </View>
   );
 };

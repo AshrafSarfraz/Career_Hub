@@ -39,7 +39,7 @@ const OnBoarding = ({ navigation }) => {
           </TouchableOpacity>
         )}
         <Image source={item.image} style={styles.image} resizeMode="contain" />
-        <View  style={{height:170, justifyContent:"center",alignItems:"center",width:"90%",}} >
+        <View  style={{height:170, justifyContent:"center",alignItems:"center",width:"85%",}} >
         <Text style={styles.Title}>{item.Title}</Text>
         <Text style={styles.description}>{item.text}</Text>
         </View>

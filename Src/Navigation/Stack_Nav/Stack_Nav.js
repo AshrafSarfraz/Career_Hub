@@ -15,6 +15,7 @@ import University_Name from '../../Screens/Universities/Names/Index';
 import Post_Data from '../../Screens/Admin_Section/Post_Item';
 import Get_Data from '../../Screens/Admin_Section/Get_Method';
 import Edit_Universities from '../../Screens/Admin_Section/Update';
+import Edit_Profile from '../../Screens/Edit_Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,9 @@ const Stack_Navigation = () => {
         <Stack.Screen name="Bottom" component={Bottom} />
         <Stack.Screen name="Uni_Name" component={University_Name} />
         <Stack.Screen name="Uni_Detail" component={Uni_Details} />
+        <Stack.Screen name="Edit_Profile" component={Edit_Profile} />
+
+        
         <Stack.Screen name="Post_Data" component={Post_Data} />
         <Stack.Screen name="Get_Data" component={Get_Data} />
 

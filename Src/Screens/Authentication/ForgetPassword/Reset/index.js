@@ -81,11 +81,7 @@ const Reset = ({ navigation }) => {
         <CustomButton title={'Continue'} onPress={showAlert} />
       </View>
 
-      <SuccessAlert
-        visible={alertVisible}
-        message="This is a custom alert!"
-        onClose={() => { hideAlert(), navigation.navigate('Login') }}
-      />
+     
     </View>
   )
 }

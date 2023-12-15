@@ -10,10 +10,8 @@ const SuccessAlert = ({ visible, message, onClose }) => {
       <View style={styles.overlay}>
         <View style={styles.alertContainer}>
         <Image source={Device} style={styles.Logo}/>
-
-        <Text style={styles.Txt} >Password reset successful!</Text>
-       
-
+        <Text style={styles.Header_Txt} >Password Reset!</Text>
+        <Text style={styles.Txt} >'Please check your email for password reset instructions</Text>
           <TouchableOpacity style={styles.okButton} onPress={onClose}>
             <Text style={styles.okButtonText}>Back to Login</Text>
           </TouchableOpacity>
@@ -40,12 +38,19 @@ const styles = StyleSheet.create({
   Logo:{
        width:150,height:150
     },
-    Txt:{
-      fontSize:22,
+    Header_Txt:{
+      fontSize:20,
       fontFamily:Fonts.SF_Bold,
       color:Colors.Black,
-      lineHeight:28,
-      marginVertical:'4%'
+      lineHeight:26,
+    },
+    Txt:{
+      fontSize:16,
+      fontFamily:Fonts.SF_Medium,
+      color:Colors.Black,
+      lineHeight:20,
+      textAlign:"center",
+      marginVertical:"5%"
     },
   okButton: {
     backgroundColor:Colors.Green,

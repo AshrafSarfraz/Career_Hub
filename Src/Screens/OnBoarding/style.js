@@ -26,16 +26,18 @@ export const styles = StyleSheet.create({
   Title:{
     fontSize: 20,
     textAlign: 'center',
-    fontFamily: Fonts.SF_Black,
+    fontFamily: Fonts.SF_Bold,
     color: Colors.Black,
-    lineHeight: 26,
+    lineHeight: 28,
+    marginBottom:'2%'
   },
   description: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center',
     fontFamily: Fonts.SF_Medium,
-    color: Colors.Black,
+    color: '#232C33',
     lineHeight: 20,
+    letterSpacing:0.2,
     marginTop: '3%',
  
   },

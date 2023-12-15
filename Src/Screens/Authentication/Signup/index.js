@@ -87,7 +87,7 @@ const SignUp = () => {
     });
       
 
-    await auth().currentUser.sendEmailVerification();
+      await auth().currentUser.sendEmailVerification();
       await auth().signOut();
       
       // You can navigate to another screen or perform other actions upon successful signup
