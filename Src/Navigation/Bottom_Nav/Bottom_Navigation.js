@@ -24,16 +24,16 @@ function MyTabs() {
 
           if (route.name === 'Home') {
             iconName = require('../../Assets/Icons/home.png');
-            tintColor = focused ? '#038F54' : '#E2E2E2';
+            tintColor = focused ? '#038F54' : '#A2A2A2';
           } else if (route.name === 'Notification') {
             iconName = require('../../Assets/Icons/Notification.png');
-            tintColor = focused ? '#038F54' : '#E2E2E2';
+            tintColor = focused ? '#038F54' : '#A2A2A2';
           } else if (route.name === 'Bookmark') {
             iconName = require('../../Assets/Icons/bookmark1.png');
-            tintColor = focused ? '#038F54' : '#E2E2E2';
+            tintColor = focused ? '#038F54' : '#A2A2A2';
           } else if (route.name === 'Profile') {
             iconName = require('../../Assets/Icons/Profile.png');
-            tintColor = focused ? '#038F54' : '#E2E2E2';
+            tintColor = focused ? '#038F54' : '#A2A2A2';
           }
 
           return <Image source={iconName} style={{ width: 25, height: 25, tintColor }} />;
@@ -43,7 +43,7 @@ function MyTabs() {
       tabBarOptions={{
         labelStyle: { paddingBottom: 10 },
         activeTintColor: '#1B938F',
-        inactiveTintColor: '#E2E2E2',
+        inactiveTintColor: '#A2A2A2',
 
       }}
 

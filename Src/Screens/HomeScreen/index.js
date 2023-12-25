@@ -1,24 +1,28 @@
-import { View, Text, Image, ImageBackground, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, Image, ImageBackground, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import React from 'react'
-import { Addmission, CareerHub_W, HeaderHome, Logo4, Logo_W, Menu, Resume, Scholarship, Staff } from '../../Themes/Images'
+import { Addmission, CareerHub_W, Device, HeaderHome, Logo1, Logo2, Logo4, Logo_W, Menu, Resume, Scholarship, Staff } from '../../Themes/Images'
 import { Colors } from '../../Themes/Colors'
 import { Fonts } from '../../Themes/Fonts'
 
 
 const HomeScreen = ({ navigation }) => {
   return (
-    <View style={styles.MainCont} >
-      <ImageBackground source={HeaderHome} style={styles.Header} imageStyle={{ width: "100%", height: 300, resizeMode:"contain" }}>
+    <View  style={styles.MainCont}>
+    <ScrollView  showsVerticalScrollIndicator={false} >
+     <View  style={styles.Header}>
         <View style={styles.Logo_Cont} >
           <TouchableOpacity onPress={() => { navigation.openDrawer() }} >
             <Image source={Menu} style={styles.Menu} />
+            <Text style={styles.Wlcm_Txt} >Start Your Journey Comfortably</Text>
           </TouchableOpacity>
-          <Image source={Logo4} style={styles.CareerHub_Logo} />
+          <Image source={require('../../Assets/Images/Slider1.png')} style={styles.CareerHub_Logo} />
         </View>
-        <Text style={styles.Wlcm_Txt} >Welcome To Career Hub</Text>
-        <Text style={styles.World_Txt} >A World of Limitless Opportunities </Text>
-      </ImageBackground>
+        <View  style={styles.World_Cont}>
+        <Text style={styles.World_Txt}>A world of limitless opportunities</Text>
+        </View>
+       </View>
       <View style={styles.BtnContainer} >
+      
         <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Uni_Name') }} >
           <Image source={Addmission} style={styles.Btn_Icon} />
           <Text style={styles.Btn_Txt} >Admission </Text>
@@ -40,6 +44,7 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.Avaliable_Txt} > 29 Avaliable </Text>
         </TouchableOpacity>
       </View>
+    </ScrollView>
     </View>
   )
 }
@@ -53,67 +58,74 @@ const styles = StyleSheet.create({
   },
   Header: {
     width: "100%",
-    flex: 0.3,
-    resizeMode: 'center',
-    top:'-5%'
+    height:300,
+    backgroundColor:Colors.Green
   },
   Logo_Cont: {
-    width: "70%",
+    width: "100%",
     flexDirection: "row",
     justifyContent: 'space-between',
-    alignItems: "center",
     padding: "3%",
-    paddingTop: 30
+    paddingTop: 30,
+    height:190,
+    alignItems:"center"
   },
   Menu: {
     width: 50, height: 50,
-    marginTop:'60%'
+    resizeMode:"contain",
+    marginBottom:'5%'
   },
   CareerHub_Logo: {
-    height: 50,
-    width: 150,
+    height: 180,
+    width:  180,
     resizeMode: "contain",
-    marginTop:'10%'
   },
   Wlcm_Txt: {
-    fontSize: 25,
+    fontSize: 24,
     color: Colors.White,
     fontFamily: Fonts.SF_Bold,
-    lineHeight: 32,
-    alignSelf: "center",
-    width: 150,
-    textAlign: "center",
-    fontWeight: "bold",
-
-
+    lineHeight: 30,
+    width:135,
+  },
+  World_Cont:{
+   alignSelf:"center",
+   height:40,
+   alignItems:"center",
+   justifyContent:"center",
+   width:'80%',
+   borderRadius:15,
+   backgroundColor:Colors.White,
+   marginTop:'2%'
   },
   World_Txt: {
-    fontSize: 14,
-    color: Colors.White,
+    fontSize: 16,
+    color: Colors.Green,
     fontFamily: Fonts.SF_Bold,
-    lineHeight: 18,
-    alignSelf: "center",
-    width: 150,
-    textAlign: "center",
-    marginTop: '5%'
+    lineHeight: 20,
+
   },
   BtnContainer: {
-    top: '50%',
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: 'space-between',
-    paddingHorizontal: "5%",
+    paddingHorizontal: "4%",
+    backgroundColor:Colors.White,
+    borderTopLeftRadius:50,
+    borderTopRightRadius:50,
+    paddingTop:"10%",
+    top:'-10%',
+
 
   },
   Btn: {
     width: '44%', height: 125,
     backgroundColor: Colors.White,
     elevation: 7,
+    shadowColor:Colors.Black,
     alignItems: "center",
     justifyContent: 'center',
     borderRadius: 15,
     margin: "3%",
-
 
   },
   Btn_Icon: {

@@ -51,27 +51,16 @@ const Stack_Navigation = () => {
         <Stack.Screen name="Uni_Detail" component={Uni_Details} />
         <Stack.Screen name="Edit_Profile" component={Edit_Profile} />
 
-        
-        <Stack.Screen name="Post_Data" component={Post_Data} />
-        <Stack.Screen name="Get_Data" component={Get_Data} />
-
-
-
-        
+         
       {/*
          <Stack.Screen name="OTP" component={Otp} />
           <Stack.Screen name="GetCode" component={GetCode} />
         <Stack.Screen name="Reset" component={Reset} />
     
-  */} 
-
-
-
-
-
-        
+  */}
+  
         <Stack.Screen name="Post" component={Post_Data} />
-        <Stack.Screen name="GET" component={Get_Data} />
+        <Stack.Screen name="Get_Data" component={Get_Data} />
         <Stack.Screen name="Edit_Uni_Details" component={Edit_Universities} />
         
       </Stack.Navigator>

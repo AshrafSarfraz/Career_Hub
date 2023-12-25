@@ -114,8 +114,8 @@ const EditItem = ({ navigation }) => {
       };
 
       await firestore()
-      .collection('items')
-      .doc(data.id)
+      .collection('Education')
+      .doc(route.params.id)
       .update(updatedData);
 
       console.log('Item updated!');

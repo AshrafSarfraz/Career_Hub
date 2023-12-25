@@ -23,6 +23,31 @@ const University_Name = (props) => {
   const [selectedCities, setSelectedCities] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
+  useEffect(() => {
+    getItems();
+  }, [isFocused]);
+
+  const showAlert = () => {
+    setAlertVisible(true);
+  };
+  const hideAlert = () => {
+    setAlertVisible(false);
+  };
+    
+  const toggleItemState = (index) => {
+    const updatedStates = [...itemStates];
+    updatedStates[index] = !updatedStates[index];
+    setItemStates(updatedStates);
+  };
+
+  useEffect(() => {
+    filterItems();
+  }, [searchQuery, items]);
+
+  useEffect(() => {
+    setFilteredItems(filterDataByButton());
+  }, [BtnState, items, selectedCities]);
+  
 
   const filterItems = () => {
     const filtered = filteredData.filter((item) => {
@@ -33,21 +58,16 @@ const University_Name = (props) => {
     setFilteredItems(filtered);
   };
 
-  useEffect(() => {
-    filterItems();
-  }, [searchQuery, items]);
-
-
   const filterDataByButton = () => {
     let filtered = filteredData;
   
     // Filter by selected cities and status simultaneously
     if (selectedCities.length > 0) {
-      console.log('Filtering by cities:', selectedCities);
+      // console.log('Filtering by cities:', selectedCities);
   
       switch (BtnState) {
         case 0:
-          console.log('Filtering by All');
+          // console.log('Filtering by All');
            filtered = filtered.filter(
       item =>
         selectedCities.includes(item.data.City) &&
@@ -55,15 +75,15 @@ const University_Name = (props) => {
     );
           break;
         case 1:
-          console.log('Filtering by Government');
+          // console.log('Filtering by Government');
           filtered = filtered.filter(item => item.data.Status === 'Government ' && selectedCities.includes(item.data.City));
           break;
         case 2:
-          console.log('Filtering by Semi-Government');
+          // console.log('Filtering by Semi-Government');
           filtered = filtered.filter(item => item.data.Status === 'Semi-Government' && selectedCities.includes(item.data.City));
           break;
         case 3:
-          console.log('Filtering by Private');
+          // console.log('Filtering by Private');
           filtered = filtered.filter(item => item.data.Status === 'Private' && selectedCities.includes(item.data.City));
           break;
         default:
@@ -71,25 +91,24 @@ const University_Name = (props) => {
           break;
       }
     } else {
-      // Filter only by status if no cities are selected
       switch (BtnState) {
         case 0:
-          console.log('Filtering by All');
+          // console.log('Filtering by All');
           break;
         case 1:
-          console.log('Filtering by Government');
+          // console.log('Filtering by Government');
           filtered = filtered.filter(item => item.data.Status === 'Government ');
           break;
         case 2:
-          console.log('Filtering by Semi-Government');
+          // console.log('Filtering by Semi-Government');
           filtered = filtered.filter(item => item.data.Status === 'Semi-Government');
           break;
         case 3:
-          console.log('Filtering by Private');
+          // console.log('Filtering by Private');
           filtered = filtered.filter(item => item.data.Status === 'Private');
           break;
         default:
-          console.log('No additional filtering needed for status');
+          // console.log('No additional filtering needed for status');
           break;
       }
     }
@@ -97,37 +116,14 @@ const University_Name = (props) => {
     console.log('Filtered Data:', filtered);
     return filtered;
   };
-  
-  useEffect(() => {
-    setFilteredItems(filterDataByButton());
-  }, [BtnState, items, selectedCities]);
-  
-
-  const showAlert = () => {
-    setAlertVisible(true);
-  };
-
-  const hideAlert = () => {
-    setAlertVisible(false);
-  };
-
-  useEffect(() => {
-    getItems();
-  }, [isFocused]);
-
-
 
   const onCitiesSelect = (cities) => {
     setSelectedCities(cities);
-    console.log('Selected Cities:', cities);
-    console.log('Current Selected Cities State:', selectedCities);
   };
   
   const onSearchInputChange = (text) => {
     setSearchQuery(text);
   };
-
-
 
   const getItems = () => {
     try {
@@ -159,24 +155,12 @@ const University_Name = (props) => {
     }
   };
 
-  const deleteItem = docId => {
-    firestore()
-      .collection('items')
-      .doc(docId)
-      .delete()
-      .then(() => {
-        console.log('Item deleted!');
-        getItems();
-      })
-      .catch(error => {
-        console.error('Error deleting item:', error);
-      });
-  };
+ 
 
   const renderItem = ({ item, index }) => (
     <View style={styles.Cart}>
       <TouchableOpacity onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
-        <ImageBackground source={{ uri: item.data.imageUrls[1] }} style={styles.Product_Img} imageStyle={{ borderRadius: 10, alignItems: 'center' }} resizeMode='cover'>
+        <ImageBackground source={{ uri: item.data.user[0] }} style={styles.Product_Img} imageStyle={{ borderRadius: 10, alignItems: 'center' }} resizeMode='cover'>
         </ImageBackground>
       </TouchableOpacity>
       <TouchableOpacity style={styles.Detail_cont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
@@ -196,12 +180,7 @@ const University_Name = (props) => {
     </View>
   );
 
-  // Function to toggle the state of a specific item
-  const toggleItemState = (index) => {
-    const updatedStates = [...itemStates];
-    updatedStates[index] = !updatedStates[index];
-    setItemStates(updatedStates);
-  };
+
 
   return (
     <ScrollView style={styles.MainCont}  showsVerticalScrollIndicator={false}>
@@ -240,9 +219,7 @@ const University_Name = (props) => {
       </ScrollView>
 {
   selectedCities.length>0?
-  <View style={styles.selected_City_}>
-      <Text style={styles.Cities_Name}>
-      Selected : </Text>   
+  <View style={styles.selected_City_}> 
       <View style={styles.SelectedCitiesContainer}>
       {selectedCities.map((city, index) => (
         <View key={index} style={styles.SelectedCityBackground}>
