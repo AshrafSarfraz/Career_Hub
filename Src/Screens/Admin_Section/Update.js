@@ -17,18 +17,19 @@ import { Colors } from '../../Themes/Colors';
 
 const EditItem = ({ navigation }) => {
   const route = useRoute();
+  console.log('...',route.params.id)
+
   const [Logo, setLogo] = useState({
-    assets: route.params.data.user ? route.params.data.user.map((url, index) => ({ uri: url, fileName: `image_${index}.jpg` })) : [],
+    assets: route.params.user ? data.user.map((url, index) => ({ uri: url, fileName: `image_${index}.jpg` })) : [],
   });
   
   const [posterImages, setPosterImages] = useState({
-    assets: route.params.data.poster ? route.params.data.poster.map((url, index) => ({ uri: url, fileName: `image_${index}.jpg` })) : [],
+    assets: route.params.poster ? data.poster.map((url, index) => ({ uri: url, fileName: `image_${index}.jpg` })) : [],
   });
   
   const [uniImages, setUniImages] = useState({
-    assets: route.params.data.uni ? route.params.data.uni.map((url, index) => ({ uri: url, fileName: `image_${index}.jpg` })) : [],
+    assets: route.params.uni ? data.uni.map((url, index) => ({ uri: url, fileName: `image_${index}.jpg` })) : [],
   });
-  
 
   const [name, setName] = useState(route.params.data.name);
   const [City, setCity] = useState(route.params.data.City);
@@ -44,7 +45,7 @@ const EditItem = ({ navigation }) => {
   const [Link, setLink] = useState(route.params.data.Link);
   const [VideoLink, setVideoLink] = useState(route.params.data.VideoLink);
   const [Type, setType] = useState(route.params.data.Type);
-  const [updateIndices, setUpdateIndices] = useState([]);
+
 
   const onDayPress = (day) => {
     setStartingDate(day.dateString);
@@ -54,7 +55,8 @@ const EditItem = ({ navigation }) => {
     setEndingDate(day.dateString);
   };
 
-
+  console.log(Logo)
+  console.log(posterImages)
 
   const openImagePicker = async (setImage) => {
     try {
@@ -62,7 +64,6 @@ const EditItem = ({ navigation }) => {
         mediaType: 'photo',
         multiple: true,
       });
-
       if (!results.didCancel) {
         setImage(results.map((result) => result.path));
       }
@@ -89,9 +90,9 @@ const EditItem = ({ navigation }) => {
 
   const uploadItem = async () => {
     try {
-      const LogoImageUrls = await uploadImages(Logo, 'Logo');
-      const posterImageUrls = await uploadImages(posterImages, 'Poster');
-      const uniImageUrls = await uploadImages(uniImages, 'Uni');
+      const LogoImageUrls = await uploadImages(Logo.assets, 'Logo');
+      const posterImageUrls = await uploadImages(posterImages.assets, 'Poster');
+      const uniImageUrls = await uploadImages(uniImages.assets, 'Uni');
       const updatedData = {
         Logo: LogoImageUrls,
         poster: posterImageUrls,
@@ -113,9 +114,9 @@ const EditItem = ({ navigation }) => {
       };
 
       await firestore()
-        .collection('items')
-        .doc(route.params.id)
-        .update(updatedData);
+      .collection('items')
+      .doc(data.id)
+      .update(updatedData);
 
       console.log('Item updated!');
       navigation.goBack();
@@ -127,28 +128,35 @@ const EditItem = ({ navigation }) => {
  
 
   const renderImages = (images, label) => {
-    console.log('Images:', images);
     if (!images || !Array.isArray(images)) {
       console.warn(`Invalid ${label} images`);
       return null;
     }
-  
+
     return (
       <View style={styles.imageContainer}>
         <Text style={styles.imageLabel}>{label}</Text>
         {images.map((image, index) => (
-          <Image key={index} source={{ uri: image.uri }} style={styles.image} />
+          <View key={index}>
+            {console.log('Image URI:', image.uri)}
+            <Image source={{ uri: image.uri }} style={styles.image} />
+          </View>
         ))}
       </View>
     );
   };
-  
+  console.log('Poster Images:', route.params.data.poster);
+console.log('Uni Images:', route.params.data.uni);
 
   return (
     <ScrollView style={styles.container}>
     <View style={styles.header}>
     <Text style={styles.headerText}>Edit_Data</Text>
     </View>
+
+   
+    
+  
     <View style={styles. Body_container}>
     
     <TextInput
@@ -274,11 +282,37 @@ const EditItem = ({ navigation }) => {
   <View style={{ marginTop: 20 }}>
   <Text>Selected Date: {EndingDate}</Text>
   </View>   
-  
+  <Text>Poster_Images</Text>
+  {route.params.data && route.params.data.poster && route.params.data.poster.map((imageUri, index) => (
+    <Image
+      key={index}
+      source={imageUri ?
+         { uri: imageUri } :
+          require('../../Assets/Images/uni_logo.png')}
+      style={[styles.icon, { width: 35, height: 35, resizeMode: "contain" }]}
+    />
+  ))}
+  <Text>lOGO</Text>
+  {route.params.data && route.params.data.user && route.params.data.user.map((imageUri, index) => (
+    <Image
+      key={index}
+      source={imageUri ?
+         { uri: imageUri } :
+          require('../../Assets/Images/uni_logo.png')}
+      style={[styles.icon, { width: 35, height: 35, resizeMode: "contain" }]}
+    />
+  ))}
+   <Text>Uni_Images</Text>
+  {route.params.data && route.params.data.uni && route.params.data.uni.map((imageUri, index) => (
+    <Image
+      key={index}
+      source={imageUri ?
+         { uri: imageUri } :
+          require('../../Assets/Images/uni_logo.png')}
+      style={[styles.icon, { width: 35, height: 35, resizeMode: "contain" }]}
+    />
+  ))}
 
-  {renderImages(Logo, 'Logo')}
-  {renderImages(posterImages, 'Poster_Images')}
-  {renderImages(uniImages, 'Uni_Images')}
 
      
       <TouchableOpacity

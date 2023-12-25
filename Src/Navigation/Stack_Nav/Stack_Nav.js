@@ -55,6 +55,9 @@ const Stack_Navigation = () => {
         <Stack.Screen name="Post_Data" component={Post_Data} />
         <Stack.Screen name="Get_Data" component={Get_Data} />
 
+
+
+        
       {/*
          <Stack.Screen name="OTP" component={Otp} />
           <Stack.Screen name="GetCode" component={GetCode} />
