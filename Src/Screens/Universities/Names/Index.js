@@ -132,7 +132,7 @@ const University_Name = (props) => {
   const getItems = () => {
     try {
       firestore()
-        .collection('items')
+        .collection('Education')
         .get()
         .then(querySnapshot => {
           // console.log('Total items: ', querySnapshot.size);

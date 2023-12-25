@@ -8,7 +8,6 @@ import { Fonts } from '../../Themes/Fonts'
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.MainCont} >
-
       <ImageBackground source={HeaderHome} style={styles.Header} imageStyle={{ width: "100%", height: 300, resizeMode:"contain" }}>
         <View style={styles.Logo_Cont} >
           <TouchableOpacity onPress={() => { navigation.openDrawer() }} >
@@ -55,7 +54,8 @@ const styles = StyleSheet.create({
   Header: {
     width: "100%",
     flex: 0.3,
-    resizeMode: 'center'
+    resizeMode: 'center',
+    top:'-5%'
   },
   Logo_Cont: {
     width: "70%",
@@ -66,12 +66,14 @@ const styles = StyleSheet.create({
     paddingTop: 30
   },
   Menu: {
-    width: 60, height: 60
+    width: 50, height: 50,
+    marginTop:'60%'
   },
   CareerHub_Logo: {
     height: 50,
     width: 150,
-    resizeMode: "contain"
+    resizeMode: "contain",
+    marginTop:'10%'
   },
   Wlcm_Txt: {
     fontSize: 25,

@@ -281,11 +281,12 @@ export const styles = StyleSheet.create({
        
     },
     Poster: {
-       width:'100%',
-       height:280,
-       marginVertical:"6%",
-       borderRadius:10,
-  
+       width:330,
+       height:300,
+       marginHorizontal:10,
+       borderRadius:20,
+       marginVertical:10,
+       resizeMode:'contain'
     },
 
 

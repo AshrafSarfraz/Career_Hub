@@ -163,8 +163,8 @@ console.log(items)
       <TouchableOpacity onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
       <ImageBackground
   source={
-    item.data && item.data.user && item.data.user[0]
-      ? { uri: item.data.user[0] }
+    item.data && item.data.Logo && item.data.Logo[0]
+      ? { uri: item.data.Logo[0] }
       : require('../../Assets/Images/uni_logo.png')
   }
   style={styles.Product_Img}
@@ -172,20 +172,6 @@ console.log(items)
   resizeMode='cover'
 >
 </ImageBackground>
-<Image source={
-  item.data && item.data.user && item.data.user[0]
-    ? { uri: item.data.poster[0] }
-    : require('../../Assets/Images/uni_logo.png')
-}
-style={[styles.icon, { width:35,height:35,resizeMode:"contain"   }]}
-/>
-<Image source={
-  item.data && item.data.user && item.data.user[0]
-    ? { uri: item.data.uni[0] }
-    : require('../../Assets/Images/uni_logo.png')
-}
-style={[styles.icon, { width:35,height:35,resizeMode:"contain"   }]}
-/>
 
       </TouchableOpacity>
       <TouchableOpacity style={styles.Detail_cont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >

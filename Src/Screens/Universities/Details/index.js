@@ -57,7 +57,7 @@ const Uni_Details = ({ navigation }) => {
         }}
         scrollEventThrottle={200}                       //  Adjust the throttle value if needed
       >
-      {item && item.data && item.data.imageUrls && item.data.imageUrls.map((item, index) => (
+      {item && item.data && item.data.poster && item.data.poster.map((item, index) => (
         <View key={index} style={[styles.paginationDot, index === currentIndex && styles.paginationDotActive]} />
       ))}
       </ScrollView>
@@ -78,9 +78,12 @@ const Uni_Details = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+   
+
+
       <AppIntroSlider
         renderItem={renderSlides}
-        data={item.data.imageUrls}
+        data={item.data.poster}
         onSlideChange={(index) => setCurrentIndex(index)}
         renderNextButton={() => null}
         renderDoneButton={() => null}
@@ -89,6 +92,7 @@ const Uni_Details = ({ navigation }) => {
         activeDotStyle={styles.paginationDotActive}
       />
       {renderPagination()}
+      
       <View style={styles.Uni_Detail}>
         <View style={styles.Title_Cont}>
           <View style={styles.Title_Cont}>
@@ -125,7 +129,7 @@ const Uni_Details = ({ navigation }) => {
         <TouchableOpacity onPress={Contact}>
           <View style={styles.Phone_Cont}>
             <View style={styles.Contact} >
-              <Image source={{uri: item.data.imageUrl }} style={styles.Uni_Logo} />
+              <Image source={{uri: item.data.uni[0] }} style={styles.Uni_Logo} />
 
               <View style={styles.User}>
                 <Text style={styles.OwnerName}>Khwaja Fareed University of Engineering 
@@ -137,8 +141,12 @@ const Uni_Details = ({ navigation }) => {
         </TouchableOpacity>
         
         <Text style={[styles.Addmission_Open,{marginTop:'3%'}]} >Addmission Open</Text>
-        <Image source={{ uri: item.data.imageUrl }} style={styles.Poster} />
-
+       <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} >
+       {item.data.poster && item.data.poster.map((poster, index) => (
+        <Image key={index} source={{ uri: poster }} style={styles.Poster} />
+      ))}
+      
+        </ScrollView>
      
         
         
