@@ -106,7 +106,6 @@ function CustomDrawerContent(props) {
           </View>):
            (<Image source={require('../../Assets/Images/uni_logo.png')} style={[styles.UserImg]} /> )
         }
-
           {userData ? (
             <Text style={styles.UserName}>{userData.Username} {userData.Lastname}</Text>) : (
             (userInfo && userInfo.name ? <Text style={styles.UserName}>{userInfo.name}</Text> : null)
@@ -138,13 +137,30 @@ function CustomDrawerContent(props) {
             <Text style={[styles.Label, ButtonState === 3 ? styles.ActiveButtonTxt : null]} >Terms & Privay Policy</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => { setButtonState(4), handleSignOut() }} style={[styles.ButtonStyle, ButtonState === 4 ? styles.ActiveButton : null]} >
-            {ButtonState === 4 ?
+          <TouchableOpacity onPress={() => { setButtonState(4) }} style={[styles.ButtonStyle, ButtonState === 4 ? styles.ActiveButton : null]} >
+          {ButtonState === 4 ?
+            <Image source={Logout} style={[styles.HomeIcon, { tintColor: '#FFFFFF' }]} />
+            :
+            <Image source={Logout} style={[styles.HomeIcon, { tintColor: Colors.Green }]} />}
+          <Text style={[styles.Label, ButtonState === 4 ? styles.ActiveButtonTxt : null]} >Themes</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => { setButtonState(5) }} style={[styles.ButtonStyle, ButtonState === 5 ? styles.ActiveButton : null]} >
+        {ButtonState === 5 ?
+          <Image source={Logout} style={[styles.HomeIcon, { tintColor: '#FFFFFF' }]} />
+          :
+          <Image source={Logout} style={[styles.HomeIcon, { tintColor: Colors.Green }]} />}
+        <Text style={[styles.Label, ButtonState === 5 ? styles.ActiveButtonTxt : null]} >Language</Text>
+      </TouchableOpacity>
+          <TouchableOpacity onPress={() => { setButtonState(6), handleSignOut() }} style={[styles.ButtonStyle, ButtonState === 6 ? styles.ActiveButton : null]} >
+            {ButtonState === 6 ?
               <Image source={Logout} style={[styles.HomeIcon, { tintColor: '#FFFFFF' }]} />
               :
               <Image source={Logout} style={[styles.HomeIcon, { tintColor: Colors.Green }]} />}
-            <Text style={[styles.Label, ButtonState === 4 ? styles.ActiveButtonTxt : null]} >Logout</Text>
+            <Text style={[styles.Label, ButtonState === 6 ? styles.ActiveButtonTxt : null]} >Logout</Text>
           </TouchableOpacity>
+
+
         </View>
         <View style={styles.VersionContainer} >
 
@@ -209,7 +225,7 @@ const styles = StyleSheet.create({
     fontWeight: '700'
   },
   VersionContainer: {
-    marginTop: '40%',
+    marginTop: '80%',
     justifyContent: 'center',
     alignItems: 'center'
   },

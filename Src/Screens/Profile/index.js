@@ -92,8 +92,13 @@ const Profile = () => {
               </View>     
           ) : (
             <View>
-              <Text style={styles.UserName}>{userInfo.name}</Text>
-              <Text style={styles.UserName}>{userInfo.email}</Text>
+            <View style={styles.Data_Cont}>
+            <Text style={styles.UserName}>{userInfo.name}</Text>
+            </View>
+            <View style={styles.Data_Cont}>
+            <Text style={styles.UserName}>{userInfo.email}</Text>
+            </View>
+             
               </View>
           ) }    
         </View>
@@ -144,8 +149,8 @@ export default Profile;
       fontFamily:Fonts.SF_SemiBold
      },
     UserImg: {
-      width: 100,
-      height: 100,
+      width: 120,
+      height: 120,
       resizeMode: 'contain',
       borderRadius:100
     },

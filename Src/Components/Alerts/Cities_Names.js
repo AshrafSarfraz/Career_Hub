@@ -124,7 +124,7 @@ const CitiesName = ({ visible, onClose,  onCitiesSelect }) => {
       <ScrollView contentContainerStyle={styles.overlay}>
         <View style={styles.alertContainer}>
           <View style={{}} >  
-            <Text style={styles.List_Txt} >List of Cities</Text>
+            <Text style={styles.List_Txt} >Cities Name</Text>
            <View style={styles.FlatList_Cont} > 
             <FlatList 
             showsVerticalScrollIndicator={false}
@@ -147,7 +147,7 @@ const CitiesName = ({ visible, onClose,  onCitiesSelect }) => {
                     paddingVertical:"2%"
                   }}
                 >
-                  <Text  style={{color:selectedCities.includes(item) ? '#FFFFFF' : 'black',textAlign:"center",fontSize:14}} >{item}</Text>
+                  <Text  style={{color:selectedCities.includes(item) ? '#FFFFFF' : '#000',textAlign:"center",fontSize:12,margin:3,fontFamily:Fonts.SF_SemiBold}} >{item}</Text>
                 </TouchableOpacity>
               )}
             />
@@ -181,12 +181,14 @@ const styles = StyleSheet.create({
   },
   Done_Button: {
     borderRadius: 10,
-    height:55,
+    height:50,
     alignItems:"center",
     justifyContent:"center",
     marginVertical:"3%",
     backgroundColor:Colors.Green,
-    top:'1%'
+    top:'1%',
+    width:150,
+    alignSelf:"center"
   },
   okButtonText: {
     color: 'black',

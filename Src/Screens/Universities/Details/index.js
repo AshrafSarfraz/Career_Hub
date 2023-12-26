@@ -15,7 +15,7 @@ const Uni_Details = ({ navigation }) => {
   const latitude = 37.7749; 
   const longitude = -122.4194;
   const phoneNumber = '923430725591'; // Replace with the phone number you want to dial
-   console.log(route.params.item)
+  //  console.log(route.params.item)
 
   const handleOpenMaps = () => {
     const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
@@ -35,7 +35,7 @@ const Uni_Details = ({ navigation }) => {
     };
 
   const renderSlides = ({ item }) =>{
-     console.log(item,'here is item')
+    //  console.log(item,'here is item')
 
     return(
     <View style={styles.slideContainer}>
@@ -104,7 +104,12 @@ const Uni_Details = ({ navigation }) => {
           <Text style={styles.City_Text}>{item.data.City}</Text>
         </View>
        </TouchableOpacity>
-        <Text style={styles.Status}>{item.data.Status}</Text>
+       <View style={styles.Status_Cont}>
+       <View style={styles.Type_Cont}>
+       <Text style={styles.Type_Txt}>{item.data.Type}</Text>
+       </View>
+       <Text style={styles.Status}>{item.data.Status}</Text>
+       </View>
         <View style={styles.Address_Cont}>
           <TouchableOpacity onPress={handleOpenMaps}>
             <Image source={Location} style={styles.Address_Img} />
@@ -132,12 +137,13 @@ const Uni_Details = ({ navigation }) => {
               <Image source={{uri: item.data.uni[0] }} style={styles.Uni_Logo} />
 
               <View style={styles.User}>
-                <Text style={styles.OwnerName}>Khwaja Fareed University of Engineering 
-                and Information Technology</Text>
+                <Text style={styles.OwnerName}>{item.data.name}</Text>
               </View>
             </View>
+            <View style={{width:'15%'}} >
             <Image source={require('../../../Assets/Icons/phone.png')} style={styles.Phone_Icon} />
-          </View>
+           </View>
+           </View>
         </TouchableOpacity>
         
         <Text style={[styles.Addmission_Open,{marginTop:'3%'}]} >Addmission Open</Text>

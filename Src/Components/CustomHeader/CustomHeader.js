@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
  
   },
   title: {
-    fontSize: 20,
-    lineHeight:26,
+    fontSize: 18,
+    lineHeight:24,
     color:Colors.Green,
-    fontFamily:Fonts.SF_Bold
+    fontFamily:Fonts.SF_SemiBold
   },
 });
 

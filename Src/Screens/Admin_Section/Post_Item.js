@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  ScrollView,TextInput
+  ScrollView,TextInput, Alert
 } from 'react-native';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
@@ -261,8 +261,6 @@ const Post_Data = ({navigation}) => {
         onPress={() => openImagePicker(setLogo)}>
         <Text style={styles.Picker_Txt}>Pick Uni_Logo</Text>
       </TouchableOpacity>
-
-     
       <TouchableOpacity
         style={styles.pickBtn}
         onPress={() => openImagePicker(setPosterImages)}>
@@ -273,7 +271,7 @@ const Post_Data = ({navigation}) => {
         onPress={() => openImagePicker(setUniImages)}>
         <Text style={styles.Picker_Txt}>Pick Uni-Images</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.uploadBtn} onPress={handleUpload}>
+      <TouchableOpacity style={styles.uploadBtn} onPress={()=>{handleUpload(),Alert.alert('Added')} }>
         <Text style={{ color: '#FFF' }}>Upload Data</Text>
       </TouchableOpacity>
 

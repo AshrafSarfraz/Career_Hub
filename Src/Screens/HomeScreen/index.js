@@ -11,15 +11,15 @@ const HomeScreen = ({ navigation }) => {
     <ScrollView  showsVerticalScrollIndicator={false} >
      <View  style={styles.Header}>
         <View style={styles.Logo_Cont} >
-          <TouchableOpacity onPress={() => { navigation.openDrawer() }} >
+        <View> 
+        <TouchableOpacity onPress={() => { navigation.openDrawer() }} >
             <Image source={Menu} style={styles.Menu} />
-            <Text style={styles.Wlcm_Txt} >Start Your Journey Comfortably</Text>
-          </TouchableOpacity>
+            </TouchableOpacity>
+            <Text style={styles.Wlcm_Txt} >Start Your Journey    Comfortably</Text>
+            </View> 
           <Image source={require('../../Assets/Images/Slider1.png')} style={styles.CareerHub_Logo} />
         </View>
-        <View  style={styles.World_Cont}>
-        <Text style={styles.World_Txt}>A world of limitless opportunities</Text>
-        </View>
+      
        </View>
       <View style={styles.BtnContainer} >
       
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   Header: {
     width: "100%",
-    height:300,
+    height:250,
     backgroundColor:Colors.Green
   },
   Logo_Cont: {
@@ -67,43 +67,29 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: "3%",
     paddingTop: 30,
-    height:190,
+    height:200,
     alignItems:"center"
   },
   Menu: {
-    width: 50, height: 50,
+    width: 45, height: 45,
     resizeMode:"contain",
-    marginBottom:'5%'
+    marginBottom:'10%'
   },
   CareerHub_Logo: {
-    height: 180,
-    width:  180,
+    height: 170,
+    width:  160,
     resizeMode: "contain",
+    marginRight:'-1%'
   },
   Wlcm_Txt: {
-    fontSize: 24,
+    fontSize: 20,
     color: Colors.White,
-    fontFamily: Fonts.SF_Bold,
-    lineHeight: 30,
+    fontFamily: Fonts.SF_SemiBold,
+    lineHeight: 26,
     width:135,
+    marginTop:"4%"
   },
-  World_Cont:{
-   alignSelf:"center",
-   height:40,
-   alignItems:"center",
-   justifyContent:"center",
-   width:'80%',
-   borderRadius:15,
-   backgroundColor:Colors.White,
-   marginTop:'2%'
-  },
-  World_Txt: {
-    fontSize: 16,
-    color: Colors.Green,
-    fontFamily: Fonts.SF_Bold,
-    lineHeight: 20,
 
-  },
   BtnContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -118,7 +104,7 @@ const styles = StyleSheet.create({
 
   },
   Btn: {
-    width: '44%', height: 125,
+    width: '44%', height: 150,
     backgroundColor: Colors.White,
     elevation: 7,
     shadowColor:Colors.Black,

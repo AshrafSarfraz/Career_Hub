@@ -1,6 +1,6 @@
 
 
-import { View, Text, ScrollView, StyleSheet, FlatList, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, FlatList, Image, TouchableOpacity, TextInput, ImageBackground, Alert } from 'react-native'
 import React, { useState,useEffect } from 'react'
 import { Colors } from '../../Themes/Colors'
 import { Fonts } from '../../Themes/Fonts'
@@ -22,10 +22,10 @@ const Get_Data = (props) => {
   const [alertVisible, setAlertVisible] = useState(false);
   const [selectedCities, setSelectedCities] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-console.log(items)
+// console.log(items)
   const filterItems = () => {
     const filtered = filteredData.filter((item) => {
-      // Check if item.data is defined before accessing item.data.name
+    
       const itemName = (item.data && item.data.name) ? item.data.name.toLowerCase() : '';
       const searchLowerCase = searchQuery.toLowerCase();
       return itemName.includes(searchLowerCase);
@@ -39,14 +39,9 @@ console.log(items)
   
   const filterDataByButton = () => {
     let filtered = filteredData;
-  
-    // Filter by selected cities and status simultaneously
     if (selectedCities.length > 0) {
-      // console.log('Filtering by cities:', selectedCities);
-  
-      switch (BtnState) {
+  switch (BtnState) {
         case 0:
-          // console.log('Filtering by All');
            filtered = filtered.filter(
       item =>
         selectedCities.includes(item.data.City) &&
@@ -66,7 +61,6 @@ console.log(items)
           break;
       }
     } else {
-      // Filter only by status if no cities are selected
       switch (BtnState) {
         case 0:
           break;
@@ -84,7 +78,7 @@ console.log(items)
       }
     }
   
-    // console.log('Filtered Data:', filtered);
+   
     return filtered;
   };
   useEffect(() => {
@@ -105,14 +99,10 @@ console.log(items)
 
   const onCitiesSelect = (cities) => {
     setSelectedCities(cities);
-    // console.log('Selected Cities:', cities);
-    // console.log('Current Selected Cities State:', selectedCities);
   }; 
   const onSearchInputChange = (text) => {
     setSearchQuery(text);
   };
-
-
 
   const getItems = () => {
     try {
@@ -120,24 +110,17 @@ console.log(items)
         .collection('Education')
         .get()
         .then(querySnapshot => {
-          // console.log('Total items: ', querySnapshot.size);
           let tempData = [];
           querySnapshot.forEach(documentSnapshot => {
-            // console.log(
-            //   'Item ID: ',
-            //   documentSnapshot.id,
-            //   documentSnapshot.data(),
-            // );
             tempData.push({
               id: documentSnapshot.id,
               data: documentSnapshot.data(),
             });
           });
-          // console.log('Items data:', tempData);
           setItems(tempData);
         })
         .catch(error => {
-          console.error('Error getting items from Firestore:', error);
+         console.error('Error getting items from Firestore:', error);
         });
     } catch (error) {
       console.error('Error fetching items:', error);
@@ -150,7 +133,6 @@ console.log(items)
       .doc(docId)
       .delete()
       .then(() => {
-        console.log('Item deleted!');
         getItems();
       })
       .catch(error => {
@@ -160,27 +142,23 @@ console.log(items)
 
   const renderItem = ({ item, index }) => (
     <View style={styles.Cart}>
-      <TouchableOpacity onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
-      <ImageBackground
-  source={
-    item.data && item.data.Logo && item.data.Logo[0]
-      ? { uri: item.data.Logo[0] }
-      : require('../../Assets/Images/uni_logo.png')
-  }
-  style={styles.Product_Img}
-  imageStyle={{ borderRadius: 10, alignItems: 'center' }}
-  resizeMode='cover'
->
-</ImageBackground>
 
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.Detail_cont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
-        <Text style={styles.Title}>{item.data.name}</Text>
+      <TouchableOpacity  style={styles.ItemCont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
+   <ImageBackground source={ item.data && item.data.Logo && item.data.Logo[0] ? { uri: item.data.Logo[0] }
+          : require('../../Assets/Images/uni_logo.png') }
+           style={styles.Product_Img}
+           imageStyle={{ borderRadius: 10, alignItems: 'center' }}
+           resizeMode='cover' >
+    </ImageBackground>
+    <View  style={styles.Detail_cont}>
+     <Text style={styles.Title}>{item.data.name}</Text>
         <View style={styles.City_Cont}>
           <Text style={styles.City_Text}>{item.data.City}</Text>
         </View>
+        </View>
       </TouchableOpacity>
-      <View style={{right:'7%'}}  >
+
+      <View style={styles.Action_Cont}  >
       <TouchableOpacity
       onPress={() => {
         navigation.navigate('Edit_Uni_Details', {
@@ -190,7 +168,7 @@ console.log(items)
       }}>
       <Image
         source={require('../../Assets/Icons/edit.png')}
-        style={[styles.icon, {width:25,height:25,marginBottom:'85%' ,left:'10%' }]}
+        style={[styles.icon, {width:25,height:25, }]}
       />
     </TouchableOpacity>
     <TouchableOpacity
@@ -199,7 +177,7 @@ console.log(items)
       }}>
       <Image
         source={require('../../Assets/Icons/remove.png')}
-        style={[styles.icon, { width:35,height:35,resizeMode:"contain"   }]}
+        style={[styles.icon, { width:30,height:30,resizeMode:"contain"   }]}
       />
     </TouchableOpacity>
     </View>
@@ -289,8 +267,7 @@ export default Get_Data
 const styles = StyleSheet.create({
   MainCont: {
     backgroundColor: Colors.Bg,
-    padding: '5%',
-    
+    padding: '4%',
   },
   Header: {
     flexDirection: 'row',
@@ -418,50 +395,58 @@ const styles = StyleSheet.create({
     padding: '2%',
     flexDirection: "row",
     elevation:2,
-    marginBottom:"3%",
-    height:120,
-    alignItems:"center"
+    marginTop:"4%",
+    height:100,
+    alignItems:"center",
+    width:"100%"
+  },
+  ItemCont:{
+    flexDirection:"row",
+    alignItems:"center",
+    width:'90%',
+  },
+ 
+  Detail_cont: {
+    justifyContent: "center",
+    marginLeft: "4%",
+    marginRight:"3%",
+    width:"65%",
   },
   Product_Img: {
-    width: 100, height: 100,
-
+    width: 80, height: 80,
+    resizeMode:"contain",
+    marginLeft:'2%'
+  },
+  Title: {
+    fontSize: 12,
+    fontFamily: Fonts.SF_Bold,
+    fontWeight: "300",
+    lineHeight: 17,
+    color: Colors.Black,
+    marginBottom: "3%",
+    height:55,
   },
   City_Cont: {
     backgroundColor: '#D0A700',
-    paddingHorizontal: "3%",
-    paddingVertical: '2%',
     alignItems: 'center',
-    width: 150,
+    justifyContent:"center",
+    width: 110,
+    height:25,
     borderRadius: 5,
     marginTop: "2%"
   },
   City_Text: {
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 18,
     color: Colors.White,
     fontFamily: Fonts.SF_Medium,
   },
-  Wishlist: {
-    width: 20,
-    height: 20,
-    alignSelf: 'flex-end',
-    top: "40%",
-    right: '40%'
-  },
-  Title: {
-    fontSize: 14,
-    fontFamily: Fonts.SF_Bold,
-    fontWeight: "600",
-    lineHeight: 18,
-    color: Colors.Black,
-    marginBottom: "3%",
-    height:50,
-  },
-  Detail_cont: {
-    justifyContent: "center",
-    marginLeft: "4%",
-    width: "60%"
-  },
-
+  Action_Cont:{
+    width:'10%',
+    height:80,
+    justifyContent:'space-between',
+    alignItems:'flex-start'
+  }
+ 
 })
 

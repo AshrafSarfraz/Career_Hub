@@ -29,8 +29,8 @@ export const styles = StyleSheet.create({
         color: Colors.Green,
         fontFamily: Fonts.SF_Bold,
         lineHeight: 26,
-        fontSize: 22,
-        fontWeight: "700",
+        fontSize: 18,
+        fontWeight: "400",
         marginRight: "3%"
     },
     Back_Icon: {
@@ -90,15 +90,16 @@ export const styles = StyleSheet.create({
     },
     City_Cont: {
         backgroundColor: '#D0A700',
-        paddingHorizontal: "3%",
         alignItems: 'center',
-        width: 150,
-        padding: "1%",
-        marginVertical: "3%",
+        width: 120,
+        height:25,
+        alignItems:"center",
+        justifyContent:"center",
+        marginVertical: "2%",
         borderRadius: 5,
     },
     City_Text: {
-        fontSize: 14,
+        fontSize: 12,
         lineHeight: 18,
         color: Colors.White,
         fontFamily: Fonts.SF_Medium,
@@ -114,15 +115,36 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
     },
     Title: {
-        fontSize: 20,
-        lineHeight: 25,
+        fontSize: 16,
+        lineHeight: 20,
         color: Colors.Black,
         fontFamily: Fonts.SF_Medium,
     },
+    Status_Cont:{
+      flexDirection:"row",
+      alignItems:"center",
+      justifyContent:"space-between",
+      width:"100%",
+      marginBottom:'2%'
+    },
     Status: {
-        fontSize: 20,
-        lineHeight: 25,
+        fontSize: 14,
+        lineHeight: 20,
         color: Colors.Black,
+        fontFamily: Fonts.SF_Medium,
+        letterSpacing:0.3
+    },
+    Type_Cont:{
+      backgroundColor:"#9B1E2E",
+      paddingHorizontal:"4%",
+      borderRadius:5,
+      height:25,
+      justifyContent:"center"
+    },
+    Type_Txt:{
+        fontSize: 14,
+        lineHeight: 20,
+        color: Colors.White,
         fontFamily: Fonts.SF_Medium,
     },
     Address_Cont: {
@@ -136,7 +158,7 @@ export const styles = StyleSheet.create({
         marginRight: "2%"
     },
     Address: {
-        fontSize: 16,
+        fontSize: 14,
         lineHeight: 20,
         color: Colors.Black,
         fontFamily: Fonts.SF_Medium,
@@ -198,38 +220,39 @@ export const styles = StyleSheet.create({
         borderRadius:10,
         paddingBottom:"3%",
     },
-    Contact: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
     Phone_Cont: {
+        width: '100%',
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        width: '100%',
         backgroundColor: "#FFFFFF",
         borderWidth: 0.5,
-        padding: '3%',
+        padding: '2%',
         borderRadius: 10,
         marginVertical: "1%",
+        height:65
+    },
+    Contact: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width:"85%",
     },
     Uni_Logo: {
-        width: 50, height: 50,
+        width: 45, height: 45,
         resizeMode: 'contain',
-        marginRight: '1%'
     },
     User: {
-        marginLeft: "3%"
+        marginLeft: "2%",
+        width:"80%",
+        alignItems:"center"
     },
-
     OwnerName: {
-        fontSize: 12,
-        lineHeight: 18,
+        fontSize: 11,
+        lineHeight: 15,
         color: Colors.Black,
         fontFamily: Fonts.SF_Bold,
-        marginLeft: "2%",
-        width:220
-
+        width:'100%',
+        
     },
     Apply_Btn: {
         flexDirection: 'row',
@@ -260,7 +283,8 @@ export const styles = StyleSheet.create({
     },
 
     Phone_Icon: {
-        width: 50, height: 50,
+        width: 45, height: 45,
+        resizeMode:'contain'
     },
     Addmission_Open: {
         color: Colors.Black,
