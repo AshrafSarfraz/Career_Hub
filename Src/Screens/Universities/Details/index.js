@@ -27,8 +27,6 @@ const Uni_Details = ({ navigation }) => {
       Linking.openURL(url);
   };
 
-    
-
     const Contact = () => {
       const url = `tel:${phoneNumber}`;
       Linking.openURL(url);
@@ -39,7 +37,7 @@ const Uni_Details = ({ navigation }) => {
 
     return(
     <View style={styles.slideContainer}>
-      <Image source={{uri : item}} style={{ width: '98%', height: '100%' ,borderRadius:20}} resizeMode='cover' />
+      <Image source={{uri :item}} style={{ width: '98%', height: '100%' ,borderRadius:20}} resizeMode='cover' />
     </View>  )
   };
 
@@ -57,7 +55,7 @@ const Uni_Details = ({ navigation }) => {
         }}
         scrollEventThrottle={200}                       //  Adjust the throttle value if needed
       >
-      {item && item.data && item.data.poster && item.data.poster.map((item, index) => (
+      {item && item.data && item.data.uni && item.data.uni.map((item, index) => (
         <View key={index} style={[styles.paginationDot, index === currentIndex && styles.paginationDotActive]} />
       ))}
       </ScrollView>
@@ -83,7 +81,7 @@ const Uni_Details = ({ navigation }) => {
 
       <AppIntroSlider
         renderItem={renderSlides}
-        data={item.data.poster}
+        data={item.data.uni}
         onSlideChange={(index) => setCurrentIndex(index)}
         renderNextButton={() => null}
         renderDoneButton={() => null}
@@ -99,11 +97,11 @@ const Uni_Details = ({ navigation }) => {
             <Text style={styles.Title}>{item.data.name}</Text>
           </View>
         </View>
-        <TouchableOpacity onPress={Website}>
-        <View style={styles.City_Cont}>
+        <View>
+        <TouchableOpacity style={styles.City_Cont} onPress={Website}>
           <Text style={styles.City_Text}>{item.data.City}</Text>
-        </View>
        </TouchableOpacity>
+       </View>
        <View style={styles.Status_Cont}>
        <View style={styles.Type_Cont}>
        <Text style={styles.Type_Txt}>{item.data.Type}</Text>
@@ -134,7 +132,7 @@ const Uni_Details = ({ navigation }) => {
         <TouchableOpacity onPress={Contact}>
           <View style={styles.Phone_Cont}>
             <View style={styles.Contact} >
-              <Image source={{uri: item.data.uni[0] }} style={styles.Uni_Logo} />
+              <Image source={{uri: item.data.Logo[0] }} style={styles.Uni_Logo} />
 
               <View style={styles.User}>
                 <Text style={styles.OwnerName}>{item.data.name}</Text>

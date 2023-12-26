@@ -1,14 +1,12 @@
 
-
 import { View, Text, ScrollView, StyleSheet, FlatList, Image, TouchableOpacity, TextInput, ImageBackground, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Colors } from '../../../Themes/Colors'
-import { Fonts } from '../../../Themes/Fonts'
 import { Back_Icon, Bookmark, Bookmark1, Search } from '../../../Themes/Images'
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import CitiesName from '../../../Components/Alerts/Cities_Names'
-``
+import { styles } from './style';
 
 const University_Name = (props) => {
   const isFocused = useIsFocused();
@@ -143,24 +141,24 @@ const University_Name = (props) => {
 
   const renderItem = ({ item, index }) => (
     <View style={styles.Cart}>
-      <TouchableOpacity onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
-        <ImageBackground source={{ uri: item.data.Logo[0] }} style={styles.Product_Img} imageStyle={{ borderRadius: 10, alignItems: 'center' }} resizeMode='cover'>
-        </ImageBackground>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.Detail_cont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
-        <Text style={styles.Title}>{item.data.name}</Text>
+      <TouchableOpacity  style={styles.Img_Cont}  onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
+      <Image source={{ uri: item.data.Logo[0] }} style={styles.Product_Img} resizeMode='cover'/>
+     <View style={styles.Title_City_Container}>
+      <Text style={styles.Title}>{item.data.name}</Text>
         <View style={styles.City_Cont}>
           <Text style={styles.City_Text}>{item.data.City}</Text>
         </View>
+        </View>
       </TouchableOpacity>
+      <View  style={{width:"10%",height:90,justifyContent:"flex-end"}}>
       {itemStates[index] ? (
-        <TouchableOpacity onPress={() => toggleItemState(index)} style={{ width: 30, height: 30, alignSelf: 'flex-end', right: "5%", bottom: "2%" }} >
-          <Image source={Bookmark1} style={styles.Wishlist} />
+        <TouchableOpacity onPress={() => toggleItemState(index)} style={{}} >
+          <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]}/>
         </TouchableOpacity>
-      ) : <TouchableOpacity onPress={() => toggleItemState(index)} style={{ width: 30, height: 30, alignSelf: "flex-end", right: "5%", bottom: "2%" }} >
+      ) : <TouchableOpacity onPress={() => toggleItemState(index)} style={{}} >
         <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
       </TouchableOpacity>}
-
+      </View>
     </View>
   );
 
@@ -239,184 +237,5 @@ const University_Name = (props) => {
 
 export default University_Name
 
-const styles = StyleSheet.create({
-  MainCont: {
-    backgroundColor: Colors.Bg,
-    padding: '5%',
 
-  },
-  Header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: "center",
-    marginVertical: "3%",
-  },
-  Back_Cont: {
-    flexDirection: 'row',
-    alignItems: "center",
-    marginBottom: "2%"
-  },
-  Back_Txt: {
-    color: Colors.Green,
-    fontFamily: Fonts.SF_Bold,
-    lineHeight: 26,
-    fontSize: 18,
-    fontWeight: "400",
-    marginRight: "5%"
-  },
-  Back_Icon: {
-    width: 20, height: 20,
-    resizeMode: "contain"
-  },
-  Auth_Cont: {
-    flexDirection: 'row',
-    alignItems: "center",
-    marginRight: "5%"
-  },
-
-  Input_With_Filter: {
-    justifyContent: "space-around",
-    flexDirection: "row",
-    borderWidth: 1,
-    elevation: 3,
-    backgroundColor: Colors.White,
-    borderColor: Colors.Black,
-    borderRadius: 10,
-    paddingHorizontal: "2%",
-    marginTop: "3%",
-    alignItems: "center",
-    height: 55
-  },
-  Input_Cont: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  SearchIcon: {
-    width: 25, height: 25,
-    marginRight: "2%"
-  },
-  Filter: {
-    width: 25, height: 25,
-    marginLeft: "2%"
-  },
-  Search_Input: {
-    width: "70%",
-    color: Colors.Black,
-    fontFamily: Fonts.SF_Medium,
-    fontSize: 14,
-    backgroundColor: Colors.White
-  },
-  Btn_Cont: {
-    marginTop: 20,
-    marginBottom: 10
-  },
-  Btn: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
-    backgroundColor: Colors.White,
-    marginRight: 10,
-    borderWidth: 0.5,
-    borderColor: Colors.Grey4
-  },
-  ActiveBtn: {
-    backgroundColor: Colors.Green
-  },
-  Btn_Txt: {
-    fontSize: 16,
-    fontFamily: Fonts.SF_SemiBold,
-    lineHeight: 20,
-    color: Colors.Black
-  },
-  ActiveBtn_Txt: {
-    color: Colors.White
-  },
-  selected_City_Container: {
-    marginBottom: "5%",
-    marginTop: '3%'
-  },
-  Cities_Name: {
-    fontSize: 22,
-    lineHeight: 28,
-    color: 'red',
-    fontFamily: Fonts.SF_Bold,
-    marginBottom: "1%"
-  },
-  SelectedCitiesContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginBottom: '2%'
-  },
-  SelectedCityBackground: {
-    backgroundColor: Colors.Green,
-    margin: "1%",
-    paddingVertical: "2%",
-    paddingHorizontal: '3%',
-    borderRadius: 15
-  },
-  SelectedCityText: {
-    fontSize: 14,
-    lineHeight: 18,
-    color: Colors.White,
-    fontFamily: Fonts.SF_Medium,
-  },
-
-
-  FlatList_Cont: {
-    paddingBottom: "10%"
-  },
-  Cart: {
-    backgroundColor: Colors.White,
-    borderRadius: 10,
-    padding: '3%',
-    flexDirection: "row",
-    elevation: 2,
-    marginBottom: "3%",
-    height: 110,
-    alignItems: "center"
-  },
-  Product_Img: {
-    width: 80, height: 80,
-    resizeMode: "contain",
-
-  },
-  City_Cont: {
-    backgroundColor: '#D0A700',
-    paddingHorizontal: "3%",
-    paddingVertical: '2%',
-    alignItems: 'center',
-    width: 100,
-    borderRadius: 5,
-    marginTop: "2%"
-  },
-  City_Text: {
-    fontSize: 12,
-    lineHeight: 18,
-    color: Colors.White,
-    fontFamily: Fonts.SF_Medium,
-  },
-  Wishlist: {
-    width: 20,
-    height: 20,
-    alignSelf: 'flex-end',
-    top: "35%",
-    right: '60%'
-  },
-  Title: {
-    fontSize: 12,
-    fontFamily: Fonts.SF_Bold,
-    fontWeight: "400",
-    lineHeight: 16,
-    color: Colors.Black,
-    marginBottom: "3%",
-    height: 50,
-  },
-  Detail_cont: {
-    justifyContent: "center",
-    marginLeft: "4%",
-    marginRight: "3%",
-    width: "58%"
-  },
-
-})
 

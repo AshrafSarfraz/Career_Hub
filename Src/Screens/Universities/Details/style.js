@@ -90,13 +90,12 @@ export const styles = StyleSheet.create({
     },
     City_Cont: {
         backgroundColor: '#D0A700',
-        alignItems: 'center',
-        width: 120,
         height:25,
-        alignItems:"center",
-        justifyContent:"center",
         marginVertical: "2%",
         borderRadius: 5,
+        width:130,
+        alignItems:"center",
+        justifyContent:"center"
     },
     City_Text: {
         fontSize: 12,
@@ -142,7 +141,7 @@ export const styles = StyleSheet.create({
       justifyContent:"center"
     },
     Type_Txt:{
-        fontSize: 14,
+        fontSize: 12,
         lineHeight: 20,
         color: Colors.White,
         fontFamily: Fonts.SF_Medium,
@@ -216,8 +215,6 @@ export const styles = StyleSheet.create({
         fontFamily: Fonts.SF_Regular,
         marginBottom: '3%',
         width: "100%",
-        height:140,
-        borderRadius:10,
         paddingBottom:"3%",
     },
     Phone_Cont: {
@@ -230,7 +227,7 @@ export const styles = StyleSheet.create({
         padding: '2%',
         borderRadius: 10,
         marginVertical: "1%",
-        height:65
+        height:75
     },
     Contact: {
         flexDirection: 'row',
@@ -238,7 +235,7 @@ export const styles = StyleSheet.create({
         width:"85%",
     },
     Uni_Logo: {
-        width: 45, height: 45,
+        width: 50, height: 50,
         resizeMode: 'contain',
     },
     User: {
@@ -247,7 +244,7 @@ export const styles = StyleSheet.create({
         alignItems:"center"
     },
     OwnerName: {
-        fontSize: 11,
+        fontSize: 12,
         lineHeight: 15,
         color: Colors.Black,
         fontFamily: Fonts.SF_Bold,
@@ -274,23 +271,22 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom:"10%"
     },
-
     Rent: {
         color: Colors.White,
         fontSize: 16,
         fontFamily: Fonts.SF_Medium,
         lineHeight: 20
     },
-
     Phone_Icon: {
-        width: 45, height: 45,
+        width: 50, height: 50,
         resizeMode:'contain'
     },
     Addmission_Open: {
         color: Colors.Black,
-        fontSize: 18,
+        fontSize: 16,
         fontFamily: Fonts.SF_SemiBold,
         lineHeight: 24,
+        marginBottom:"3%"
     },
     Link: {
         color: Colors.Green,

@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     elevation:2,
     marginTop:"4%",
-    height:100,
+    height:110,
     alignItems:"center",
     width:"100%"
   },
@@ -424,16 +424,16 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     color: Colors.Black,
     marginBottom: "3%",
-    height:55,
+    height:60,
   },
   City_Cont: {
     backgroundColor: '#D0A700',
     alignItems: 'center',
     justifyContent:"center",
-    width: 110,
-    height:25,
+    width:140,
+    height:27,
     borderRadius: 5,
-    marginTop: "2%"
+    marginTop: "1%"
   },
   City_Text: {
     fontSize: 12,
