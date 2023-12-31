@@ -19,11 +19,15 @@ const Notifications = () => {
   const navigation = useNavigation();
 
   const [notificationArray, setNotificationArray] = useState([
-    { image: require('../../Assets/Images/Ghost.png'), Info: 'Rent Request from User for the item named ', Type :'‘Headphones 7.1’',  Accept: ' has been accepted!' ,  Time: '4 min Ago' ,Btn:'Proceed to pay',Image2:require('../../Assets/Icons/filter.png') ,status:'Offline' },
-   
+    { image: require('../../Assets/Images/Ghost.png'), Info: 'DeLorem ipsum dolor sit amet, consectetur adipiscing elit.  ', Type :'',  Accept: '' ,  Time: '4 min Ago' ,Btn:'See details',Image2:''},
+    { image: require('../../Assets/Images/Ghost.png'), Info: 'DeLorem ipsum dolor sit amet, consectetur adipiscing elit.  ', Type :'',  Accept: '' ,  Time: '4 min Ago' ,Btn:'See details',Image2:''},
+    { image: require('../../Assets/Images/Ghost.png'), Info: 'DeLorem ipsum dolor sit amet, consectetur adipiscing elit.  ', Type :'',  Accept: '' ,  Time: '4 min Ago' ,Btn:'See details',Image2:''},
+    
 ]);
 const [notificationArray1, setNotificationArray1] = useState([
   
+    { image: require('../../Assets/Images/Ghost.png'), Info: 'DeLorem ipsum dolor sit amet, consectetur adipiscing elit.  ', Type :'',  Accept: '' ,  Time: '4 min Ago' ,Btn:'See details',Image2:''},
+    { image: require('../../Assets/Images/Ghost.png'), Info: 'DeLorem ipsum dolor sit amet, consectetur adipiscing elit.  ', Type :'',  Accept: '' ,  Time: '4 min Ago' ,Btn:'See details',Image2:''},
     { image: require('../../Assets/Images/Ghost.png'), Info: 'DeLorem ipsum dolor sit amet, consectetur adipiscing elit.  ', Type :'',  Accept: '' ,  Time: '4 min Ago' ,Btn:'See details',Image2:''},
     
 ]);
@@ -46,8 +50,53 @@ const [notificationArray1, setNotificationArray1] = useState([
       <CustomHeader title={'Notifications'} onBackPress={() => navigation.goBack()} />
       <Text style={styles.Today_Text}>Today</Text>
       <View style={styles.Flatlist_View}>
+      <FlatList
+        data={notificationArray}
+        ItemSeparatorComponent={Separator}
+        renderItem={({ item, index }) => (
+          <Swipeout
+            right={[
+              {
+                component: (
+                  <Image
+                    source={require('../../Assets/Icons/remove.png')}
+                    style={styles.DeletImage_Style}
+                  />
+                ),
+                backgroundColor: 'lightpink',
+                onPress: () => onDeleteNotification(item, notificationArray1),
+              },
+            ]}
+            key={index.toString()}>
+            <TouchableOpacity style={styles.Card_View}>
+            <View style={styles.Circular_View}>
+                <Image source={item.image} style={styles.Alarm_Imge} />
+              </View>
+              <View style={styles.Texts_View}>
+                <Text style={styles.Info_Text}>{item.Info}
+                <Text style={styles.Type_Text}>{item.Type} 
+                <Text style={styles.Info_Text}>{item.Accept} </Text>
+                </Text>
+                </Text>
+                <View style={styles.Footer} >
+                <Text style={styles.Time_Text}>{item.Time}</Text>
+                <TouchableOpacity style={styles.BtnCont} > 
+                  <Text style={styles.Btn_Txt} >{item.Btn}</Text>
+                  <Image source={item.Image2} style={styles.Image2} />
+                </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </Swipeout>
+        )}
+        keyExtractor={(_, index) => index.toString()}
+      />
+    </View>
+      <Text style={styles.Today_Text}>Last week</Text>
+
+      <View style={[styles.Flatlist_View,{ marginBottom:30}]}>
         <FlatList
-          data={notificationArray}
+          data={notificationArray1}
           ItemSeparatorComponent={Separator}
           renderItem={({ item, index }) => (
             <Swipeout
@@ -55,57 +104,7 @@ const [notificationArray1, setNotificationArray1] = useState([
                 {
                   component: (
                     <Image
-                      source={require('../../Assets/Images/Anger.png')}
-                      style={styles.DeletImage_Style}
-                    />
-                  ),
-                  backgroundColor: '#FC9D9C',
-                  onPress: () => onDeleteNotification(item, notificationArray),
-                },
-              ]}
-              key={index.toString()}>
-              <View style={{ paddingTop: '2%', backgroundColor: Colors.Bg }}>
-                <TouchableOpacity
-                  style={styles.Card_View}
-                  onPress={() => {
-                    navigation.navigate('ReviewSummary2');
-                  }}>
-                   <View style={styles.Circular_View}>
-                  <Image source={item.image} style={styles.Alarm_Imge} />
-                </View>
-                <View style={styles.Texts_View}>
-                  <Text style={styles.Info_Text}>{item.Info}
-                  <Text style={styles.Type_Text}>{item.Type} 
-                  <Text style={styles.Info_Text}>{item.Accept} </Text>
-                  </Text>
-                  </Text>
-                  <View style={styles.Footer} >
-                  <Text style={styles.Time_Text}>{item.Time}</Text>
-                  <TouchableOpacity style={styles.BtnCont} > 
-                    <Text style={styles.Btn_Txt} >{item.Btn}</Text>
-                    <Image source={item.Image2} style={styles.Image2} />
-                  </TouchableOpacity>
-                  </View>
-                </View>
-                </TouchableOpacity>
-              </View>
-            </Swipeout>
-          )}
-          keyExtractor={(_, index) => index.toString()}
-        />
-      </View>
-      <Text style={styles.Today_Text}>Last week</Text>
-
-      <View style={styles.Flatlist_View}>
-        <FlatList
-          data={notificationArray1}
-          renderItem={({ item, index }) => (
-            <Swipeout
-              right={[
-                {
-                  component: (
-                    <Image
-                      source={require('../../Assets/Icons/filter.png')}
+                      source={require('../../Assets/Icons/remove.png')}
                       style={styles.DeletImage_Style}
                     />
                   ),
@@ -138,6 +137,7 @@ const [notificationArray1, setNotificationArray1] = useState([
           keyExtractor={(_, index) => index.toString()}
         />
       </View>
+
     </ScrollView>
   );
 };

@@ -9,13 +9,15 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Bobi, Doc, Home, Logo, Logo1, Logout, Profile, Profile2 } from '../../Themes/Images';
+import { Bobi, DarkMood, Doc, Home, Language_Icon, LightMood, Logo, Logo1, Logout, Moon, Profile, Profile2 } from '../../Themes/Images';
 import { Fonts } from '../../Themes/Fonts';
 import { Colors } from '../../Themes/Colors';
 
 
 
 function CustomDrawerContent(props) {
+  const [Dark,setDark]=useState(false)
+  const [Language,setLanguage]=useState(false)
   const [ButtonState, setButtonState] = useState(1)
   const [userData, setUserData] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
@@ -120,6 +122,35 @@ function CustomDrawerContent(props) {
             <Text style={[styles.Label, ButtonState === 1 ? styles.ActiveButtonTxt : null]} >Home</Text>
           </TouchableOpacity>
 
+          <View style={styles.ThemeBtn} >
+          <View  style={{flexDirection:"row",alignItems:"center"}}>
+            <Image source={Moon} style={[styles.HomeIcon, { tintColor:Colors.Green,width:40,height:40,resizeMode:"contain" }]} /> 
+          <Text style={styles.Label} >Themes</Text>
+          </View>
+          <TouchableOpacity onPress={()=>{setDark(!Dark)}} >
+          {
+            Dark===false?
+            <Image source={LightMood} style={styles.LightMood} />:
+            <Image source={DarkMood} style={styles.LightMood} />
+          }
+          </TouchableOpacity>
+          </View>
+           
+          <View style={styles.ThemeBtn} >
+          <View  style={{flexDirection:"row",alignItems:"center"}}>
+            <Image source={Language_Icon} style={[styles.HomeIcon, { tintColor:Colors.Green,width:23,height:23,resizeMode:"contain" }]} /> 
+          <Text style={[styles.Label,{marginLeft:'7%'}]} >Language</Text>
+          </View>
+          <TouchableOpacity onPress={()=>{setLanguage(!Language)}} >
+          {
+            Language===false?
+            <Text style={styles.Lang_Txt}>Eng</Text>:
+            <Text  style={styles.Lang_Txt}>Urdu</Text>
+          }
+          </TouchableOpacity>
+          </View>
+
+
           <TouchableOpacity onPress={() => { setButtonState(2), props.navigation.navigate('Contact') }} style={[styles.ButtonStyle, ButtonState === 2 ? styles.ActiveButton : null]} >
             {ButtonState === 2 ?
               <Image source={Profile} style={[styles.HomeIcon, { tintColor: '#FFFFFF' }]} />
@@ -137,21 +168,6 @@ function CustomDrawerContent(props) {
             <Text style={[styles.Label, ButtonState === 3 ? styles.ActiveButtonTxt : null]} >Terms & Privay Policy</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => { setButtonState(4) }} style={[styles.ButtonStyle, ButtonState === 4 ? styles.ActiveButton : null]} >
-          {ButtonState === 4 ?
-            <Image source={Logout} style={[styles.HomeIcon, { tintColor: '#FFFFFF' }]} />
-            :
-            <Image source={Logout} style={[styles.HomeIcon, { tintColor: Colors.Green }]} />}
-          <Text style={[styles.Label, ButtonState === 4 ? styles.ActiveButtonTxt : null]} >Themes</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => { setButtonState(5) }} style={[styles.ButtonStyle, ButtonState === 5 ? styles.ActiveButton : null]} >
-        {ButtonState === 5 ?
-          <Image source={Logout} style={[styles.HomeIcon, { tintColor: '#FFFFFF' }]} />
-          :
-          <Image source={Logout} style={[styles.HomeIcon, { tintColor: Colors.Green }]} />}
-        <Text style={[styles.Label, ButtonState === 5 ? styles.ActiveButtonTxt : null]} >Language</Text>
-      </TouchableOpacity>
           <TouchableOpacity onPress={() => { setButtonState(6), handleSignOut() }} style={[styles.ButtonStyle, ButtonState === 6 ? styles.ActiveButton : null]} >
             {ButtonState === 6 ?
               <Image source={Logout} style={[styles.HomeIcon, { tintColor: '#FFFFFF' }]} />
@@ -206,7 +222,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: '4%',
     paddingHorizontal: "6%",
-    marginBottom: '2%'
+    marginBottom: '2%',
   },
   ActiveButton: {
     backgroundColor: Colors.Green,
@@ -214,6 +230,26 @@ const styles = StyleSheet.create({
   },
   ActiveButtonTxt: {
     color: '#FFFFFF'
+  },
+  ThemeBtn:{
+    width: '100%',
+    padding: '2%',
+    alignItems: 'center',
+    flexDirection: "row",
+    padding: '4%',
+    paddingHorizontal: "6%",
+    marginBottom: '2%',
+    justifyContent:"space-between"
+  },
+  LightMood:{
+   width:40,height:20,resizeMode:"contain"
+  },
+  Lang_Txt:{
+    fontSize: 12,
+    lineHeight: 16,
+    fontFamily:Fonts.SF_Medium,
+    color: Colors.Black,
+    fontWeight: '400',
   },
   HomeIcon: {
     width: 25, height: 25, resizeMode: 'contain', marginRight: "5%"

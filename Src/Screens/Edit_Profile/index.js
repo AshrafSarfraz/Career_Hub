@@ -29,9 +29,10 @@ const Edit_Profile = () => {
             const userDataFromFirestore = userDocument.data();
             setUserData(userDataFromFirestore);
             setUserImage(userDataFromFirestore.imageUrl);
-            setUsername(userData && userData.Username ? userData.Username : '');
-            setLastname(userData && userData.Lastname ? userData.Lastname : '');
-            setPhoneNumber(userData && userData.PhoneNumber ? userData.PhoneNumber : '');
+            setUsername(userDataFromFirestore && userDataFromFirestore.Username ? userDataFromFirestore.Username : '');
+            setLastname(userDataFromFirestore && userDataFromFirestore.Lastname ? userDataFromFirestore.Lastname : '');
+            setPhoneNumber(userDataFromFirestore && userDataFromFirestore.PhoneNumber ? userDataFromFirestore.PhoneNumber : '');
+            
 
           } else {
             console.log('User document does not exist.');

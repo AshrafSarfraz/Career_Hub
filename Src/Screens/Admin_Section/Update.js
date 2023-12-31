@@ -307,7 +307,7 @@ const EditItem = ({ navigation }) => {
   onPress={() => openImagePicker(setUniImages)}>
   <Text style={styles.Picker_Txt}>New Uni-Images</Text>
 </TouchableOpacity>
-      <TouchableOpacity style={styles.uploadBtn}  onPress={() => {uploadItem(),navigation.goBack(); }}>
+      <TouchableOpacity style={styles.uploadBtn}  onPress={() => {uploadItem(),navigation.navigate('Get_Data'); }}>
         <Text style={{ color: '#FFF' }}>Update Data</Text>
       </TouchableOpacity>
 

@@ -45,7 +45,9 @@ export const styles = StyleSheet.create({
     },
 
     Bookmark: {
-        width: 25, height: 25,
+        width: 23, height: 23,
+        resizeMode:"contain",
+        tintColor:Colors.Green
     },
 
     slideContainer: {
@@ -68,7 +70,8 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 16,
-        marginLeft: '40%'
+        marginLeft: '40%',
+        marginTop:"2%"
 
     },
     paginationScrollView: {
@@ -90,12 +93,13 @@ export const styles = StyleSheet.create({
     },
     City_Cont: {
         backgroundColor: '#D0A700',
-        height:25,
+        height:27,
         marginVertical: "2%",
         borderRadius: 5,
-        width:130,
         alignItems:"center",
-        justifyContent:"center"
+        justifyContent:"center",
+        alignSelf:"flex-start",
+        paddingHorizontal:"3%"
     },
     City_Text: {
         fontSize: 12,
@@ -109,15 +113,12 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
 
     },
-    Title_Cont: {
-        flexDirection: "row",
-        alignItems: 'center'
-    },
     Title: {
-        fontSize: 16,
-        lineHeight: 20,
+        fontSize: 18,
+        lineHeight: 24,
         color: Colors.Black,
         fontFamily: Fonts.SF_Medium,
+        marginBottom:"1%",
     },
     Status_Cont:{
       flexDirection:"row",
@@ -127,17 +128,17 @@ export const styles = StyleSheet.create({
       marginBottom:'2%'
     },
     Status: {
-        fontSize: 14,
-        lineHeight: 20,
+        fontSize: 16,
+        lineHeight: 22,
         color: Colors.Black,
         fontFamily: Fonts.SF_Medium,
         letterSpacing:0.3
     },
     Type_Cont:{
       backgroundColor:"#9B1E2E",
-      paddingHorizontal:"4%",
+      paddingHorizontal:"3%",
       borderRadius:5,
-      height:25,
+      height:27,
       justifyContent:"center"
     },
     Type_Txt:{
@@ -258,7 +259,8 @@ export const styles = StyleSheet.create({
         backgroundColor: Colors.Green,
         width: '100%',
         padding: '4%',
-        borderRadius: 10
+        borderRadius: 10,
+        marginTop:"4%"
     },
     Req_Btn: {
         flexDirection: 'row',
@@ -308,8 +310,5 @@ export const styles = StyleSheet.create({
        marginVertical:10,
        resizeMode:'contain'
     },
-
-
-
 
 })

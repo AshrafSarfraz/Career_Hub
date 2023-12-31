@@ -194,10 +194,10 @@ const Get_Data = (props) => {
   return (
     <ScrollView style={styles.MainCont}  showsVerticalScrollIndicator={false}>
       <View style={styles.Header} >
-        <TouchableOpacity onPress={() => { props.navigation.goBack() }} style={styles.Back_Cont} >
+        <TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.Back_Cont} >
           <Image source={Back_Icon} style={styles.Back_Icon} />
         </TouchableOpacity>
-        <Text style={styles.Back_Txt} >Addmission</Text>
+        <Text style={styles.Back_Txt} >Get Data</Text>
         <View style={styles.Auth_Cont} >
         </View>
       </View>
@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
     width:"65%",
   },
   Product_Img: {
-    width: 80, height: 80,
+    width: 90, height: 90,
     resizeMode:"contain",
     marginLeft:'2%'
   },
@@ -424,16 +424,15 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     color: Colors.Black,
     marginBottom: "3%",
-    height:60,
   },
   City_Cont: {
     backgroundColor: '#D0A700',
     alignItems: 'center',
     justifyContent:"center",
-    width:140,
     height:27,
     borderRadius: 5,
-    marginTop: "1%"
+    alignSelf:'flex-start',
+    paddingHorizontal:"4%"
   },
   City_Text: {
     fontSize: 12,

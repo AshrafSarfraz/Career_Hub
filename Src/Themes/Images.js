@@ -37,8 +37,13 @@ export const Doc=require(IconPath+'doc.png')
 export const Logout=require(IconPath+'logout.png')
 export const Phone=require(IconPath+'phone.png')
 export const Search=require(IconPath+'search.png')
+export const LightMood=require(IconPath+'toggle4.png')
+export const DarkMood=require(IconPath+'toggle3.png')
+export const Moon=require(IconPath+'moon.png')
+export const Language_Icon=require(IconPath+'language.png')
 
 export const Next=require(IconPath+'next.png')
 export const Cross=require(IconPath+'cross.png')
 export const Exclimation=require(IconPath+'Exclimation.png')
 export const Filter=require(IconPath+'filter.png')
+

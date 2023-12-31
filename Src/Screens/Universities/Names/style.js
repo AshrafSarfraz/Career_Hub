@@ -151,17 +151,17 @@ export const styles = StyleSheet.create({
     },
     Title_City_Container:{
        flexDirection:"column",
-       alignItems:'flex-start',
        justifyContent:'space-around',
        marginLeft:'3%',
-       width:'76%',
+       width:'70%',
     },
     City_Cont: {
       backgroundColor: '#D0A700',
       borderRadius: 5,
-      height:25,
+      height:27,
       paddingHorizontal:"3%",
-      alignItems:"center"
+      justifyContent:'center',
+      alignSelf:"flex-start"
     },
     City_Text: {
       fontSize: 12,
@@ -170,12 +170,11 @@ export const styles = StyleSheet.create({
       fontFamily: Fonts.SF_Medium,
     },
     Title: {
-      fontSize: 12,
+      fontSize: 14,
       fontFamily: Fonts.SF_Bold,
       fontWeight: "400",
       lineHeight: 16,
       color: Colors.Black,
-      height: 60,
       width: "100%",
       marginBottom:"3%"
     },
@@ -186,8 +185,9 @@ export const styles = StyleSheet.create({
       
     },
     Wishlist: {
-      width: 25,
-      height: 25,
-      alignSelf:"center"
+      width: 23,
+      height: 23,
+      alignSelf:"center",
+      resizeMode:"contain"
     },
   })
