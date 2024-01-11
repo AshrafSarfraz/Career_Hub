@@ -103,7 +103,7 @@ function CustomDrawerContent(props) {
         {userData ? (
             <Image source={{ uri: userData.userImage }} style={[styles.UserImg]} />) : (
         (userInfo ?
-            <Image source={{ uri: userInfo.photo }} style={[styles.UserImg]} /> : null)
+            <Image source={{ uri: userInfo.phot }} style={[styles.UserImg]} /> : null)
           )}
           </View>):
            (<Image source={require('../../Assets/Images/uni_logo.png')} style={[styles.UserImg]} /> )
