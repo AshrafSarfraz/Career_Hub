@@ -16,8 +16,6 @@ import { Colors } from '../../Themes/Colors';
 
 
 function CustomDrawerContent(props) {
-  const [Dark,setDark]=useState(false)
-  const [Language,setLanguage]=useState(false)
   const [ButtonState, setButtonState] = useState(1)
   const [userData, setUserData] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
@@ -121,35 +119,6 @@ function CustomDrawerContent(props) {
               <Image source={Home} style={styles.HomeIcon} />}
             <Text style={[styles.Label, ButtonState === 1 ? styles.ActiveButtonTxt : null]} >Home</Text>
           </TouchableOpacity>
-
-          <View style={styles.ThemeBtn} >
-          <View  style={{flexDirection:"row",alignItems:"center"}}>
-            <Image source={Moon} style={[styles.HomeIcon, { tintColor:Colors.Green,width:40,height:40,resizeMode:"contain" }]} /> 
-          <Text style={styles.Label} >Themes</Text>
-          </View>
-          <TouchableOpacity onPress={()=>{setDark(!Dark)}} >
-          {
-            Dark===false?
-            <Image source={LightMood} style={styles.LightMood} />:
-            <Image source={DarkMood} style={styles.LightMood} />
-          }
-          </TouchableOpacity>
-          </View>
-           
-          <View style={styles.ThemeBtn} >
-          <View  style={{flexDirection:"row",alignItems:"center"}}>
-            <Image source={Language_Icon} style={[styles.HomeIcon, { tintColor:Colors.Green,width:23,height:23,resizeMode:"contain" }]} /> 
-          <Text style={[styles.Label,{marginLeft:'7%'}]} >Language</Text>
-          </View>
-          <TouchableOpacity onPress={()=>{setLanguage(!Language)}} >
-          {
-            Language===false?
-            <Text style={styles.Lang_Txt}>Eng</Text>:
-            <Text  style={styles.Lang_Txt}>Urdu</Text>
-          }
-          </TouchableOpacity>
-          </View>
-
 
           <TouchableOpacity onPress={() => { setButtonState(2), props.navigation.navigate('Contact') }} style={[styles.ButtonStyle, ButtonState === 2 ? styles.ActiveButton : null]} >
             {ButtonState === 2 ?

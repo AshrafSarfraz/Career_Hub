@@ -14,9 +14,9 @@ const Uni_Details = ({ navigation }) => {
   const item = route.params.item;
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollViewRef = useRef(null);
-  const latitude = 37.7749;
-  const longitude = -122.4194;
-  const phoneNumber = '923430725591'; // Replace with the phone number you want to dial
+  const latitude = item.data.latitude? item.data.latitude:null
+  const longitude = item.data.longitude? item.data.longitude : null
+  const phoneNumber = item.data.phoneNumber; // Replace with the phone number you want to dial
   //  console.log(route.params.item)
 
   const handleOpenMaps = () => {

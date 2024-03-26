@@ -92,7 +92,7 @@ const Edit_Profile = () => {
    
     <View style={styles.Main_Cont}>
     <ScrollView   showsVerticalScrollIndicator={false}>
-    <CustomHeader title={'Edit Profile'} onBackPress={()=>{navigation.goBack()}}/>
+    <CustomHeader title={'Edit Profile'} onBackPress={()=>{navigation.goBack(l)}}/>
     
     <View  style={styles.Header_Cont}>
       {userData && userData.userImage ? (

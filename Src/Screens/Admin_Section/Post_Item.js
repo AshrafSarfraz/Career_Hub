@@ -103,6 +103,8 @@ const Post_Data = ({navigation}) => {
       });
 
       console.log('Images uploaded successfully!');
+      setName('')
+      setDescription('')
     } catch (error) {
       console.error('Error storing images in Firestore:', error);
     }

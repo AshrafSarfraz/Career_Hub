@@ -5,10 +5,13 @@ import { Colors } from '../../../Themes/Colors'
 import { Back_Icon, Bookmark, Bookmark1, Search } from '../../../Themes/Images'
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import { useDispatch } from "react-redux";
 import CitiesName from '../../../Components/Alerts/Cities_Names'
 import { styles } from './style';
+import { Add_To_Wishlist } from '../../../Redux/WhislistSlice';
 
 const University_Name = (props) => {
+  const dispatch=useDispatch();
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const currentDate = new Date();
@@ -148,14 +151,14 @@ const University_Name = (props) => {
         <View style={styles.City_Cont}>
           <Text style={styles.City_Text}>{item.data.City}</Text>
         </View>
-        </View>
+        </View>         
       </TouchableOpacity>
       <View  style={{width:"10%",height:90,justifyContent:"flex-end"}}>
       {itemStates[index] ? (
-        <TouchableOpacity onPress={() => toggleItemState(index)} style={{}} >
+        <TouchableOpacity onPress={() => {dispatch(Add_To_Wishlist(item.id)),toggleItemState(index) }}     style={{}} >
           <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]}/>
         </TouchableOpacity>
-      ) : <TouchableOpacity onPress={() => toggleItemState(index)} style={{}} >
+      ) : <TouchableOpacity onPress={() =>{dispatch(Add_To_Wishlist(item.id)), toggleItemState(index)}} style={{}} >
         <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
       </TouchableOpacity>}
       </View>

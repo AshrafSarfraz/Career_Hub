@@ -4,8 +4,10 @@ const AddtoWhishlist=createSlice({
     name:"AddToWishList",
     initialState:[],
     reducers:{
-        Add_Item_To_Wishlist(action,state){
+        Add_To_Wishlist(state,action){
             state.push(action.payload)
         }
     }
 })
+export const {Add_To_Wishlist}=AddtoWhishlist.actions
+export default AddtoWhishlist.reducer
