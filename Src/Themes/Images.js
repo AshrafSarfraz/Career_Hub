@@ -1,5 +1,5 @@
 const ImgPath='../Assets/Images/'
-export const Logo1=require(ImgPath+'logo1.png')
+export const Logo1=require(ImgPath+'Logo1.png')
 export const Logo2=require(ImgPath+'logo2.png')
 export const Logo3=require(ImgPath+'logo3.png')
 export const Logo4=require(ImgPath+'logo4.png')
