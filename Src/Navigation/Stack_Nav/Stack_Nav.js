@@ -39,7 +39,7 @@ const Stack_Navigation = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={user ? 'Bottom' : 'Splash_Blank'} screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName={user ? 'Post' : 'Post'} screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash_Blank" component={Splash_Blank} />
         <Stack.Screen name="Splash" component={Splash_Screen} />
         <Stack.Screen name="onBoarding" component={OnBoarding} />
