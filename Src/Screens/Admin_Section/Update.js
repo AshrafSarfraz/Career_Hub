@@ -27,6 +27,7 @@ const EditItem = ({ navigation }) => {
   const [name, setName] = useState(route.params.data.name);
   const [City, setCity] = useState(route.params.data.City);
   const [City_Link, setCity_Link] = useState(route.params.data.City_Link);
+  const [Province, setProvince] = useState(route.params.data.Province);
   const [Status, setStatus] = useState(route.params.data.Status);
   const [Location, setLocation] = useState(route.params.data.Location);
   const [Longitude, setLongitude] = useState(route.params.data.Longitude);
@@ -91,6 +92,7 @@ const EditItem = ({ navigation }) => {
         name: name,
         City: City,
         City_Link: City_Link,
+        Province: Province,
         Status: Status,
         Location: Location,
         Longitude: Longitude,
@@ -222,6 +224,13 @@ const EditItem = ({ navigation }) => {
   value={Type}
   onChangeText={text => setType(text)}
   />
+  <TextInput
+      placeholder="Province"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={Province}
+      onChangeText={text => setProvince(text)}
+    />
   <View style={styles.Schdule_Cont}>
   <View style={{alignItems:"center"}}>
   <Text style={styles.End} >Starting Date</Text>
