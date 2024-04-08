@@ -28,6 +28,7 @@ const EditItem = ({ navigation }) => {
   const [City, setCity] = useState(route.params.data.City);
   const [City_Link, setCity_Link] = useState(route.params.data.City_Link);
   const [Province, setProvince] = useState(route.params.data.Province);
+  const [Campus, setCampus] = useState(route.params.data.Campus);
   const [Status, setStatus] = useState(route.params.data.Status);
   const [Location, setLocation] = useState(route.params.data.Location);
   const [Longitude, setLongitude] = useState(route.params.data.Longitude);
@@ -224,6 +225,13 @@ const EditItem = ({ navigation }) => {
   value={Type}
   onChangeText={text => setType(text)}
   />
+  <TextInput
+      placeholder="Campus"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={Campus}
+      onChangeText={text => setCampus(text)}
+    />
   <TextInput
       placeholder="Province"
       placeholderTextColor={'#7F7F7F'}

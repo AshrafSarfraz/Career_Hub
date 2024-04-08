@@ -10,7 +10,6 @@ import {
 import ImageCropPicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import { Calendar } from 'react-native-calendars';
 import { Fonts } from '../../Themes/Fonts';
 import { Colors } from '../../Themes/Colors';
 
@@ -21,6 +20,7 @@ const Post_Data = ({ navigation }) => {
   const [name, setName] = useState('');
   const [City, setCity] = useState('');
   const [Province, setProvince] = useState('');
+  const [Campus, setCampus] = useState('');
   const [City_Link, setCity_Link] = useState('');
   const [Status, setStatus] = useState('');
   const [Location, setLocation] = useState('');
@@ -89,6 +89,7 @@ const Post_Data = ({ navigation }) => {
         name: name,
         City: City,
         Province: Province,
+        Campus: Campus,
         City_Link: City_Link,
         Status: Status,
         Location: Location,
@@ -105,8 +106,8 @@ const Post_Data = ({ navigation }) => {
       });
 
       console.log('Images uploaded successfully!');
-       setLongitude(''), setLatitude(''),
-        setLocation(''), setPhoneNumber(''), setLink(''),setCity(''),setCity_Link('')
+        setName(''),setDescription(''), setLongitude(''), setLatitude(''),
+        setLocation(''), setPhoneNumber(''), setLink(''),setCampus('')
     } catch (error) {
       console.error('Error storing images in Firestore:', error);
     }
@@ -209,6 +210,13 @@ const Post_Data = ({ navigation }) => {
           style={styles.inputStyle}
           value={Link}
           onChangeText={text => setLink(text)}
+        />
+        <TextInput
+          placeholder="Campus"
+          placeholderTextColor={'#7F7F7F'}
+          style={styles.inputStyle}
+          value={Campus}
+          onChangeText={text => setCampus(text)}
         />
         <TextInput
           placeholder="Province"
