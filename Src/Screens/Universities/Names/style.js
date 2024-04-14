@@ -162,6 +162,7 @@ export const styles = StyleSheet.create({
       borderRadius: 5,
       height:27,
       paddingHorizontal:"3%",
+      paddingVertical:'1%',
       justifyContent:'center',
       alignSelf:"flex-start"
     },

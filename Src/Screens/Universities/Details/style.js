@@ -93,17 +93,16 @@ export const styles = StyleSheet.create({
     },
     City_Cont: {
         backgroundColor: '#D0A700',
-        height:27,
-        marginVertical: "2%",
-        borderRadius: 5,
+        height:25,
+        marginVertical:'2%',
         alignItems:"center",
-        justifyContent:"center",
+        padding:"1%",
+        paddingHorizontal:"2%",
         alignSelf:"flex-start",
-        paddingHorizontal:"3%"
+        borderRadius:5
     },
     City_Text: {
         fontSize: 12,
-        lineHeight: 18,
         color: Colors.White,
         fontFamily: Fonts.SF_Medium,
     },

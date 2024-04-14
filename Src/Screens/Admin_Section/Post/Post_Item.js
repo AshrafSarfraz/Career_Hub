@@ -10,8 +10,10 @@ import {
 import ImageCropPicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import { Fonts } from '../../Themes/Fonts';
-import { Colors } from '../../Themes/Colors';
+import { Colors } from '../../../Themes/Colors';
+import { Fonts } from '../../../Themes/Fonts';
+import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator';
+
 
 const Post_Data = ({ navigation }) => {
   const [Logo, setLogo] = useState([]);
@@ -33,6 +35,8 @@ const Post_Data = ({ navigation }) => {
   const [Link, setLink] = useState('');
   const [Type, setType] = useState('');
   const [VideoLink, setVideoLink] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [Error, setError] = useState('');
 
   const onDayPress = (day) => {
     setStartingDate(day.dateString);
@@ -55,7 +59,7 @@ const Post_Data = ({ navigation }) => {
         setImage(results.map((result) => result.path));
       }
     } catch (error) {
-      console.error('Error picking images:', error);
+      setError.error('Error picking images:', error);
     }
   };
 
@@ -71,16 +75,15 @@ const Post_Data = ({ navigation }) => {
       const downloadURLs = await Promise.all(uploadTasks);
       return downloadURLs;
     } catch (error) {
-      console.error('Error uploading images:', error);
+      setError.error('Error uploading images:', error);
     }
   };
 
   const handleUpload = async () => {
+    setIsLoading(true);
     const LogoImageUrls = await uploadImages(Logo, 'Logo');
     const posterImageUrls = await uploadImages(posterImages, 'Poster');
     const uniImageUrls = await uploadImages(uniImages, 'Uni');
-
-    // Store the image URLs in Firestore
     try {
       await firestore().collection('Education').doc().set({
         Logo: LogoImageUrls,
@@ -104,12 +107,13 @@ const Post_Data = ({ navigation }) => {
         Type: Type
 
       });
-
-      console.log('Images uploaded successfully!');
+      //  console.log('Images uploaded successfully!');
         setName(''),setDescription(''), setLongitude(''), setLatitude(''),
-        setLocation(''), setPhoneNumber(''), setLink(''),setCampus('')
+        setLocation(''), setPhoneNumber(''), setLink(''),setCampus(''),setCity(''),setCity_Link('')
     } catch (error) {
-      console.error('Error storing images in Firestore:', error);
+      // console.error('Error storing images in Firestore:', error);
+    } finally {
+      setIsLoading(false); // Hide activity indicator modal after upload completes
     }
   };
 
@@ -295,7 +299,7 @@ const Post_Data = ({ navigation }) => {
           <Text style={styles.Picker_Txt}>Pick Uni-Images</Text>
         </TouchableOpacity>
         */}
-        <TouchableOpacity style={styles.uploadBtn} onPress={() => { handleUpload(), Alert.alert('Added') }}>
+        <TouchableOpacity style={styles.uploadBtn} onPress={() => { handleUpload() }}>
           <Text style={{ color: '#FFF' }}>Upload Data</Text>
         </TouchableOpacity>
 
@@ -303,6 +307,7 @@ const Post_Data = ({ navigation }) => {
           <Text style={{ color: '#FFF' }}>Get All Data</Text>
         </TouchableOpacity>
       </View>
+      <ActivityIndicatorModal visible={isLoading} />
     </ScrollView>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View,ScrollView , Text, Modal, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { Fonts } from '../../Themes/Fonts';
 import { Colors } from '../../Themes/Colors';
@@ -107,16 +107,50 @@ const CitiesName = ({ visible, onClose,  onCitiesSelect }) => {
   
   
 
-  // Function to handle city click
-  const handleCityClick = (city) => {
-    // Check if the city is already selected
-    if (selectedCities.includes(city)) {
-      // Remove the city from the selected list
-      setSelectedCities(selectedCities.filter((selectedCity) => selectedCity !== city));
-    } else {
-      // Add the city to the selected list
-      setSelectedCities([...selectedCities, city]);
-    }
+  // // Function to handle city click
+  // const handleCityClick = (city) => {
+  //   // Check if the city is already selected
+  //   if (selectedCities.includes(city)) {
+  //     // Remove the city from the selected list
+  //     setSelectedCities(selectedCities.filter((selectedCity) => selectedCity !== city));
+  //   } else {
+  //     // Add the city to the selected list
+  //     setSelectedCities([...selectedCities, city]);
+  //   }
+  // };
+  const handleCityClick = useCallback((city) => {
+    setSelectedCities(prevSelectedCities => {
+      if (prevSelectedCities.includes(city)) {
+        return prevSelectedCities.filter(selectedCity => selectedCity !== city);
+      } else {
+        return [...prevSelectedCities, city];
+      }
+    });
+  }, []);
+  
+  const renderItem = useCallback(({ item }) => (
+    <TouchableOpacity
+      onPress={() => handleCityClick(item)}
+      style={[
+        cityButtonStyle,
+        { backgroundColor: selectedCities.includes(item) ? 'green' : 'white' },
+      ]}
+    >
+      <Text style={{ color: selectedCities.includes(item) ? '#FFFFFF' : '#000', fontSize: 12, fontFamily: Fonts.SF_SemiBold }}>
+        {item}
+      </Text>
+    </TouchableOpacity>
+  ), [selectedCities, handleCityClick]);
+
+  const cityButtonStyle = {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderWidth: 1,
+    margin: '1.5%',
+    paddingVertical: '2%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '30%',
   };
 
   return (
@@ -126,30 +160,12 @@ const CitiesName = ({ visible, onClose,  onCitiesSelect }) => {
           <View style={{}} >  
             <Text style={styles.List_Txt} >Cities Name</Text>
            <View style={styles.FlatList_Cont} > 
-            <FlatList 
-            showsVerticalScrollIndicator={false}
-            numColumns={3}
+               <FlatList
+              showsVerticalScrollIndicator={false}
+              numColumns={3}
               data={cities}
               keyExtractor={(item) => item}
-              renderItem={({ item }) => (
-             
-                <TouchableOpacity
-                  onPress={() => handleCityClick(item)}
-                  style={{
-                    backgroundColor: selectedCities.includes(item) ? 'green' : 'white',
-                    borderRadius: 10,
-                    borderWidth:1,
-                    margin:'1.5%',
-                    paddingVertical:"2%",
-                    alignItems:"center",
-                    justifyContent:"center",
-                    width:"30%",
-                    paddingVertical:"2%"
-                  }}
-                >
-                  <Text  style={{color:selectedCities.includes(item) ? '#FFFFFF' : '#000',textAlign:"center",fontSize:12,margin:3,fontFamily:Fonts.SF_SemiBold}} >{item}</Text>
-                </TouchableOpacity>
-              )}
+              renderItem={renderItem}
             />
             </View>
 

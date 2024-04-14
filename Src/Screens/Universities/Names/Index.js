@@ -9,11 +9,11 @@ import { useDispatch } from "react-redux";
 import CitiesName from '../../../Components/Alerts/Cities_Names'
 import { styles } from './style';
 import { Add_To_Wishlist } from '../../../Redux/WhislistSlice';
+import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator';
 
 const University_Name = (props) => {
   const dispatch=useDispatch();
   const isFocused = useIsFocused();
-  const navigation = useNavigation();
   const currentDate = new Date();
   const [BtnState, setBtnState] = useState(0)
   const [items, setItems] = useState([]);
@@ -23,6 +23,8 @@ const University_Name = (props) => {
   const [alertVisible, setAlertVisible] = useState(false);
   const [selectedCities, setSelectedCities] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [Error, setError] = useState('');
 
   useEffect(() => {
     getItems();
@@ -67,16 +69,13 @@ const University_Name = (props) => {
           filtered = filtered.filter(
             item =>
               selectedCities.includes(item.data.City) &&
-              (BtnState === 0 || item.data.Status === 'Government ' || item.data.Status === 'Semi-Government' || item.data.Status === 'Private')
+              (BtnState === 0 || item.data.Status === 'Government' ||  item.data.Status === 'Private')
           );
           break;
         case 1:
-          filtered = filtered.filter(item => item.data.Status === 'Government ' && selectedCities.includes(item.data.City));
+          filtered = filtered.filter(item => item.data.Status === ' Government' && selectedCities.includes(item.data.City));
           break;
         case 2:
-          filtered = filtered.filter(item => item.data.Status === 'Semi-Government' && selectedCities.includes(item.data.City));
-          break;
-        case 3:
           filtered = filtered.filter(item => item.data.Status === 'Private' && selectedCities.includes(item.data.City));
           break;
         default:
@@ -87,12 +86,9 @@ const University_Name = (props) => {
         case 0:
           break;
         case 1:
-          filtered = filtered.filter(item => item.data.Status === 'Government ');
+          filtered = filtered.filter(item => item.data.Status === 'Government');
           break;
         case 2:
-          filtered = filtered.filter(item => item.data.Status === 'Semi-Government');
-          break;
-        case 3:
           filtered = filtered.filter(item => item.data.Status === 'Private');
           break;
         default:
@@ -117,28 +113,24 @@ const University_Name = (props) => {
       firestore()
         .collection('Education')
         .get()
-        .then(querySnapshot => {
-          // console.log('Total items: ', querySnapshot.size);
+        .then(querySnapshot => {   // console.log('Total items: ', querySnapshot.size);
           let tempData = [];
           querySnapshot.forEach(documentSnapshot => {
-            // console.log(
-            //   'Item ID: ',
-            //   documentSnapshot.id,
-            //   documentSnapshot.data(),
-            // );
             tempData.push({
               id: documentSnapshot.id,
               data: documentSnapshot.data(),
             });
           });
-          // console.log('Items data:', tempData);
+          setIsLoading(false)
           setItems(tempData);
         })
         .catch(error => {
-          Alert.alert('Error getting items from Firestore:', error);
+          setIsLoading(false)
+          setError.error('Error getting items from Firestore:', error);
         });
     } catch (error) {
-      Alert.alert('Error fetching items:', error);
+      setIsLoading(false)
+      setError.error('Error fetching items:', error);
     }
   };
 
@@ -195,10 +187,8 @@ const University_Name = (props) => {
         <TouchableOpacity style={[styles.Btn, BtnState === 1 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(1) }}>
           <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Government</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.Btn, BtnState === 2 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
-          <Text style={[styles.Btn_Txt, BtnState == 2 ? styles.ActiveBtn_Txt : null]} >Semi-Goverment</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.Btn, BtnState === 3 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(3) }}>
+     
+        <TouchableOpacity style={[styles.Btn, BtnState === 3 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
           <Text style={[styles.Btn_Txt, BtnState === 3 ? styles.ActiveBtn_Txt : null]} >Private</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -234,6 +224,7 @@ const University_Name = (props) => {
         onClose={() => { hideAlert(); }}
         onCitiesSelect={onCitiesSelect}
       />
+      <ActivityIndicatorModal visible={isLoading} />
     </ScrollView>
   )
 }

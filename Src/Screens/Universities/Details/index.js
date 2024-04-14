@@ -9,40 +9,36 @@ import YouTube from 'react-native-youtube-iframe';
 
 
 const Uni_Details = ({ navigation }) => {
-  const [BookmarkBtn,setBookmarkBtn]=useState(false)
+  const [BookmarkBtn, setBookmarkBtn] = useState(false)
   const route = useRoute();
   const item = route.params.item;
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollViewRef = useRef(null);
-  const latitude = item.data.latitude? item.data.latitude:null
-  const longitude = item.data.longitude? item.data.longitude : null
+  const latitude = item.data.Latitude ? item.data.Latitude : null
+  const longitude = item.data.Longitude ? item.data.Longitude : null
   const phoneNumber = item.data.phoneNumber; // Replace with the phone number you want to dial
-  //  console.log(route.params.item)
+  const City_Link = item.data.City_Link;
+
 
   const handleOpenMaps = () => {
     const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
     Linking.openURL(url);
   };
-
   const Website = () => {
-    const url = 'https://en.wikipedia.org/wiki/Islamabad';
+    const url = City_Link;
     Linking.openURL(url);
   };
-
   const Contact = () => {
     const url = `tel:${phoneNumber}`;
     Linking.openURL(url);
   };
 
   const renderSlides = ({ item }) => {
-    //  console.log(item,'here is item')
-
     return (
       <View style={styles.slideContainer}>
         <Image source={{ uri: item }} style={{ width: '98%', height: '100%', borderRadius: 20 }} resizeMode='cover' />
       </View>)
   };
-
   const renderPagination = () => (
     <View style={styles.paginationContainer}>
       <ScrollView
@@ -64,7 +60,6 @@ const Uni_Details = ({ navigation }) => {
     </View>
   );
 
-
   return (
     <ScrollView style={styles.MainContainer}>
       <View style={styles.Header}>
@@ -73,16 +68,14 @@ const Uni_Details = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.Back_Txt}>Details</Text>
         <View style={styles.Auth_Cont}>
-          <TouchableOpacity onPress={()=>{setBookmarkBtn(!BookmarkBtn)}} >
-          {
-            BookmarkBtn===false?<Image source={Bookmark} style={styles.Bookmark} />:
-            <Image source={Bookmark1} style={[styles.Bookmark]} />
-          }  
+          <TouchableOpacity onPress={() => { setBookmarkBtn(!BookmarkBtn) }} >
+            {
+              BookmarkBtn === false ? <Image source={Bookmark} style={styles.Bookmark} /> :
+                <Image source={Bookmark1} style={[styles.Bookmark]} />
+            }
           </TouchableOpacity>
         </View>
       </View>
-
-
 
       <AppIntroSlider
         renderItem={renderSlides}
@@ -102,8 +95,8 @@ const Uni_Details = ({ navigation }) => {
             <Text style={styles.Title}>{item.data.name}</Text>
           </View>
         </View>
-        <View>
-          <TouchableOpacity style={styles.City_Cont} onPress={Website}>
+        <View style={styles.City_Cont} >
+          <TouchableOpacity  onPress={Website}>
             <Text style={styles.City_Text}>{item.data.City}</Text>
           </TouchableOpacity>
         </View>
@@ -166,7 +159,6 @@ const Uni_Details = ({ navigation }) => {
       */}
 
         <YouTube
-          // videoId="6AClkFS3xkI"
           videoId={item.data.VideoLink}
           height={300}
           play={false}
