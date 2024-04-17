@@ -9,14 +9,14 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import Icons from 'react-native-vector-icons/FontAwesome5';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import firestore from '@react-native-firebase/firestore';
 import { Colors } from '../../../Themes/Colors';
 import { Drop, Hide, Lock, Message, Show } from '../../../Themes/Images';
 import CustomButton from '../../../Components/CustomButton/CustomButton';
 import { styles } from './style';
+import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator';
+
 
 
 const SignInScreen = ({ navigation }) => {
@@ -24,33 +24,38 @@ const SignInScreen = ({ navigation }) => {
   const [Password, setPassword] = useState('');
   const [ShowPassword, setShowPassword] = useState(false)
   const [isError, setIsError] = useState('');
-  const [isChecked, setIsChecked] = useState(false);
-  const toggleCheckbox = () => {
-    setIsChecked(!isChecked);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
-  // firebase  Auth BY Google
+
   GoogleSignin.configure({
     webClientId: '499188544934-7je57jquuqs6cv3fjiatagjqv5meo28f.apps.googleusercontent.com',
   });
   async function onGoogleButtonPress() {
     try {
-      // Check for Play Services
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });     // Get Google Sign-In token
       const { idToken } = await GoogleSignin.signIn();                               // Create Google Sign-In credentials
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);         // Sign in with Google credentials
       await auth().signInWithCredential(googleCredential);  
-      navigation.navigate('Bottom')             
-      // Log success
-      console.log('Signed in with Google!');
+      setIsLoading(false)
+      navigation.navigate('Bottom')  
+      setIsError(''),setEmail('')           
     } catch (error) {
-      console.error('Google Sign-In error:', error.message);
+      setIsLoading(false)
+      setIsError('Google Sign-In error:', error.message);
     }}
-  // firebase  Auth BY Google
 
 
-  // firebase  Auth BY Email/Password
+
   const handleSignIn = async () => {
+    if (!validateEmail(Email)) {
+      setIsError('Please enter a valid email address.');
+      return;
+    }
     if (!Email || !Password) {
       setIsError('Please fill in both email and password fields.');
       return; // Don't proceed with sign-in
@@ -60,17 +65,17 @@ const SignInScreen = ({ navigation }) => {
       const userCredential = await auth().signInWithEmailAndPassword(Email, Password);
       console.log('User account created & signed in!', userCredential);
       if (userCredential.user.emailVerified) {
-        Alert.alert('You are verified');
+        setIsError('');setPassword('');setEmail('')
         navigation.navigate('Bottom')
       } else {
-        Alert.alert('You are not verified So Please check your Gmail for verification');
+        setIsError('You are not verified So Please check your Gmail for verification');
         await auth.currentUser.sendEmailVerification();
         await auth.signOut();
       }
     } catch (error) {
-      console.error('Error signing in:', error.message);
+      setIsError('Error signing in:', error.message);
     }};
-  // firebase  Auth BY Email/Password
+
   
   return (
     <ScrollView contentContainerStyle={styles.MainContainer}>
@@ -134,7 +139,10 @@ const SignInScreen = ({ navigation }) => {
         </View>
 
       </View>
+      <ActivityIndicatorModal visible={isLoading} />
     </ScrollView>
   );
 };
 export default SignInScreen;
+
+

@@ -23,7 +23,6 @@ const Get_Data = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [Error, setError] = useState('');
-  
   const filterItems = () => {
     const filtered = filteredData.filter((item) => {
       const itemName = (item.data && item.data.name) ? item.data.name.toLowerCase() : '';
