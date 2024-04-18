@@ -38,7 +38,7 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.Btn_Txt} >Job-Seeker</Text>
           <Text style={styles.Avaliable_Txt} > 29 Avaliable </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Post')}} >
+        <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Uni_Post')}} >
           <Image source={Resume} style={styles.Btn_Icon} />
           <Text style={styles.Btn_Txt} >Resume</Text>
           <Text style={styles.Avaliable_Txt} > 29 Avaliable </Text>

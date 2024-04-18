@@ -1,11 +1,11 @@
 import { View, Text, ScrollView,  FlatList, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
 import React, { useState,useEffect } from 'react'
-import { Colors } from '../../../Themes/Colors'
-import {  Back_Icon, Search } from '../../../Themes/Images'
+import { Colors } from '../../../../Themes/Colors'
+import {  Back_Icon, Search } from '../../../../Themes/Images'
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import CitiesName from '../../../Components/Alerts/Cities_Names'
-import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator'
+import CitiesName from '../../../../Components/Alerts/Cities_Names'
+import ActivityIndicatorModal from '../../../../Components/Loader/ActivityIndicator'
 import { styles } from './style';
 
 
@@ -144,7 +144,7 @@ const Get_Data = (props) => {
 
       <TouchableOpacity  style={styles.ItemCont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
    <ImageBackground source={ item.data && item.data.Logo && item.data.Logo[0] ? { uri: item.data.Logo[0] }
-          : require('../../../Assets/Images/uni_logo.png') }
+          : require('../../../../Assets/Images/uni_logo.png') }
            style={styles.Product_Img}
            imageStyle={{ borderRadius: 10, alignItems: 'center' }}
            resizeMode='cover' >
@@ -162,13 +162,13 @@ const Get_Data = (props) => {
       <View style={styles.Action_Cont}  >
       <TouchableOpacity
       onPress={() => {
-        navigation.navigate('Edit_Uni_Details', {
+        navigation.navigate('Uni_Update', {
           data: item.data,
           id: item.id,
         });
       }}>
       <Image
-        source={require('../../../Assets/Icons/edit.png')}
+        source={require('../../../../Assets/Icons/edit.png')}
         style={[styles.icon, {width:25,height:25, }]}
       />
     </TouchableOpacity>
@@ -177,7 +177,7 @@ const Get_Data = (props) => {
         deleteItem(item.id);
       }}>
       <Image
-        source={require('../../../Assets/Icons/remove.png')}
+        source={require('../../../../Assets/Icons/remove.png')}
         style={[styles.icon, { width:30,height:30,resizeMode:"contain"   }]}
       />
     </TouchableOpacity>
@@ -208,12 +208,12 @@ const Get_Data = (props) => {
       <TouchableOpacity onPress={filterItems}>
       <Image source={Search} style={styles.SearchIcon} />
       </TouchableOpacity> 
-        <TextInput placeholder='Search here.....' placeholderTextColor={Colors.Grey9} style={styles.Search_Input}  
+        <TextInput placeholder='Search here...' placeholderTextColor={Colors.Grey9} style={styles.Search_Input}  
         value={searchQuery}
         onChangeText={(text) => setSearchQuery(text)} />
       </View>
       <TouchableOpacity onPress={showAlert}  >
-          <Image source={require('../../../Assets/Icons/filter.png')} style={styles.Filter} />
+          <Image source={require('../../../../Assets/Icons/filter.png')} style={styles.Filter} />
         </TouchableOpacity>
       </View>
       <ScrollView horizontal style={styles.Btn_Cont} showsHorizontalScrollIndicator={false}  >

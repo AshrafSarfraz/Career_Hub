@@ -88,7 +88,7 @@ const SignInScreen = ({ navigation }) => {
           <View style={[styles.Input_Field, Email !== '' ? styles.Active_Input_Field : null]}>
             <Image source={Message} style={[styles.Input_Icon, { tintColor: Email !== '' ? Colors.Black2 : Colors.Grey9 }]} resizeMode='contain' />
             <TextInput
-              placeholder="ashrafq952@gmail.com"
+              placeholder="Email"
               value={Email}
               placeholderTextColor={Colors.Grey9}
               onChangeText={(txt) => { setEmail(txt); }}

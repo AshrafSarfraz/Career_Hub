@@ -13,9 +13,9 @@ import Bottom from '../Bottom_Nav/Bottom_Navigation';
 import Uni_Details from '../../Screens/Universities/Details';
 import University_Name from '../../Screens/Universities/Names/Index';
 import Edit_Profile from '../../Screens/Edit_Profile';
-import Post_Data from '../../Screens/Admin_Section/Post/Post_Item';
-import Get_Data from '../../Screens/Admin_Section/Get/Get_Method';
-import EditItem from '../../Screens/Admin_Section/Update/Update';
+import Post_Data from '../../Screens/Admin/Universities/Post/Post';
+import Get_Data from '../../Screens/Admin/Universities/Get/Get';
+import EditItem from '../../Screens/Admin/Universities/Update/Update';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,10 +50,9 @@ const Stack_Navigation = () => {
         <Stack.Screen name="Uni_Name" component={University_Name} />
         <Stack.Screen name="Uni_Detail" component={Uni_Details} />
         <Stack.Screen name="Edit_Profile" component={Edit_Profile} />
-        <Stack.Screen name="Post" component={Post_Data} />
-        <Stack.Screen name="Get_Data" component={Get_Data} />
-        <Stack.Screen name="Edit_Uni_Details" component={EditItem} />
-
+        <Stack.Screen name="Uni_Post" component={Post_Data} />
+        <Stack.Screen name="Uni_Get" component={Get_Data} />
+        <Stack.Screen name="Uni_Update" component={EditItem} />
                  
       {/*
          <Stack.Screen name="OTP" component={Otp} />

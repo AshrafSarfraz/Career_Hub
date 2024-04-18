@@ -13,9 +13,9 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import { useRoute } from '@react-navigation/native';
 import { Calendar } from 'react-native-calendars';
-import { Fonts } from '../../../Themes/Fonts';
+import { Fonts } from '../../../../Themes/Fonts';
 import { styles } from './style';
-import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator';
+import ActivityIndicatorModal from '../../../../Components/Loader/ActivityIndicator';
 
 const EditItem = ({ navigation }) => {
   const route = useRoute();
@@ -42,12 +42,7 @@ const EditItem = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [Error, setError] = useState('');
 
-  // useEffect(() => {
-  //   console.log("University ID:", route.params.id);
-  //   console.log("University Logo:", Logo);
-  //   console.log("University Uni:", uniImages);
-  //   console.log("University Poster:", posterImages);
-  // }, [route.params.id, Logo, uniImages, posterImages]);
+  
 
   const openImagePicker = async (setImage) => {
     try {
@@ -109,11 +104,8 @@ const EditItem = ({ navigation }) => {
         PhoneNumber: PhoneNumber,
         Link: Link,
         VideoLink: VideoLink,
-        Type: Type
+        Type: Type  
       };
-  
-      // console.log('Updated Data:', updatedData);
-  
       // Update Firestore document
       await firestore()
         .collection('Education')
@@ -138,82 +130,7 @@ const EditItem = ({ navigation }) => {
     setEndingDate(day.dateString);
   };
 
-  // const openImagePicker = async (setImage) => {
-  //   try {
-  //     const results = await ImageCropPicker.openPicker({
-  //       mediaType: 'photo',
-  //       multiple: true,
-  //     });
 
-  //     if (!results.didCancel) {
-  //       setImage(results.map((result) => result.path));
-  //     }
-  //   } catch (error) {
-  //     setError('Error picking images:', error);
-  //   }
-  // };
-
-  // const uploadImages = async (images, categoryName) => {
-  //   try {
-  //     const uploadTasks = images.map(async (image, index) => {
-  //       const imageName = `${categoryName}_${index}.jpg`;
-  //       const reference = storage().ref(imageName);
-  //       await reference.putFile(image);
-  //       return reference.getDownloadURL();
-  //     });
-
-  //     const downloadURLs = await Promise.all(uploadTasks);
-  //     return downloadURLs;
-  //   } catch (error) {
-  //     setError('Error uploading images:', error);
-  //   }
-  // };
-
-  // const uploadItem = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     const LogoImageUrls = Logo.length > 0 ? await uploadImages(Logo, 'Logo') : route.params.data.Logo;
-  //     const posterImageUrls = posterImages.length > 0 ? await uploadImages(posterImages, 'Poster') : route.params.data.poster;
-  //     const uniImageUrls = uniImages.length > 0 ? await uploadImages(uniImages, 'Uni') : route.params.data.uni;
-  
-  //     console.log('LogoImageUrls:', LogoImageUrls);
-  //     console.log('posterImageUrls:', posterImageUrls);
-  //     console.log('uniImageUrls:', uniImageUrls);
-  
-  //     const updatedData = {
-  //       Logo: LogoImageUrls,
-  //       poster: posterImageUrls,
-  //       uni: uniImageUrls,
-  //       name: name,
-  //       City: City,
-  //       City_Link: City_Link,
-  //       Province: Province,
-  //       Status: Status,
-  //       Location: Location,
-  //       Longitude: Longitude,
-  //       Latitude: Latitude,
-  //       description: description,
-  //       StartingDate: StartingDate,
-  //       EndingDate: EndingDate,
-  //       PhoneNumber: PhoneNumber,
-  //       Link: Link,
-  //       VideoLink: VideoLink,
-  //       Type: Type
-  //     };
-  
-  //     console.log('updatedData:', updatedData);
-  
-  //     await firestore()
-  //       .collection('Education')
-  //       .doc(route.params.id)
-  //       .update(updatedData);
-  //     setIsLoading(false);
-  //     navigation.goBack();
-  //   } catch (error) {
-  //     setError('Error updating item:', error);
-  //     setIsLoading(false);
-  //   }
-  // };
   
 
   const renderImages = (images, label) => {
@@ -377,7 +294,7 @@ const EditItem = ({ navigation }) => {
           key={index}
           source={imageUri ?
             { uri: imageUri } :
-            require('../../../Assets/Images/uni_logo.png')}
+            require('../../../../Assets/Images/uni_logo.png')}
           style={[styles.icon, { width: 100, height: 100, resizeMode: "contain", marginBottom: '2%' }]}
         />
       ))}
@@ -387,7 +304,7 @@ const EditItem = ({ navigation }) => {
           key={index}
           source={imageUri ?
             { uri: imageUri } :
-            require('../../../Assets/Images/uni_logo.png')}
+            require('../../../../Assets/Images/uni_logo.png')}
           style={[styles.icon, { width: 100, height: 100, resizeMode: "contain", marginBottom: "2%" }]}
         />
       ))}
@@ -397,7 +314,7 @@ const EditItem = ({ navigation }) => {
           key={index}
           source={imageUri ?
             { uri: imageUri } :
-            require('../../../Assets/Images/uni_logo.png')}
+            require('../../../../Assets/Images/uni_logo.png')}
           style={[styles.icon, { width: 100, height: 100, resizeMode: "contain" }]}
         />
       ))}
@@ -438,3 +355,85 @@ export default EditItem;
 
 
 
+
+
+
+
+
+
+  // const openImagePicker = async (setImage) => {
+  //   try {
+  //     const results = await ImageCropPicker.openPicker({
+  //       mediaType: 'photo',
+  //       multiple: true,
+  //     });
+
+  //     if (!results.didCancel) {
+  //       setImage(results.map((result) => result.path));
+  //     }
+  //   } catch (error) {
+  //     setError('Error picking images:', error);
+  //   }
+  // };
+
+  // const uploadImages = async (images, categoryName) => {
+  //   try {
+  //     const uploadTasks = images.map(async (image, index) => {
+  //       const imageName = `${categoryName}_${index}.jpg`;
+  //       const reference = storage().ref(imageName);
+  //       await reference.putFile(image);
+  //       return reference.getDownloadURL();
+  //     });
+
+  //     const downloadURLs = await Promise.all(uploadTasks);
+  //     return downloadURLs;
+  //   } catch (error) {
+  //     setError('Error uploading images:', error);
+  //   }
+  // };
+
+  // const uploadItem = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     const LogoImageUrls = Logo.length > 0 ? await uploadImages(Logo, 'Logo') : route.params.data.Logo;
+  //     const posterImageUrls = posterImages.length > 0 ? await uploadImages(posterImages, 'Poster') : route.params.data.poster;
+  //     const uniImageUrls = uniImages.length > 0 ? await uploadImages(uniImages, 'Uni') : route.params.data.uni;
+  
+  //     console.log('LogoImageUrls:', LogoImageUrls);
+  //     console.log('posterImageUrls:', posterImageUrls);
+  //     console.log('uniImageUrls:', uniImageUrls);
+  
+  //     const updatedData = {
+  //       Logo: LogoImageUrls,
+  //       poster: posterImageUrls,
+  //       uni: uniImageUrls,
+  //       name: name,
+  //       City: City,
+  //       City_Link: City_Link,
+  //       Province: Province,
+  //       Status: Status,
+  //       Location: Location,
+  //       Longitude: Longitude,
+  //       Latitude: Latitude,
+  //       description: description,
+  //       StartingDate: StartingDate,
+  //       EndingDate: EndingDate,
+  //       PhoneNumber: PhoneNumber,
+  //       Link: Link,
+  //       VideoLink: VideoLink,
+  //       Type: Type
+  //     };
+  
+  //     console.log('updatedData:', updatedData);
+  
+  //     await firestore()
+  //       .collection('Education')
+  //       .doc(route.params.id)
+  //       .update(updatedData);
+  //     setIsLoading(false);
+  //     navigation.goBack();
+  //   } catch (error) {
+  //     setError('Error updating item:', error);
+  //     setIsLoading(false);
+  //   }
+  // };
