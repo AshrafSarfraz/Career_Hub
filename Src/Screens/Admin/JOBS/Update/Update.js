@@ -17,12 +17,13 @@ import { Fonts } from '../../../../Themes/Fonts';
 import { styles } from './style';
 import ActivityIndicatorModal from '../../../../Components/Loader/ActivityIndicator';
 
-const EditItem = ({ navigation }) => {
+const Job_Update = ({ navigation }) => {
   const route = useRoute();
 
-  const [Logo, setLogo] = useState(route.params.Logo || []);
+  const [logoImages, setLogoImages] = useState(route.params.Logo || []);
   const [posterImages, setPosterImages] = useState(route.params.poster || []);
   const [uniImages, setUniImages] = useState(route.params.uni || []);
+
   const [name, setName] = useState(route.params.data.name);
   const [City, setCity] = useState(route.params.data.City);
   const [City_Link, setCity_Link] = useState(route.params.data.City_Link);
@@ -42,22 +43,25 @@ const EditItem = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [Error, setError] = useState('');
 
-  
 
-  const openImagePicker = async (setImage) => {
+  const openImagePicker = async (setImage, itemId) => {
     try {
       const results = await ImageCropPicker.openPicker({
         mediaType: 'photo',
         multiple: true,
       });
-
-      if (!results.didCancel) {
-        setImage(results.map((result) => result.path));
+  
+      if (results && !results.didCancel) { // Check if results is not undefined
+        const updatedImages = results.map((result) => result.path); // Update state variable with selected image paths
+        setImage(updatedImages);
       }
     } catch (error) {
-      setError.error('Error picking images:', error);
+      setError('Error picking images: ' + error.message);
     }
   };
+  
+  
+  
 
   const uploadImages = async (images, categoryName) => {
     try {
@@ -71,8 +75,8 @@ const EditItem = ({ navigation }) => {
       const downloadURLs = await Promise.all(uploadTasks);
       return downloadURLs;
     } catch (error) {
-      setError.error('Error uploading images:', error);
-      throw error; // Rethrow the error to handle it later
+      setError('Error uploading images: ' + error.message);
+      throw error;
     }
   };
 
@@ -80,12 +84,10 @@ const EditItem = ({ navigation }) => {
     try {
       setIsLoading(true);
   
-      // Ensure all fields have valid values before updating Firestore
-      const LogoImageUrls = Logo.length > 0 ? await uploadImages(Logo, 'Logo') : route.params.data.Logo;
+      const LogoImageUrls = logoImages.length > 0 ? await uploadImages(logoImages, 'Logo') : route.params.data.Logo;
       const posterImageUrls = posterImages.length > 0 ? await uploadImages(posterImages, 'Poster') : route.params.data.poster;
       const uniImageUrls = uniImages.length > 0 ? await uploadImages(uniImages, 'Uni') : route.params.data.uni;
   
-      // Construct updated data object
       const updatedData = {
         Logo: LogoImageUrls,
         poster: posterImageUrls,
@@ -93,7 +95,7 @@ const EditItem = ({ navigation }) => {
         name: name,
         City: City,
         City_Link: City_Link,
-        Province: Province || "", // Handle potential undefined value
+        Province: Province || "",
         Status: Status,
         Location: Location,
         Longitude: Longitude,
@@ -106,43 +108,55 @@ const EditItem = ({ navigation }) => {
         VideoLink: VideoLink,
         Type: Type  
       };
-      // Update Firestore document
+  
       await firestore()
-        .collection('Education')
+        .collection('Jobs')
         .doc(route.params.id)
-        .update(updatedData);
-         setIsLoading(false);
-         navigation.goBack();
-    } catch (error) {
-      setError.error('Error updating item:', error);
+        .update(updatedData); // Correct the update query to update the document with updatedData
       setIsLoading(false);
-      setError(error.message); // Set error message for display
+      navigation.goBack();
+    } catch (error) {
+      setError('Error updating item: ' + error.message);
+      setIsLoading(false);
+    }
+  };
+  
+
+  const onDayPress = (day) => {
+    setStartingDate(day.dateString);
+  };
+
+  const onDayPress1 = (day) => {
+    setEndingDate(day.dateString);
+  };
+
+  const renderImages = (images, label) => {
+
+
+    if (Array.isArray(images) && images.length > 0) {
+      return (
+        <View style={styles.imageContainer}>
+          <Text style={styles.imageLabel}>{label}</Text>
+          {images.map((image, index) => (
+            <Image
+              key={index}
+              source={typeof image === 'string' ? { uri: image } : require('../../../../Assets/Images/uni_logo.png')}
+              style={styles.image}
+            />
+          ))}
+        </View>
+      );
+    } else {
+      // Return a default message or null if images is empty
+      return null; // or <Text>No images to display</Text>
     }
   };
   
   
   
-  
-  const onDayPress = (day) => {
-    setStartingDate(day.dateString);
-  };
-  const onDayPress1 = (day) => {
-    setEndingDate(day.dateString);
-  };
 
+ 
 
-  
-
-  const renderImages = (images, label) => {
-    return (
-      <View style={styles.imageContainer}>
-        <Text style={styles.imageLabel}>{label}</Text>
-        {images.map((image, index) => (
-          <Image key={index} source={{ uri: image }} style={styles.image} />
-        ))}
-      </View>
-    );
-  };
 
   return (
     <ScrollView style={styles.container}>
@@ -292,52 +306,49 @@ const EditItem = ({ navigation }) => {
       {route.params.data && route.params.data.poster && route.params.data.poster.map((imageUri, index) => (
         <Image
           key={index}
-          source={imageUri ?
-            { uri: imageUri } :
-            require('../../../../Assets/Images/uni_logo.png')}
+          source={typeof imageUri === 'string' ? { uri: imageUri } : require('../../../../Assets/Images/uni_logo.png')}
           style={[styles.icon, { width: 100, height: 100, resizeMode: "contain", marginBottom: '2%' }]}
         />
       ))}
-      <Text style={{ fontSize: 14, color: "#000", fontFamily: Fonts.SF_SemiBold, marginVertical: '3%' }}>University Logo Backend</Text>
+      
       {route.params.data && route.params.data.Logo && route.params.data.Logo.map((imageUri, index) => (
         <Image
           key={index}
-          source={imageUri ?
-            { uri: imageUri } :
-            require('../../../../Assets/Images/uni_logo.png')}
+          source={typeof imageUri === 'string' ? { uri: imageUri } : require('../../../../Assets/Images/uni_logo.png')}
           style={[styles.icon, { width: 100, height: 100, resizeMode: "contain", marginBottom: "2%" }]}
         />
       ))}
-      <Text style={{ fontSize: 14, color: "#000", fontFamily: Fonts.SF_SemiBold, marginVertical: '3%' }}>University Images Backend</Text>
+      
       {route.params.data && route.params.data.uni && route.params.data.uni.map((imageUri, index) => (
         <Image
           key={index}
-          source={imageUri ?
-            { uri: imageUri } :
-            require('../../../../Assets/Images/uni_logo.png')}
+          source={typeof imageUri === 'string' ? { uri: imageUri } : require('../../../../Assets/Images/uni_logo.png')}
           style={[styles.icon, { width: 100, height: 100, resizeMode: "contain" }]}
         />
       ))}
+      
+      
 
-      {renderImages(Logo, 'New Logo')}
+      {renderImages(logoImages, 'New Logo')}
       {renderImages(posterImages, 'New Poster_Images')}
       {renderImages(uniImages, 'New Uni_Images')}
 
       <TouchableOpacity
-        style={styles.pickBtn}
-        onPress={() => openImagePicker(setLogo)}>
-        <Text style={styles.Picker_Txt}>New Logo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.pickBtn}
-        onPress={() => openImagePicker(setPosterImages)}>
-        <Text style={styles.Picker_Txt}>New Poster</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.pickBtn}
-        onPress={() => openImagePicker(setUniImages)}>
-        <Text style={styles.Picker_Txt}>New Uni-Images</Text>
-      </TouchableOpacity>
+      style={styles.pickBtn}
+      onPress={() => openImagePicker(setLogoImages, route.params.id)}>
+      <Text style={styles.Picker_Txt}>New Logo</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      style={styles.pickBtn}
+      onPress={() => openImagePicker(setPosterImages, route.params.id)}>
+      <Text style={styles.Picker_Txt}>New Poster</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      style={styles.pickBtn}
+      onPress={() => openImagePicker(setUniImages, route.params.id)}>
+      <Text style={styles.Picker_Txt}>New University Images</Text>
+    </TouchableOpacity>
+
       <TouchableOpacity style={styles.uploadBtn} onPress={() => { uploadItem(); }}>
         <Text style={{ color: '#FFF' }}>Update Data</Text>
       </TouchableOpacity>
@@ -349,91 +360,5 @@ const EditItem = ({ navigation }) => {
   );
 };
 
-export default EditItem;
+export default Job_Update;
 
-
-
-
-
-
-
-
-
-
-
-  // const openImagePicker = async (setImage) => {
-  //   try {
-  //     const results = await ImageCropPicker.openPicker({
-  //       mediaType: 'photo',
-  //       multiple: true,
-  //     });
-
-  //     if (!results.didCancel) {
-  //       setImage(results.map((result) => result.path));
-  //     }
-  //   } catch (error) {
-  //     setError('Error picking images:', error);
-  //   }
-  // };
-
-  // const uploadImages = async (images, categoryName) => {
-  //   try {
-  //     const uploadTasks = images.map(async (image, index) => {
-  //       const imageName = `${categoryName}_${index}.jpg`;
-  //       const reference = storage().ref(imageName);
-  //       await reference.putFile(image);
-  //       return reference.getDownloadURL();
-  //     });
-
-  //     const downloadURLs = await Promise.all(uploadTasks);
-  //     return downloadURLs;
-  //   } catch (error) {
-  //     setError('Error uploading images:', error);
-  //   }
-  // };
-
-  // const uploadItem = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     const LogoImageUrls = Logo.length > 0 ? await uploadImages(Logo, 'Logo') : route.params.data.Logo;
-  //     const posterImageUrls = posterImages.length > 0 ? await uploadImages(posterImages, 'Poster') : route.params.data.poster;
-  //     const uniImageUrls = uniImages.length > 0 ? await uploadImages(uniImages, 'Uni') : route.params.data.uni;
-  
-  //     console.log('LogoImageUrls:', LogoImageUrls);
-  //     console.log('posterImageUrls:', posterImageUrls);
-  //     console.log('uniImageUrls:', uniImageUrls);
-  
-  //     const updatedData = {
-  //       Logo: LogoImageUrls,
-  //       poster: posterImageUrls,
-  //       uni: uniImageUrls,
-  //       name: name,
-  //       City: City,
-  //       City_Link: City_Link,
-  //       Province: Province,
-  //       Status: Status,
-  //       Location: Location,
-  //       Longitude: Longitude,
-  //       Latitude: Latitude,
-  //       description: description,
-  //       StartingDate: StartingDate,
-  //       EndingDate: EndingDate,
-  //       PhoneNumber: PhoneNumber,
-  //       Link: Link,
-  //       VideoLink: VideoLink,
-  //       Type: Type
-  //     };
-  
-  //     console.log('updatedData:', updatedData);
-  
-  //     await firestore()
-  //       .collection('Education')
-  //       .doc(route.params.id)
-  //       .update(updatedData);
-  //     setIsLoading(false);
-  //     navigation.goBack();
-  //   } catch (error) {
-  //     setError('Error updating item:', error);
-  //     setIsLoading(false);
-  //   }
-  // };

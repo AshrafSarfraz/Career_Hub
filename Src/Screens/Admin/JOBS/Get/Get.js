@@ -1,7 +1,7 @@
 import { View, Text, ScrollView,  FlatList, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
 import React, { useState,useEffect } from 'react'
 import { Colors } from '../../../../Themes/Colors'
-import {  Back_Icon, Search } from '../../../../Themes/Images'
+import {  Back_Icon, Plus, Search } from '../../../../Themes/Images'
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import CitiesName from '../../../../Components/Alerts/Cities_Names'
@@ -9,7 +9,7 @@ import ActivityIndicatorModal from '../../../../Components/Loader/ActivityIndica
 import { styles } from './style';
 
 
-const Get_Data = (props) => {
+const Job_Data = (props) => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const currentDate = new Date();
@@ -100,7 +100,7 @@ const Get_Data = (props) => {
   const getItems = () => {
     try {
       firestore()
-        .collection('Education')
+        .collection('Jobs')
         .get()
         .then(querySnapshot => {
           let tempData = [];
@@ -124,19 +124,36 @@ const Get_Data = (props) => {
   };
 
   const deleteItem = docId => {
-    setIsLoading(true)
-    firestore()
-      .collection('Education')
-      .doc(docId)
-      .delete()
-      .then(() => {
-        getItems();
-        setIsLoading(false)
-      })
-      .catch(error => {
-        setIsLoading(false)
-        setError.error('Error deleting item:', error);
-      });
+    Alert.alert(
+      'Confirm Deletion',
+      'Are you sure you want to delete this item?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            setIsLoading(true);
+            firestore()
+              .collection('Jobs')
+              .doc(docId)
+              .delete()
+              .then(() => {
+                getItems();
+                setIsLoading(false);
+              })
+              .catch(error => {
+                setIsLoading(false);
+                setError.error('Error deleting item:', error);
+              });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   const renderItem = ({ item, index }) => (
@@ -162,7 +179,7 @@ const Get_Data = (props) => {
       <View style={styles.Action_Cont}  >
       <TouchableOpacity
       onPress={() => {
-        navigation.navigate('Uni_Update', {
+        navigation.navigate('Job_Update', {
           data: item.data,
           id: item.id,
         });
@@ -193,13 +210,13 @@ const Get_Data = (props) => {
   };
 
   return (
-    
+    <View>
     <ScrollView style={styles.MainCont}  showsVerticalScrollIndicator={false}>
       <View style={styles.Header} >
-        <TouchableOpacity onPress={() => { navigation.navigate('Post')}} style={styles.Back_Cont} >
+        <TouchableOpacity onPress={() => { navigation.goBack()}} style={styles.Back_Cont} >
           <Image source={Back_Icon} style={styles.Back_Icon} />
         </TouchableOpacity>
-        <Text style={styles.Back_Txt} >Get Data</Text>
+        <Text style={styles.Back_Txt} >Jobs</Text>
         <View style={styles.Auth_Cont} >
         </View>
       </View>
@@ -261,7 +278,11 @@ const Get_Data = (props) => {
       />
       <ActivityIndicatorModal visible={isLoading} />
       </ScrollView>
+      <TouchableOpacity  style={styles.AddBtn} onPress={()=>{navigation.navigate('Uni_Post')}} >
+      <Image source={Plus}  style={{width:25,height:25,tintColor:'white'}}/>
+      </TouchableOpacity>
+     </View>
   )
 }
 
-export default Get_Data
+export default Job_Data

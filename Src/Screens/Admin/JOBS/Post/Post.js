@@ -13,7 +13,7 @@ import ActivityIndicatorModal from '../../../../Components/Loader/ActivityIndica
 import { Calendar } from 'react-native-calendars';
 import { styles } from './style';
 
-const Post_Data = ({ navigation }) => {
+const Job_Post = ({ navigation }) => {
   const [Logo, setLogo] = useState([]);
   const [posterImages, setPosterImages] = useState([]);
   const [uniImages, setUniImages] = useState([]);
@@ -83,7 +83,7 @@ const Post_Data = ({ navigation }) => {
     const posterImageUrls = await uploadImages(posterImages, 'Poster');
     const uniImageUrls = await uploadImages(uniImages, 'Uni');
     try {
-      await firestore().collection('Education').doc().set({
+      await firestore().collection('Jobs').doc().set({
         Logo: LogoImageUrls,
         poster: posterImageUrls,
         uni: uniImageUrls,
@@ -272,8 +272,8 @@ const Post_Data = ({ navigation }) => {
 
 
         {renderImages(Logo, 'Logo')}
-        {renderImages(posterImages, 'Poster_Images')}
-        {renderImages(uniImages, 'Uni_Images')}
+        {renderImages(posterImages, 'Job_Poster')}
+        {renderImages(uniImages, 'Job_Images')}
 
 
         <TouchableOpacity
@@ -296,7 +296,7 @@ const Post_Data = ({ navigation }) => {
           <Text style={{ color: '#FFF' }}>Upload Data</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.uploadBtn} onPress={() => { navigation.navigate('Uni_Get') }}>
+        <TouchableOpacity style={styles.uploadBtn} onPress={() => { navigation.navigate('Job_Data') }}>
           <Text style={{ color: '#FFF' }}>Get All Data</Text>
         </TouchableOpacity>
       </View>
@@ -305,7 +305,7 @@ const Post_Data = ({ navigation }) => {
   );
 };
 
-export default Post_Data;
+export default Job_Post;
 
 
 

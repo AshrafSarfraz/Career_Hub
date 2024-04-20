@@ -13,7 +13,7 @@ import ActivityIndicatorModal from '../../../../Components/Loader/ActivityIndica
 import { Calendar } from 'react-native-calendars';
 import { styles } from './style';
 
-const Post_Data = ({ navigation }) => {
+const SchlorShip_Post = ({ navigation }) => {
   const [Logo, setLogo] = useState([]);
   const [posterImages, setPosterImages] = useState([]);
   const [uniImages, setUniImages] = useState([]);
@@ -83,7 +83,7 @@ const Post_Data = ({ navigation }) => {
     const posterImageUrls = await uploadImages(posterImages, 'Poster');
     const uniImageUrls = await uploadImages(uniImages, 'Uni');
     try {
-      await firestore().collection('Education').doc().set({
+      await firestore().collection('Schlorship').doc().set({
         Logo: LogoImageUrls,
         poster: posterImageUrls,
         uni: uniImageUrls,
@@ -305,7 +305,7 @@ const Post_Data = ({ navigation }) => {
   );
 };
 
-export default Post_Data;
+export default SchlorShip_Post;
 
 
 

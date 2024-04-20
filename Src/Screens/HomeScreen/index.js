@@ -28,17 +28,17 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.Btn_Txt} >Admission </Text>
           <Text style={styles.Avaliable_Txt} > 29 Avaliable </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Uni_Name') }} >
+        <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Sch_Data') }} >
           <Image source={Scholarship} style={styles.Btn_Icon} />
           <Text style={styles.Btn_Txt} >Scholarship</Text>
           <Text style={styles.Avaliable_Txt} > 29 Avaliable </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Uni_Name') }} >
+        <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Jobs_Data') }} >
           <Image source={Staff} style={styles.Btn_Icon} />
           <Text style={styles.Btn_Txt} >Job-Seeker</Text>
           <Text style={styles.Avaliable_Txt} > 29 Avaliable </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Uni_Post')}} >
+        <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Admin')}} >
           <Image source={Resume} style={styles.Btn_Icon} />
           <Text style={styles.Btn_Txt} >Resume</Text>
           <Text style={styles.Avaliable_Txt} > 29 Avaliable </Text>

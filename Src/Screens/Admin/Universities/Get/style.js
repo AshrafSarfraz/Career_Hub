@@ -190,6 +190,18 @@ const styles = StyleSheet.create({
     height:80,
     justifyContent:'space-between',
     alignItems:'flex-start'
+  },
+  AddBtn:{
+    width:65,height:65,
+    borderRadius:50,
+    elevation:2,
+    position:"absolute",
+    backgroundColor:Colors.Green,
+    bottom:20,
+    right:20,
+    justifyContent:"center",
+    alignItems:"center"
+
   }
  
 })

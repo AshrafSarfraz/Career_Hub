@@ -1,7 +1,7 @@
-import { View, Text, ScrollView,  FlatList, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
+import { View, Text, ScrollView,  FlatList, Image, TouchableOpacity, TextInput, ImageBackground,Alert } from 'react-native'
 import React, { useState,useEffect } from 'react'
 import { Colors } from '../../../../Themes/Colors'
-import {  Back_Icon, Search } from '../../../../Themes/Images'
+import {  Back_Icon, Plus, Search } from '../../../../Themes/Images'
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import CitiesName from '../../../../Components/Alerts/Cities_Names'
@@ -123,21 +123,41 @@ const Get_Data = (props) => {
     }
   };
 
-  const deleteItem = docId => {
-    setIsLoading(true)
-    firestore()
-      .collection('Education')
-      .doc(docId)
-      .delete()
-      .then(() => {
-        getItems();
-        setIsLoading(false)
-      })
-      .catch(error => {
-        setIsLoading(false)
-        setError.error('Error deleting item:', error);
-      });
-  };
+  
+
+const deleteItem = docId => {
+  Alert.alert(
+    'Confirm Deletion',
+    'Are you sure you want to delete this item?',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        onPress: () => {
+          setIsLoading(true);
+          firestore()
+            .collection('Education')
+            .doc(docId)
+            .delete()
+            .then(() => {
+              getItems();
+              setIsLoading(false);
+            })
+            .catch(error => {
+              setIsLoading(false);
+              setError.error('Error deleting item:', error);
+            });
+        },
+      },
+    ],
+    { cancelable: false }
+  );
+};
+
 
   const renderItem = ({ item, index }) => (
     <View style={styles.Cart}>
@@ -193,10 +213,10 @@ const Get_Data = (props) => {
   };
 
   return (
-    
+    <View>
     <ScrollView style={styles.MainCont}  showsVerticalScrollIndicator={false}>
       <View style={styles.Header} >
-        <TouchableOpacity onPress={() => { navigation.navigate('Post')}} style={styles.Back_Cont} >
+        <TouchableOpacity onPress={() => { navigation.goBack()}} style={styles.Back_Cont} >
           <Image source={Back_Icon} style={styles.Back_Icon} />
         </TouchableOpacity>
         <Text style={styles.Back_Txt} >Get Data</Text>
@@ -260,7 +280,12 @@ const Get_Data = (props) => {
       onCitiesSelect={onCitiesSelect}
       />
       <ActivityIndicatorModal visible={isLoading} />
+     
       </ScrollView>
+      <TouchableOpacity  style={styles.AddBtn} onPress={()=>{navigation.navigate('Job_Post')}} >
+      <Image source={Plus}  style={{width:25,height:25,tintColor:'white'}}/>
+      </TouchableOpacity>
+     </View>
   )
 }
 

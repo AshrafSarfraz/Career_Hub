@@ -41,6 +41,8 @@ export const LightMood=require(IconPath+'toggle4.png')
 export const DarkMood=require(IconPath+'toggle3.png')
 export const Moon=require(IconPath+'moon.png')
 export const Language_Icon=require(IconPath+'language.png')
+export const Plus=require(IconPath+'plus1.png')
+
 
 export const Next=require(IconPath+'next.png')
 export const Cross=require(IconPath+'cross.png')
