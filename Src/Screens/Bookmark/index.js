@@ -1,114 +1,90 @@
-import { View, Text,FlatList,TouchableOpacity } from 'react-native'
-import React,{useState} from 'react'
-import { useSelector } from "react-redux";
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { Colors } from '../../Themes/Colors';
+import { Bookmark1 } from '../../Themes/Images';
+import { Removetocart } from '../../Redux_Toolkit/wishlist/Uni_Wishlist';
 import { styles } from './style';
-import { Bookmark, Bookmark1 } from '../../Themes/Images';
- const SearchItemData=[
-  {
-      Id:1,
-      Image1:require('../../Assets/Images/university.png'),
-      Image2:require('../../Assets/Images/drop1.png'),
-      Image3:require('../../Assets/Images/chatting.png'),
-      Title:'Khwaja Fareed University of Engineering and Information Technology',
-      City:'Rahim Yar Khan',
-      Status:'Goverment',
-      Location:'Abu Dhabi Rd, Rahim Yar Khan, Punjab',
-      Price:'CHF 3.60 /day',
-      MeetingPoint:'Meeting Point: Rolex Learning Center, 1015 Ecublens, Suisse',
-      Description:'This headset offers ultimate comfort for prolonged gaming sessions through its low weight and noise reducing closed ear cups using soft comfortable signature memory foam with a highly adjustable headband for a perfect fit. Crystal clear sound and excellent noise isolation bring you a total immersion into your gaming session.',
-  },
-  {
-      Id:2,
-      Image1:require('../../Assets/Images/university.png'),
-      Image2:require('../../Assets/Images/university.png'),
-      Image3:require('../../Assets/Images/university.png'),
-      Title:'Khwaja Fareed University of Engineering and Information Technology',
-      City:'Rahim Yar Khan',
-      Status:'Goverment',
-      Location:'Abu Dhabi Rd, Rahim Yar Khan, Punjab',
-      Price:'CHF 3.60 /day',
-      MeetingPoint:'Meeting Point: Rolex Learning Center, 1015 Ecublens, Suisse',
-      Description:'This headset offers ultimate comfort for prolonged gaming sessions through its low weight and noise reducing closed ear cups using soft comfortable signature memory foam with a highly adjustable headband for a perfect fit. Crystal clear sound and excellent noise isolation bring you a total immersion into your gaming session.',
-  },
-  {
-      Id:3,
-      Image1:require('../../Assets/Images/university.png'),
-      Image2:require('../../Assets/Images/university.png'),
-      Image3:require('../../Assets/Images/university.png'),
-      Title:'Khwaja Fareed University of Engineering and Information Technology',
-      City:'Rahim Yar Khan',
-      Status:'Goverment',
-      Location:'Abu Dhabi Rd, Rahim Yar Khan, Punjab',
-      Price:'CHF 3.60 /day',
-      MeetingPoint:'Meeting Point: Rolex Learning Center, 1015 Ecublens, Suisse',
-      Description:'This headset offers ultimate comfort for prolonged gaming sessions through its low weight and noise reducing closed ear cups using soft comfortable signature memory foam with a highly adjustable headband for a perfect fit. Crystal clear sound and excellent noise isolation bring you a total immersion into your gaming session.',
-  },
-  {
-      Id:4,
-      Image1:require('../../Assets/Images/university.png'),
-      Image2:require('../../Assets/Images/university.png'),
-      Image3:require('../../Assets/Images/university.png'),
-      Title:'Khwaja Fareed University of Engineering and Information Technology',
-      City:'Rahim Yar Khan',
-      Status:'Goverment',
-      Location:'Abu Dhabi Rd, Rahim Yar Khan, Punjab',
-      Price:'CHF 3.60 /day',
-      MeetingPoint:'Meeting Point: Rolex Learning Center, 1015 Ecublens, Suisse',
-      Description:'This headset offers ultimate comfort for prolonged gaming sessions through its low weight and noise reducing closed ear cups using soft comfortable signature memory foam with a highly adjustable headband for a perfect fit. Crystal clear sound and excellent noise isolation bring you a total immersion into your gaming session.',
-  },
-]
 
+const Bookmarks = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const Uni = useSelector((state) => state.uni); // Accessing 'user' slice
+  const Data = useSelector((state) => state.Get_All_Uni_Data);
+  const job = useSelector((state) => state.Job);
+  const sch = useSelector((state) => state.Scholarship);
 
-   
-const Bookmarks = () => {
-  // const [itemStates, setItemStates] = useState(Array(SearchItemData.length).fill(true)); // Initialize itemStates with an array of true values
+  const [btnstate, setbtnstate] = useState(0)
 
-
-  // const toggleItemState = (index) => {
-  //   const updatedStates = [...itemStates];
-  //   updatedStates[index] = !updatedStates[index];
-  //   setItemStates(updatedStates);
-  // };
-
-  // const renderItem = ({ item, index }) => (
-  //   <View style={styles.Cart}>
-  //     <TouchableOpacity style={styles.Img_Cont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }}>
-  //       <View style={styles.Title_City_Container}>
-  //         <Text style={styles.Title}>{item.name}</Text>
-  //         <View style={styles.City_Cont}>
-  //           <Text style={styles.City_Text}>{item.City}</Text>
-  //         </View>
-  //       </View>
-  //     </TouchableOpacity>
-  //     <View style={{ width: "10%", height: 90, justifyContent: "flex-end" }}>
-  //       {itemStates[index] ? (
-  //         <TouchableOpacity onPress={() => { dispatch(Add_To_Wishlist(item.id)); toggleItemState(index) }}>
-  //           <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
-  //         </TouchableOpacity>
-  //       ) : (
-  //         <TouchableOpacity onPress={() => { dispatch(Add_To_Wishlist(item.id)); toggleItemState(index) }}>
-  //           <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
-  //         </TouchableOpacity>
-  //       )}
-  //     </View>
-  //   </View>
-  // );
+  const renderItem = ({ item, index }) => (
+    <View style={styles.Cart}>
+      <TouchableOpacity style={styles.Img_Cont} onPress={() => { navigation.navigate('Uni_Detail', { item: item }) }} >
+        <Image source={{ uri: item.data.Logo[0] }} style={styles.Product_Img} resizeMode='cover' />
+        <View style={styles.Title_City_Container}>
+          <Text style={styles.Title}>{item.data.name}</Text>
+          <View style={styles.City_Cont}>
+            <Text style={styles.City_Text}>{item.data.City}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+      <View style={{ width: "10%", height: 90, justifyContent: "flex-end" }}>
+        <TouchableOpacity onPress={() => { dispatch(Removetocart(item.id)) }} style={{}} >
+          <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 
   return (
-    <View style={styles.MainCont}>
-    <Text>Bookmark</Text>
-     
+    <View style={styles.container}>
+      <View style={styles.Header}>
+        <Text style={styles.Header_Txt} >My Bookmarks</Text>
+      </View>
+      <View style={styles.Btn_Cont}>
+        <TouchableOpacity onPress={() => { setbtnstate(0) }} style={[btnstate === 0 ? styles.Active_Btn : styles.Btn]} >
+          <Text style={[btnstate === 0 ? styles.Active_Txt : styles.txt]} >University</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => { setbtnstate(1) }} style={[btnstate === 1 ? styles.Active_Btn : styles.Btn]} >
+          <Text style={[btnstate === 1 ? styles.Active_Txt : styles.txt]}>Jobs</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => { setbtnstate(2) }} style={[btnstate === 2 ? styles.Active_Btn : styles.Btn]} >
+          <Text style={[btnstate === 2 ? styles.Active_Txt : styles.txt]} >Scholarship</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.FlatList_Cont} >
+        {btnstate === 0 ?
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            data={Uni}
+            renderItem={renderItem}
+            keyExtractor={item => item.id.toString()}
+
+          /> : null}
+        {btnstate === 1 ?
+          <FlatList
+            data={Data}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          /> : null}
+        {btnstate === 2 ?
+          <FlatList
+            data={sch}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          /> : null}
+      </View>
+
     </View>
   );
 };
 
+
+
+
+
 export default Bookmarks;
 
-//  <View style={styles.FlatList_Cont}>
-// <FlatList
-// showsHorizontalScrollIndicator={false}
-// showsVerticalScrollIndicator={false}
-// data={SearchItemData}
-// renderItem={renderItem}
-// />
-// </View>
+
+
+
+

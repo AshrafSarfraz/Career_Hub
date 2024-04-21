@@ -5,19 +5,23 @@ import { Colors } from '../../../Themes/Colors'
 import { Back_Icon, Bookmark, Bookmark1, Search } from '../../../Themes/Images'
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import CitiesName from '../../../Components/Alerts/Cities_Names'
 import { styles } from './style';
-import { Add_To_Wishlist } from '../../../Redux/WhislistSlice';
 import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator';
+import { Add_University, Removetocart } from '../../../Redux_Toolkit/wishlist/Uni_Wishlist';
+
+
 
 const University_Name = (props) => {
   const dispatch=useDispatch();
+  const Uni = useSelector((state) => state.uni); // Accessing 'user' slice
+
+
   const isFocused = useIsFocused();
   const currentDate = new Date();
   const [BtnState, setBtnState] = useState(0)
   const [items, setItems] = useState([]);
-  const [itemStates, setItemStates] = useState(items.map(() => true));
   const filteredData = items.filter(item => new Date(item.data.EndingDate) >= currentDate);
   const [filteredItems, setFilteredItems] = useState([]);
   const [alertVisible, setAlertVisible] = useState(false);
@@ -25,6 +29,8 @@ const University_Name = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [Error, setError] = useState('');
+
+
 
   useEffect(() => {
     getItems();
@@ -144,15 +150,19 @@ const University_Name = (props) => {
           <Text style={styles.City_Text}>{item.data.City}</Text>
         </View>
         </View>         
-      </TouchableOpacity>
+      </TouchableOpacity> 
       <View  style={{width:"10%",height:90,justifyContent:"flex-end"}}>
-      {itemStates[index] ? (
-        <TouchableOpacity onPress={() => {dispatch(Add_To_Wishlist(item.id)),toggleItemState(index) }}     style={{}} >
-          <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]}/>
-        </TouchableOpacity>
-      ) : <TouchableOpacity onPress={() =>{dispatch(Add_To_Wishlist(item.id)), toggleItemState(index)}} style={{}} >
-        <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
-      </TouchableOpacity>}
+    
+        {Uni.find(uni => uni.id === item.id) ? (
+          <TouchableOpacity onPress={() => {dispatch(Removetocart(item.id))}} style={{}} >
+            <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]}/>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => {dispatch(Add_University(item))}} style={{}} >
+            <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
+          </TouchableOpacity>
+        )}
+    
       </View>
     </View>
   );

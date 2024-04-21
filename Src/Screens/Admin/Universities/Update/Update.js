@@ -20,9 +20,10 @@ import ActivityIndicatorModal from '../../../../Components/Loader/ActivityIndica
 const EditItem = ({ navigation }) => {
   const route = useRoute();
 
-  const [logoImages, setLogoImages] = useState(route.params.Logo || []);
-  const [posterImages, setPosterImages] = useState(route.params.poster || []);
-  const [uniImages, setUniImages] = useState(route.params.uni || []);
+  const [logoImages, setLogoImages] = useState(route.params.Logo ? [...route.params.Logo] : []);
+  const [posterImages, setPosterImages] = useState(route.params.poster ? [...route.params.poster] : []);
+  const [uniImages, setUniImages] = useState(route.params.uni ? [...route.params.uni] : []);
+
 
   const [name, setName] = useState(route.params.data.name);
   const [City, setCity] = useState(route.params.data.City);
@@ -50,23 +51,24 @@ const EditItem = ({ navigation }) => {
         mediaType: 'photo',
         multiple: true,
       });
-  
+
       if (results && !results.didCancel) { // Check if results is not undefined
         const updatedImages = results.map((result) => result.path); // Update state variable with selected image paths
         setImage(updatedImages);
+        // Call uploadItem function after setting images
       }
     } catch (error) {
       setError('Error picking images: ' + error.message);
     }
   };
+      
   
-  
-  
-
-  const uploadImages = async (images, categoryName) => {
+    
+ 
+  const uploadImages = async (images, categoryName, itemId) => {
     try {
       const uploadTasks = images.map(async (image, index) => {
-        const imageName = `${categoryName}_${index}.jpg`;
+        const imageName = `${categoryName}_${itemId}_${index}.jpg`;
         const reference = storage().ref(imageName);
         await reference.putFile(image);
         return reference.getDownloadURL();
@@ -80,39 +82,40 @@ const EditItem = ({ navigation }) => {
     }
   };
 
-  const uploadItem = async () => {
+  const uploadItem = async (itemId) => {
     try {
       setIsLoading(true);
   
-      const LogoImageUrls = logoImages.length > 0 ? await uploadImages(logoImages, 'Logo') : route.params.data.Logo;
-      const posterImageUrls = posterImages.length > 0 ? await uploadImages(posterImages, 'Poster') : route.params.data.poster;
-      const uniImageUrls = uniImages.length > 0 ? await uploadImages(uniImages, 'Uni') : route.params.data.uni;
+      const LogoImageUrls = logoImages.length > 0 ? await uploadImages(logoImages, 'Logo', itemId) : route.params.data.Logo;
+      const posterImageUrls = posterImages.length > 0 ? await uploadImages(posterImages, 'Poster', itemId) : route.params.data.poster;
+      const uniImageUrls = uniImages.length > 0 ? await uploadImages(uniImages, 'Uni', itemId) : route.params.data.uni;
+
+      // Update data
+      const updatedData = {};
+      if (LogoImageUrls) updatedData.Logo = LogoImageUrls;
+      if (posterImageUrls) updatedData.poster = posterImageUrls;
+      if (uniImageUrls) updatedData.uni = uniImageUrls;
+      if (name) updatedData.name = name;
+      if (City) updatedData.City = City;
+      if (City_Link) updatedData.City_Link = City_Link;
+      if (Province) updatedData.Province = Province;
+      if (Status) updatedData.Status = Status;
+      if (Location) updatedData.Location = Location;
+      if (Longitude) updatedData.Longitude = Longitude;
+      if (Latitude) updatedData.Latitude = Latitude;
+      if (description) updatedData.description = description;
+      if (StartingDate) updatedData.StartingDate = StartingDate;
+      if (EndingDate) updatedData.EndingDate = EndingDate;
+      if (PhoneNumber) updatedData.PhoneNumber = PhoneNumber;
+      if (Link) updatedData.Link = Link;
+      if (VideoLink) updatedData.VideoLink = VideoLink;
+      if (Type) updatedData.Type = Type;
   
-      const updatedData = {
-        Logo: LogoImageUrls,
-        poster: posterImageUrls,
-        uni: uniImageUrls.length > 0 ? uniImageUrls : route.params.data.uni,
-        name: name,
-        City: City,
-        City_Link: City_Link,
-        Province: Province || "",
-        Status: Status,
-        Location: Location,
-        Longitude: Longitude,
-        Latitude: Latitude,
-        description: description,
-        StartingDate: StartingDate,
-        EndingDate: EndingDate,
-        PhoneNumber: PhoneNumber,
-        Link: Link,
-        VideoLink: VideoLink,
-        Type: Type  
-      };
-  
+      
       await firestore()
         .collection('Education')
-        .doc(route.params.id)
-        .update(updatedData); // Correct the update query to update the document with updatedData
+        .doc(itemId)
+        .update(updatedData); 
       setIsLoading(false);
       navigation.goBack();
     } catch (error) {
@@ -120,6 +123,9 @@ const EditItem = ({ navigation }) => {
       setIsLoading(false);
     }
   };
+      
+
+
   
 
   const onDayPress = (day) => {
@@ -131,8 +137,6 @@ const EditItem = ({ navigation }) => {
   };
 
   const renderImages = (images, label) => {
-
-
     if (Array.isArray(images) && images.length > 0) {
       return (
         <View style={styles.imageContainer}>
@@ -151,12 +155,9 @@ const EditItem = ({ navigation }) => {
       return null; // or <Text>No images to display</Text>
     }
   };
-  
-  
-  
 
+  
  
-
 
   return (
     <ScrollView style={styles.container}>
@@ -349,10 +350,9 @@ const EditItem = ({ navigation }) => {
       <Text style={styles.Picker_Txt}>New University Images</Text>
     </TouchableOpacity>
 
-      <TouchableOpacity style={styles.uploadBtn} onPress={() => { uploadItem(); }}>
-        <Text style={{ color: '#FFF' }}>Update Data</Text>
-      </TouchableOpacity>
-
+    <TouchableOpacity style={styles.uploadBtn} onPress={() => { uploadItem(route.params.id); }}>
+    <Text style={{ color: '#FFF' }}>Update Data</Text>
+  </TouchableOpacity>
 
     </View>
     <ActivityIndicatorModal visible={isLoading} />
@@ -366,86 +366,15 @@ export default EditItem;
 
 
 
-
-
-
-
-
-
-
-  // const openImagePicker = async (setImage) => {
-  //   try {
-  //     const results = await ImageCropPicker.openPicker({
-  //       mediaType: 'photo',
-  //       multiple: true,
-  //     });
-
-  //     if (!results.didCancel) {
-  //       setImage(results.map((result) => result.path));
-  //     }
-  //   } catch (error) {
-  //     setError('Error picking images:', error);
-  //   }
-  // };
-
-  // const uploadImages = async (images, categoryName) => {
-  //   try {
-  //     const uploadTasks = images.map(async (image, index) => {
-  //       const imageName = `${categoryName}_${index}.jpg`;
-  //       const reference = storage().ref(imageName);
-  //       await reference.putFile(image);
-  //       return reference.getDownloadURL();
-  //     });
-
-  //     const downloadURLs = await Promise.all(uploadTasks);
-  //     return downloadURLs;
-  //   } catch (error) {
-  //     setError('Error uploading images:', error);
-  //   }
-  // };
-
-  // const uploadItem = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     const LogoImageUrls = Logo.length > 0 ? await uploadImages(Logo, 'Logo') : route.params.data.Logo;
-  //     const posterImageUrls = posterImages.length > 0 ? await uploadImages(posterImages, 'Poster') : route.params.data.poster;
-  //     const uniImageUrls = uniImages.length > 0 ? await uploadImages(uniImages, 'Uni') : route.params.data.uni;
   
-  //     console.log('LogoImageUrls:', LogoImageUrls);
-  //     console.log('posterImageUrls:', posterImageUrls);
-  //     console.log('uniImageUrls:', uniImageUrls);
+
+
   
-  //     const updatedData = {
-  //       Logo: LogoImageUrls,
-  //       poster: posterImageUrls,
-  //       uni: uniImageUrls,
-  //       name: name,
-  //       City: City,
-  //       City_Link: City_Link,
-  //       Province: Province,
-  //       Status: Status,
-  //       Location: Location,
-  //       Longitude: Longitude,
-  //       Latitude: Latitude,
-  //       description: description,
-  //       StartingDate: StartingDate,
-  //       EndingDate: EndingDate,
-  //       PhoneNumber: PhoneNumber,
-  //       Link: Link,
-  //       VideoLink: VideoLink,
-  //       Type: Type
-  //     };
-  
-  //     console.log('updatedData:', updatedData);
-  
-  //     await firestore()
-  //       .collection('Education')
-  //       .doc(route.params.id)
-  //       .update(updatedData);
-  //     setIsLoading(false);
-  //     navigation.goBack();
-  //   } catch (error) {
-  //     setError('Error updating item:', error);
-  //     setIsLoading(false);
-  //   }
-  // };
+
+
+
+
+
+
+
+

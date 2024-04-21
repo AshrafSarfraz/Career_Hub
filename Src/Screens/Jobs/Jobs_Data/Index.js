@@ -8,7 +8,6 @@ import firestore from '@react-native-firebase/firestore';
 import { useDispatch } from "react-redux";
 import CitiesName from '../../../Components/Alerts/Cities_Names'
 import { styles } from './style';
-import { Add_To_Wishlist } from '../../../Redux/WhislistSlice';
 import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator';
 
 const Jobs_Data = (props) => {

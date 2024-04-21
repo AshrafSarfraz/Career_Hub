@@ -1,15 +1,20 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Linking } from 'react-native'
 import React, { useRef, useState } from 'react'
 import AppIntroSlider from 'react-native-app-intro-slider';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native'
-import { Back_Icon, Bookmark, Bookmark1, Bookmark2, Location } from '../../../Themes/Images';
+import { Back_Icon, Bookmark, Bookmark1, Location } from '../../../Themes/Images';
 import { styles } from './style';
 import YouTube from 'react-native-youtube-iframe';
+import { Colors } from '../../../Themes/Colors';
+import { Add_University, Removetocart } from '../../../Redux_Toolkit/wishlist/Uni_Wishlist';
 
 
 
 const Uni_Details = ({ navigation }) => {
-  const [BookmarkBtn, setBookmarkBtn] = useState(false)
+  const dispatch=useDispatch();
+  const Uni = useSelector((state) => state.uni); // Accessing 'user' slice
+
   const route = useRoute();
   const item = route.params.item;
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -68,12 +73,17 @@ const Uni_Details = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.Back_Txt}>Details</Text>
         <View style={styles.Auth_Cont}>
-          <TouchableOpacity onPress={() => { setBookmarkBtn(!BookmarkBtn) }} >
-            {
-              BookmarkBtn === false ? <Image source={Bookmark} style={styles.Bookmark} /> :
-                <Image source={Bookmark1} style={[styles.Bookmark]} />
-            }
+        
+        {Uni.find(uni => uni.id === item.id) ? (
+          <TouchableOpacity onPress={() => {dispatch(Removetocart(item.id))}} style={{}} >
+            <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]}/>
           </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => {dispatch(Add_University(item))}} style={{}} >
+            <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
+          </TouchableOpacity>
+        )}
+
         </View>
       </View>
 
