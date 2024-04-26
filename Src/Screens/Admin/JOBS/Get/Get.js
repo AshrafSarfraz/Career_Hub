@@ -100,7 +100,7 @@ const Job_Data = (props) => {
   const getItems = () => {
     try {
       firestore()
-        .collection('Jobs')
+        .collection('Jobs-Posting')
         .get()
         .then(querySnapshot => {
           let tempData = [];
@@ -138,7 +138,7 @@ const Job_Data = (props) => {
           onPress: () => {
             setIsLoading(true);
             firestore()
-              .collection('Jobs')
+              .collection('Jobs-Posting')
               .doc(docId)
               .delete()
               .then(() => {
@@ -160,7 +160,7 @@ const Job_Data = (props) => {
     <View style={styles.Cart}>
 
       <TouchableOpacity  style={styles.ItemCont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
-   <ImageBackground source={ item.data && item.data.Logo && item.data.Logo[0] ? { uri: item.data.Logo[0] }
+   <ImageBackground source={ item.data && item.data.poster && item.data.poster[0] ? { uri: item.data.poster[0] }
           : require('../../../../Assets/Images/uni_logo.png') }
            style={styles.Product_Img}
            imageStyle={{ borderRadius: 10, alignItems: 'center' }}
@@ -278,7 +278,7 @@ const Job_Data = (props) => {
       />
       <ActivityIndicatorModal visible={isLoading} />
       </ScrollView>
-      <TouchableOpacity  style={styles.AddBtn} onPress={()=>{navigation.navigate('Uni_Post')}} >
+      <TouchableOpacity  style={styles.AddBtn} onPress={()=>{navigation.navigate('Job_Post')}} >
       <Image source={Plus}  style={{width:25,height:25,tintColor:'white'}}/>
       </TouchableOpacity>
      </View>

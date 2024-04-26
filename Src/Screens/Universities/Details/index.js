@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Linking } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Linking, Alert } from 'react-native'
 import React, { useRef, useState } from 'react'
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ import { Add_University, Removetocart } from '../../../Redux_Toolkit/wishlist/Un
 
 
 const Uni_Details = ({ navigation }) => {
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const Uni = useSelector((state) => state.uni); // Accessing 'user' slice
 
   const route = useRoute();
@@ -21,18 +21,24 @@ const Uni_Details = ({ navigation }) => {
   const scrollViewRef = useRef(null);
   const latitude = item.data.Latitude ? item.data.Latitude : null
   const longitude = item.data.Longitude ? item.data.Longitude : null
-  const phoneNumber = item.data.phoneNumber; // Replace with the phone number you want to dial
+  const phoneNumber = item.data.PhoneNumber; // Replace with the phone number you want to dial
   const City_Link = item.data.City_Link;
+  const Apply = item.data.Link;
 
 
   const handleOpenMaps = () => {
     const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
     Linking.openURL(url);
   };
-  const Website = () => {
+  const City_Websity = () => {
     const url = City_Link;
     Linking.openURL(url);
   };
+  const Apply_Link = () => {
+    const url = Apply;
+    Linking.openURL(url);
+  };
+
   const Contact = () => {
     const url = `tel:${phoneNumber}`;
     Linking.openURL(url);
@@ -73,16 +79,16 @@ const Uni_Details = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.Back_Txt}>Details</Text>
         <View style={styles.Auth_Cont}>
-        
-        {Uni.find(uni => uni.id === item.id) ? (
-          <TouchableOpacity onPress={() => {dispatch(Removetocart(item.id))}} style={{}} >
-            <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]}/>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={() => {dispatch(Add_University(item))}} style={{}} >
-            <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
-          </TouchableOpacity>
-        )}
+
+          {Uni.find(uni => uni.id === item.id) ? (
+            <TouchableOpacity onPress={() => { dispatch(Removetocart(item.id)) }} style={{}} >
+              <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => { dispatch(Add_University(item)) }} style={{}} >
+              <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
+            </TouchableOpacity>
+          )}
 
         </View>
       </View>
@@ -106,7 +112,7 @@ const Uni_Details = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.City_Cont} >
-          <TouchableOpacity  onPress={Website}>
+          <TouchableOpacity onPress={() => { City_Websity() }}>
             <Text style={styles.City_Text}>{item.data.City}</Text>
           </TouchableOpacity>
         </View>
@@ -151,40 +157,29 @@ const Uni_Details = ({ navigation }) => {
             </View>
           </View>
         </TouchableOpacity>
-
         <Text style={[styles.Addmission_Open, { marginTop: '3%' }]} >Addmission Open</Text>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
           {item.data.poster && item.data.poster.map((poster, index) => (
             <Image key={index} source={{ uri: poster }} style={styles.Poster} />
           ))}
-
         </ScrollView>
 
-
-
-
         <Text style={styles.Addmission_Open} >How To Apply</Text>
-        {/*
-  <Image source={require('../../../Assets/Images/video.png')} style={{width:'100%',height:300,borderRadius:20}} />
-      */}
-
-        <YouTube
+       <YouTube
           videoId={item.data.VideoLink}
-          height={300}
+          height={200}
+          width={'100%'}
           play={false}
           fullscreen={false}
           loop={false}
-          controls={true}
-        />
+          controls={true} />
 
-        <TouchableOpacity style={styles.Apply_Btn} onPress={Website}>
+        <TouchableOpacity style={styles.Apply_Btn} onPress={Apply_Link}>
           <Text style={styles.Rent}>Apply Now </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.Req_Btn} onPress={() => { navigation.navigate('') }}>
+        <TouchableOpacity style={styles.Req_Btn} onPress={() => { Alert.alert('Continue Working on It ') }}>
           <Text style={styles.Rent}>Request to Apply</Text>
         </TouchableOpacity>
-
-
       </View>
 
     </ScrollView>

@@ -110,7 +110,6 @@ const EditItem = ({ navigation }) => {
       if (Link) updatedData.Link = Link;
       if (VideoLink) updatedData.VideoLink = VideoLink;
       if (Type) updatedData.Type = Type;
-  
       
       await firestore()
         .collection('Education')

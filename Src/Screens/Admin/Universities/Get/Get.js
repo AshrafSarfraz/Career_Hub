@@ -167,7 +167,7 @@ const deleteItem = docId => {
           : require('../../../../Assets/Images/uni_logo.png') }
            style={styles.Product_Img}
            imageStyle={{ borderRadius: 10, alignItems: 'center' }}
-           resizeMode='cover' >
+           resizeMode='contain' >
     </ImageBackground>
     <View  style={styles.Detail_cont}>
      <Text style={styles.Title}>{item.data.name}</Text>

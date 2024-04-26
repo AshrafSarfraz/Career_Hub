@@ -8,8 +8,6 @@ import Contact from '../../Screens/Contact';
 import Policies from '../../Screens/Policies';
 
 
-
-
 const Drawer = createDrawerNavigator();
 
 const MyDrawer = () => {
@@ -21,7 +19,6 @@ const MyDrawer = () => {
         drawerActiveBackgroundColor: '#45b9bf',
       }}
     >
-
       <Drawer.Screen
         name='HomeScreen'
         component={HomeScreen}

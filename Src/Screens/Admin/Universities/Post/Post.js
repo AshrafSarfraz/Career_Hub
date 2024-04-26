@@ -129,7 +129,7 @@ const Post_Data = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Post Data</Text>
+        <Text style={styles.headerText}>University Posting</Text>
       </View>
       <View style={styles.Body_container}>
 
@@ -141,7 +141,7 @@ const Post_Data = ({ navigation }) => {
           onChangeText={text => setName(text)}
         />
         <TextInput
-          placeholder="Government, Private, Semi-Government"
+          placeholder="Government, Private"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
           value={Status}
@@ -155,7 +155,7 @@ const Post_Data = ({ navigation }) => {
           onChangeText={text => setType(text)}
         />
         <TextInput
-          placeholder="Enter Item Description"
+          placeholder="Enter Description"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
           value={description}
@@ -169,7 +169,7 @@ const Post_Data = ({ navigation }) => {
           onChangeText={text => setCity(text)}
         />
         <TextInput
-          placeholder="City_Link"
+          placeholder="City Link"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
           value={City_Link}
@@ -200,21 +200,21 @@ const Post_Data = ({ navigation }) => {
           />
         </View>
         <TextInput
-          placeholder="Enter Administration Number"
+          placeholder="Administration Number"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
           value={PhoneNumber}
           onChangeText={text => setPhoneNumber(text)}
         />
         <TextInput
-          placeholder="Apply_Link"
+          placeholder="Apply-Link"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
           value={Link}
           onChangeText={text => setLink(text)}
         />
         <TextInput
-          placeholder="Campus"
+          placeholder="Other Campus"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
           value={Campus}
@@ -228,7 +228,7 @@ const Post_Data = ({ navigation }) => {
           onChangeText={text => setProvince(text)}
         />
         <TextInput
-          placeholder="Video_Link"
+          placeholder="Video-Link"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
           value={VideoLink}
@@ -236,17 +236,17 @@ const Post_Data = ({ navigation }) => {
         />
         <View style={styles.Schdule_Cont}>
           <View style={{ alignItems: "center" }}>
-            <Text style={styles.End} >Starting Date</Text>
+            <Text style={styles.End} >Apply Date</Text>
             <Text style={styles.Dates}>{StartingDate}</Text>
           </View>
           <View style={{ alignItems: "center" }}>
-            <Text style={styles.End} >Ending Date</Text>
+            <Text style={styles.End} >Deadline</Text>
             <Text style={styles.Dates}>{EndingDate}</Text>
           </View>
 
         </View>
 
-        <Text style={styles.Title} >Starting Date</Text>
+        <Text style={styles.Title} >Addmission Date</Text>
         <Calendar
           markedDates={{
             [StartingDate]: { selected: true, marked: true },

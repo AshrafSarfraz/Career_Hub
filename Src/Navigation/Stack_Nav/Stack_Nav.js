@@ -19,7 +19,6 @@ import EditItem from '../../Screens/Admin/Universities/Update/Update';
 import Admin_Home from '../../Screens/Admin/Panel/Index';
 import Job_Post from '../../Screens/Admin/JOBS/Post/Post';
 import Job_Data from '../../Screens/Admin/JOBS/Get/Get';
-import Job_Update from '../../Screens/Admin/JOBS/Update/Update';
 import SchlorShip_Post from '../../Screens/Admin/Schlorship/Post/Post';
 import SchlorShip_Data from '../../Screens/Admin/Schlorship/Get/Get';
 import Schlorship_Update from '../../Screens/Admin/Schlorship/Update/Update';
@@ -27,6 +26,7 @@ import Jobs_Data from '../../Screens/Jobs/Jobs_Data/Index';
 import Jobs_Details from '../../Screens/Jobs/Detail';
 import Sch_Details from '../../Screens/SchlorShips/Details';
 import Sch_Data from '../../Screens/SchlorShips/Sch_Data/Index';
+import Jobs_Update from '../../Screens/Admin/JOBS/Update/Update';
 
 const Stack = createNativeStackNavigator();
 
@@ -74,7 +74,7 @@ const Stack_Navigation = () => {
         <Stack.Screen name="Uni_Update" component={EditItem} />
         <Stack.Screen name="Job_Post" component={Job_Post} />
         <Stack.Screen name="Job_Data" component={Job_Data} />
-        <Stack.Screen name="Job_Update" component={Job_Update} />
+        <Stack.Screen name="Job_Update" component={Jobs_Update} />
         <Stack.Screen name="Schlorship_Post" component={SchlorShip_Post} />
         <Stack.Screen name="Schlorship_Data" component={SchlorShip_Data} />
         <Stack.Screen name="Schlorship_Update" component={Schlorship_Update} />

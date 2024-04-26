@@ -75,7 +75,7 @@ export const styles = StyleSheet.create({
 
     },
     paginationScrollView: {
-        paddingHorizontal: 16,
+        
     },
     paginationDot: {
         width: 8,

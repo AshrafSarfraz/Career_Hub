@@ -10,13 +10,14 @@ import CitiesName from '../../../Components/Alerts/Cities_Names'
 import { styles } from './style';
 import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator';
 import { Add_University, Removetocart } from '../../../Redux_Toolkit/wishlist/Uni_Wishlist';
+import { UniversitiesData } from '../../../Redux_Toolkit/University_Data/Universities';
 
 
 
 const University_Name = (props) => {
   const dispatch=useDispatch();
   const Uni = useSelector((state) => state.uni); // Accessing 'user' slice
-
+  const Data = useSelector((state) => state.Get_All_Uni_Data);
 
   const isFocused = useIsFocused();
   const currentDate = new Date();
@@ -31,6 +32,11 @@ const University_Name = (props) => {
   const [Error, setError] = useState('');
 
 
+  useEffect(()=>{
+    filteredData.map(item=>{
+      dispatch(UniversitiesData(item))
+    })
+    },[] )
 
   useEffect(() => {
     getItems();

@@ -18,7 +18,6 @@ import { styles } from './style';
 import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator';
 
 
-
 const SignInScreen = ({ navigation }) => {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
