@@ -115,10 +115,6 @@ const Bookmarks = ({ navigation }) => {
   );
 };
 
-
-
-
-
 export default Bookmarks;
 
 

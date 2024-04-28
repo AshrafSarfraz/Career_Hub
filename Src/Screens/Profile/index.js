@@ -54,59 +54,58 @@ const Profile = () => {
   };
 
   return (
-   
-    <View style={styles.Main_Cont}>
-    <ScrollView   showsVerticalScrollIndicator={false}>
-    <View  style={styles.Header_Cont}>
-    {(userData && userData.userImage || userInfo && userInfo.photo) ? (
-      <View>  
-    {userData ? (
-        <Image source={{ uri: userData.userImage }} style={[styles.UserImg]} />) : (
-    (userInfo ?
-        <Image source={{ uri: userInfo.photo }} style={[styles.UserImg]} /> : null)
-      )}
-      </View>): (<Image source={require('../../Assets/Images/uni_logo.png')} style={[styles.UserImg]} /> )
-    }
-    </View>
-    <View  style={styles.Body} >
-      {(userData || userInfo) ? (
-        <View>
-          {userData ? (
-            <View>
-              <View style={styles.Data_Cont}>
-              <Text style={styles.UserName}>{userData.Username} {userData.Lastname}</Text>
-              </View>
-              <View style={styles.Data_Cont}>
-              <Text style={styles.UserName}>{userData.PhoneNumber}</Text>
-              </View>
-              <View style={styles.Data_Cont}>
-              <Text style={styles.UserName}>{userData.Email}</Text>
-              </View>
-              <TouchableOpacity  style={styles.Edit_Btn}  onPress={()=>{navigation.navigate('Edit_Profile')}}>
-              <Text  style={styles.Edit_Txt}>Edit Profile</Text>
-              </TouchableOpacity> 
-              </View>     
-          ) : (
-            <View>
-            <View style={styles.Data_Cont}>
-            <Text style={styles.UserName}>{userInfo.name}</Text>
-            </View>
-            <View style={styles.Data_Cont}>
-            <Text style={styles.UserName}>{userInfo.email}</Text>
-            </View>
-             
-              </View>
-          ) }    
-        </View>
-      ) : (
-        <Text style={styles.UserName}>No Data Found</Text>
-      )}
 
-      </View>
-    </ScrollView>
-  </View>
+    <View style={styles.Main_Cont}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.Header_Cont}>
+          {(userData && userData.userImage || userInfo && userInfo.photo) ? (
+            <View>
+              {userData ? (
+                <Image source={{ uri: userData.userImage }} style={[styles.UserImg]} />) : (
+                (userInfo ?
+                  <Image source={{ uri: userInfo.photo }} style={[styles.UserImg]} /> : null)
+              )}
+            </View>) : (<Image source={require('../../Assets/Images/uni_logo.png')} style={[styles.UserImg]} />)
+          }
+        </View>
+        <View style={styles.Body} >
+          {(userData || userInfo) ? (
+            <View>
+              {userData ? (
+                <View>
+                  <View style={styles.Data_Cont}>
+                    <Text style={styles.UserName}>{userData.Username} {userData.Lastname}</Text>
+                  </View>
+                  <View style={styles.Data_Cont}>
+                    <Text style={styles.UserName}>{userData.PhoneNumber}</Text>
+                  </View>
+                  <View style={styles.Data_Cont}>
+                    <Text style={styles.UserName}>{userData.Email}</Text>
+                  </View>
+                  <TouchableOpacity style={styles.Edit_Btn} onPress={() => { navigation.navigate('Edit_Profile', { userData: userData,})}}>
+                    <Text style={styles.Edit_Txt}>Edit Profile</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View>
+                  <View style={styles.Data_Cont}>
+                    <Text style={styles.UserName}>{userInfo.name}</Text>
+                  </View>
+                  <View style={styles.Data_Cont}>
+                    <Text style={styles.UserName}>{userInfo.email}</Text>
+                  </View>
+
+                </View>
+              )}
+            </View>
+          ) : (
+            <Text style={styles.UserName}>No Data Found</Text>
+          )}
+
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
 export default Profile;
- 

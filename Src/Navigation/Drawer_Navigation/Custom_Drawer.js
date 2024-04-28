@@ -40,7 +40,7 @@ function CustomDrawerContent(props) {
         setUserData(null);
       }
     });
-    return () => unsubscribe(); 
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -57,7 +57,8 @@ function CustomDrawerContent(props) {
       }
     } catch (error) {
       console.error('Error checking Google Sign-In:', error.message);
-    }};
+    }
+  };
 
 
   const handleSignOut = async () => {
@@ -86,26 +87,17 @@ function CustomDrawerContent(props) {
       <DrawerContentScrollView {...props}>
 
 
-        {/* <DrawerItemList {...props} /> */}
-        {/* <DrawerItem
-          style={styles.Btn1}
-          label="Help"
-          onPress={() =>{props.navigation.navigate('Navigator')}}
-        /> */}
-
-
         <View style={{ backgroundColor: Colors.Green, borderBottomWidth: 1, borderColor: Colors.Grey4, top: '-1%' }}>
-          
-        {(userData && userData.userImage || userInfo && userInfo.photo) ? (
-          <View>  
-        {userData ? (
-            <Image source={{ uri: userData.userImage }} style={[styles.UserImg]} />) : (
-        (userInfo ?
-            <Image source={{ uri: userInfo.photo }} style={[styles.UserImg]} /> : null)
-          )}
-          </View>):
-           (<Image source={require('../../Assets/Images/uni_logo.png')} style={[styles.UserImg]} /> )
-        }
+
+          {(userData && userData.userImage || userInfo && userInfo.photo) ? (
+            <View>
+              {userData ? (
+                <Image source={{ uri: userData.userImage }} style={[styles.UserImg]} />) : (
+                (userInfo ?
+                  <Image source={{ uri: userInfo.photo }} style={[styles.UserImg]} /> : null)
+              )}
+            </View>) : (<Image source={require('../../Assets/Images/uni_logo.png')} style={[styles.UserImg]} />)
+          }
           {userData ? (
             <Text style={styles.UserName}>{userData.Username} {userData.Lastname}</Text>) : (
             (userInfo && userInfo.name ? <Text style={styles.UserName}>{userInfo.name}</Text> : null)
@@ -200,7 +192,7 @@ const styles = StyleSheet.create({
   ActiveButtonTxt: {
     color: '#FFFFFF'
   },
-  ThemeBtn:{
+  ThemeBtn: {
     width: '100%',
     padding: '2%',
     alignItems: 'center',
@@ -208,15 +200,15 @@ const styles = StyleSheet.create({
     padding: '4%',
     paddingHorizontal: "6%",
     marginBottom: '2%',
-    justifyContent:"space-between"
+    justifyContent: "space-between"
   },
-  LightMood:{
-   width:40,height:20,resizeMode:"contain"
+  LightMood: {
+    width: 40, height: 20, resizeMode: "contain"
   },
-  Lang_Txt:{
+  Lang_Txt: {
     fontSize: 12,
     lineHeight: 16,
-    fontFamily:Fonts.SF_Medium,
+    fontFamily: Fonts.SF_Medium,
     color: Colors.Black,
     fontWeight: '400',
   },

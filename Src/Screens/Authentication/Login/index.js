@@ -59,12 +59,12 @@ const SignInScreen = ({ navigation }) => {
       setIsError('Please fill in both email and password fields.');
       return; // Don't proceed with sign-in
     }
-   
+       setIsLoading(true)
     try {
       const userCredential = await auth().signInWithEmailAndPassword(Email, Password);
-      console.log('User account created & signed in!', userCredential);
       if (userCredential.user.emailVerified) {
         setIsError('');setPassword('');setEmail('')
+        setIsLoading(false)
         navigation.navigate('Bottom')
       } else {
         setIsError('You are not verified So Please check your Gmail for verification');
