@@ -16,22 +16,17 @@ import { styles } from './style';
 const SchlorShip_Post = ({ navigation }) => {
   const [Logo, setLogo] = useState([]);
   const [posterImages, setPosterImages] = useState([]);
-  const [uniImages, setUniImages] = useState([]);
-  const [name, setName] = useState('');
-  const [City, setCity] = useState('');
+  const [Sch_name, setSch_name] = useState('');
+  const [Selected_City, setSelected_City] = useState('');
   const [Province, setProvince] = useState('');
-  const [Campus, setCampus] = useState('');
-  const [City_Link, setCity_Link] = useState('');
   const [Status, setStatus] = useState('');
-  const [Location, setLocation] = useState('');
-  const [Longitude, setLongitude] = useState('');
-  const [Latitude, setLatitude] = useState('');
   const [description, setDescription] = useState('');
+  const [Apply_Des, setApply_Des] = useState('');
+  const [Qualification, setQualification] = useState('');
   const [StartingDate, setStartingDate] = useState('2000-01-01');
   const [EndingDate, setEndingDate] = useState('2000-01-01');
-  const [PhoneNumber, setPhoneNumber] = useState('');
   const [Link, setLink] = useState('');
-  const [Type, setType] = useState('');
+  const [Sch_Type, setSch_Type] = useState('');
   const [VideoLink, setVideoLink] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [Error, setError] = useState('');
@@ -81,35 +76,26 @@ const SchlorShip_Post = ({ navigation }) => {
     setIsLoading(true);
     const LogoImageUrls = await uploadImages(Logo, 'Logo');
     const posterImageUrls = await uploadImages(posterImages, 'Poster');
-    const uniImageUrls = await uploadImages(uniImages, 'Uni');
     try {
       await firestore().collection('Schlorship').doc().set({
         Logo: LogoImageUrls,
         poster: posterImageUrls,
-        uni: uniImageUrls,
-        name: name,
-        City: City,
+        Sch_name: Sch_name,
+        Selected_City: Selected_City,
         Province: Province,
-        Campus: Campus,
-        City_Link: City_Link,
         Status: Status,
-        Location: Location,
-        Longitude: Longitude,
-        Latitude: Latitude,
         description: description,
+        Apply_Des:Apply_Des,
+        Qualification:Qualification,
         StartingDate: StartingDate,
         EndingDate: EndingDate,
-        PhoneNumber: PhoneNumber,
         Link: Link,
         VideoLink: VideoLink,
-        Type: Type
-
+        Sch_Type: Sch_Type
       });
-      //  console.log('Images uploaded successfully!');
-      setName(''), setDescription(''), setLongitude(''), setLatitude(''),
-        setLocation(''), setPhoneNumber(''), setLink(''), setCampus(''), setCity(''), setCity_Link('')
+      
     } catch (error) {
-      // console.error('Error storing images in Firestore:', error);
+      setError('Error storing images in Firestore:', error);
     } finally {
       setIsLoading(false); // Hide activity indicator modal after upload completes
     }
@@ -129,96 +115,66 @@ const SchlorShip_Post = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Post Data</Text>
+        <Text style={styles.headerText}>Post ScholarShip</Text>
       </View>
       <View style={styles.Body_container}>
 
         <TextInput
-          placeholder="University Name"
+          placeholder="ScholarShip Name"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
-          value={name}
-          onChangeText={text => setName(text)}
+          value={Sch_name}
+          onChangeText={text => setSch_name(text)}
         />
         <TextInput
-          placeholder="Government, Private, Semi-Government"
+          placeholder="In/Out Country"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
           value={Status}
           onChangeText={text => setStatus(text)}
         />
         <TextInput
-          placeholder="University-Type"
+          placeholder="ScholarShip Type"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
-          value={Type}
-          onChangeText={text => setType(text)}
+          value={Sch_Type}
+          onChangeText={text => setSch_Type(text)}
         />
         <TextInput
-          placeholder="Enter Item Description"
+          placeholder="ScholarShip Description"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
           value={description}
           onChangeText={text => setDescription(text)}
         />
         <TextInput
-          placeholder="City Name"
-          placeholderTextColor={'#7F7F7F'}
-          style={styles.inputStyle}
-          value={City}
-          onChangeText={text => setCity(text)}
-        />
+        placeholder="Apply Description"
+        placeholderTextColor={'#7F7F7F'}
+        style={styles.inputStyle}
+        value={Apply_Des}
+        onChangeText={text => setApply_Des(text)}
+      />
         <TextInput
-          placeholder="City_Link"
+          placeholder="Selected City"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
-          value={City_Link}
-          onChangeText={text => setCity_Link(text)}
+          value={Selected_City}
+          onChangeText={text => setSelected_City(text)}
         />
 
         <TextInput
-          placeholder="Location (Address)"
+          placeholder="Qualification"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
-          value={Location}
-          onChangeText={text => setLocation(text)}
-        />
-        <View style={styles.Input_Cont}>
-          <TextInput
-            placeholder="Longitude"
-            placeholderTextColor={'#7F7F7F'}
-            style={styles.inputStyle1}
-            value={Longitude}
-            onChangeText={text => setLongitude(text)}
-          />
-          <TextInput
-            placeholder="Latitude"
-            placeholderTextColor={'#7F7F7F'}
-            style={styles.inputStyle1}
-            value={Latitude}
-            onChangeText={text => setLatitude(text)}
-          />
-        </View>
-        <TextInput
-          placeholder="Enter Administration Number"
-          placeholderTextColor={'#7F7F7F'}
-          style={styles.inputStyle}
-          value={PhoneNumber}
-          onChangeText={text => setPhoneNumber(text)}
+          value={Qualification}
+          onChangeText={text => setQualification(text)}
         />
         <TextInput
-          placeholder="Apply_Link"
+          placeholder="Apply Link"
           placeholderTextColor={'#7F7F7F'}
           style={styles.inputStyle}
           value={Link}
           onChangeText={text => setLink(text)}
-        />
-        <TextInput
-          placeholder="Campus"
-          placeholderTextColor={'#7F7F7F'}
-          style={styles.inputStyle}
-          value={Campus}
-          onChangeText={text => setCampus(text)}
         />
         <TextInput
           placeholder="Province"
@@ -273,30 +229,24 @@ const SchlorShip_Post = ({ navigation }) => {
 
         {renderImages(Logo, 'Logo')}
         {renderImages(posterImages, 'Poster_Images')}
-        {renderImages(uniImages, 'Uni_Images')}
 
 
         <TouchableOpacity
           style={styles.pickBtn}
           onPress={() => openImagePicker(setLogo)}>
-          <Text style={styles.Picker_Txt}>Pick Uni_Logo</Text>
+          <Text style={styles.Picker_Txt}>New Logo</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.pickBtn}
           onPress={() => openImagePicker(setPosterImages)}>
-          <Text style={styles.Picker_Txt}>Pick Poster</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.pickBtn}
-          onPress={() => openImagePicker(setUniImages)}>
-          <Text style={styles.Picker_Txt}>Pick Uni-Images</Text>
+          <Text style={styles.Picker_Txt}>New Poster</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.uploadBtn} onPress={() => { handleUpload() }}>
           <Text style={{ color: '#FFF' }}>Upload Data</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.uploadBtn} onPress={() => { navigation.navigate('Uni_Get') }}>
+        <TouchableOpacity style={styles.uploadBtn} onPress={() => { navigation.goBack() }}>
           <Text style={{ color: '#FFF' }}>Get All Data</Text>
         </TouchableOpacity>
       </View>

@@ -7,9 +7,13 @@ export const Job_Slice=createSlice({
     reducers:{
         Add_Job(state, action){
             state.push(action.payload)
-        }
+        },
+        RemoveJob(state, action){
+            return state.filter((item)=> 
+            item.id !== action.payload );
+           },
     }
 })
 
-export const {Add_Job}=Job_Slice.actions
+export const {Add_Job,RemoveJob}=Job_Slice.actions
 export default Job_Slice.reducer

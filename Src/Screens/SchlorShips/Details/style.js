@@ -309,5 +309,12 @@ export const styles = StyleSheet.create({
        marginVertical:10,
        resizeMode:'contain'
     },
+    Wishlist: {
+        width: 25,
+        height: 25,
+        alignSelf:"center",
+        resizeMode:"contain"
+      },
+
 
 })

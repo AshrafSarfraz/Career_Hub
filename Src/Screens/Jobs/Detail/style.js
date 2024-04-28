@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
         backgroundColor: Colors.Bg,
         marginBottom: '6%',
         padding: "5%"
-
     },
     Header: {
         flexDirection: 'row',
@@ -23,7 +22,6 @@ export const styles = StyleSheet.create({
     Back_Cont: {
         flexDirection: 'row',
         alignItems: "center",
-
     },
     Back_Txt: {
         color: Colors.Green,
@@ -43,13 +41,11 @@ export const styles = StyleSheet.create({
         alignItems: "center",
         marginRight: "5%"
     },
-
     Bookmark: {
         width: 23, height: 23,
-        resizeMode:"contain",
-        tintColor:Colors.Green
+        resizeMode: "contain",
+        tintColor: Colors.Green
     },
-
     slideContainer: {
         backgroundColor: Colors.White,
         alignItems: 'center',
@@ -71,7 +67,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 16,
         marginLeft: '40%',
-        marginTop:"2%"
+        marginTop: "2%"
 
     },
     paginationScrollView: {
@@ -93,13 +89,13 @@ export const styles = StyleSheet.create({
     },
     City_Cont: {
         backgroundColor: '#D0A700',
-        height:25,
-        marginVertical:'2%',
-        alignItems:"center",
-        padding:"1%",
-        paddingHorizontal:"2%",
-        alignSelf:"flex-start",
-        borderRadius:5
+        height: 25,
+        marginVertical: '2%',
+        alignItems: "center",
+        padding: "1%",
+        paddingHorizontal: "2%",
+        alignSelf: "flex-start",
+        borderRadius: 5
     },
     City_Text: {
         fontSize: 12,
@@ -117,51 +113,34 @@ export const styles = StyleSheet.create({
         lineHeight: 24,
         color: Colors.Black,
         fontFamily: Fonts.SF_Medium,
-        marginBottom:"1%",
+        marginBottom: "1%",
     },
-    Status_Cont:{
-      flexDirection:"row",
-      alignItems:"center",
-      justifyContent:"space-between",
-      width:"100%",
-      marginBottom:'2%'
+    Status_Cont: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: "100%",
+        marginBottom: '2%'
     },
     Status: {
         fontSize: 16,
         lineHeight: 22,
         color: Colors.Black,
         fontFamily: Fonts.SF_Medium,
-        letterSpacing:0.3
+        letterSpacing: 0.3
     },
-    Type_Cont:{
-      backgroundColor:"#9B1E2E",
-      paddingHorizontal:"3%",
-      borderRadius:5,
-      height:27,
-      justifyContent:"center"
+    Type_Cont: {
+        backgroundColor: "#9B1E2E",
+        paddingHorizontal: "3%",
+        borderRadius: 5,
+        height: 27,
+        justifyContent: "center"
     },
-    Type_Txt:{
+    Type_Txt: {
         fontSize: 12,
         lineHeight: 20,
         color: Colors.White,
         fontFamily: Fonts.SF_Medium,
-    },
-    Address_Cont: {
-        flexDirection: 'row',
-        alignItems: "center",
-        marginVertical: "2%"
-    },
-    Address_Img: {
-        width: 20, height: 20,
-        resizeMode: 'contain',
-        marginRight: "2%"
-    },
-    Address: {
-        fontSize: 14,
-        lineHeight: 20,
-        color: Colors.Black,
-        fontFamily: Fonts.SF_Medium,
-        width:"94%"
     },
     Schedule_Cont: {
         backgroundColor: Colors.White,
@@ -198,9 +177,38 @@ export const styles = StyleSheet.create({
         fontFamily: Fonts.SF_Bold,
         marginTop: "2%",
     },
-    Desc_Cont: {
-
+    Table_Outer_Cont: {
+        backgroundColor: Colors.White,
+        padding: "4%",
+        borderRadius: 15,
     },
+    Table_Cont: {
+        flexDirection: "row",
+    },
+    Table_Header: {
+        width: '40%',
+        // borderRightWidth: 1,
+        borderColor: Colors.Green
+    },
+    Table_Body: {
+        width: '100%',
+        fontSize: 12,
+        lineHeight: 18,
+        color: Colors.Green,
+        fontFamily: Fonts.SF_SemiBold
+    },
+    Table_Txt: {
+        fontSize: 12,
+        lineHeight: 18,
+        color: Colors.Black,
+        fontFamily: Fonts.SF_Medium,
+    },
+    Table_Column: {
+        width: '55%',
+        marginLeft: "4%",
+        marginBottom: '1%'
+    },
+
     Desc: {
         fontSize: 18,
         lineHeight: 22,
@@ -209,47 +217,13 @@ export const styles = StyleSheet.create({
         marginVertical: "3%"
     },
     Detail: {
-        fontSize: 14,
-        lineHeight: 20,
+        fontSize: 12,
+        lineHeight: 18,
         color: '#000000',
         fontFamily: Fonts.SF_Regular,
         marginBottom: '3%',
         width: "100%",
-        paddingBottom:"3%",
-    },
-    Phone_Cont: {
-        width: '100%',
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        backgroundColor: "#FFFFFF",
-        borderWidth: 0.5,
-        padding: '2%',
-        borderRadius: 10,
-        marginVertical: "1%",
-        height:75
-    },
-    Contact: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        width:"85%",
-    },
-    Uni_Logo: {
-        width: 50, height: 50,
-        resizeMode: 'contain',
-    },
-    User: {
-        marginLeft: "2%",
-        width:"80%",
-        alignItems:"center"
-    },
-    OwnerName: {
-        fontSize: 12,
-        lineHeight: 15,
-        color: Colors.Black,
-        fontFamily: Fonts.SF_Bold,
-        width:'100%',
-        
+        paddingBottom: "3%",
     },
     Apply_Btn: {
         flexDirection: 'row',
@@ -259,55 +233,32 @@ export const styles = StyleSheet.create({
         width: '100%',
         padding: '4%',
         borderRadius: 10,
-        marginTop:"4%"
-    },
-    Req_Btn: {
-        flexDirection: 'row',
-        alignItems: "center",
-        justifyContent: 'center',
-        backgroundColor: '#003300',
-        width: '100%',
-        padding: '4%',
-        marginVertical: '5%',
-        borderRadius: 10,
-        marginBottom:"10%"
-    },
-    Rent: {
-        color: Colors.White,
-        fontSize: 16,
-        fontFamily: Fonts.SF_Medium,
-        lineHeight: 20
-    },
-    Phone_Icon: {
-        width: 50, height: 50,
-        resizeMode:'contain'
-    },
-    Addmission_Open: {
-        color: Colors.Black,
-        fontSize: 16,
-        fontFamily: Fonts.SF_SemiBold,
-        lineHeight: 24,
-        marginBottom:"3%"
+        marginBottom: "6%"
     },
     Link: {
         color: Colors.Green,
         fontSize: 14,
         fontFamily: Fonts.SF_SemiBold,
         lineHeight: 20,
-        marginVertical:"2%"
+        marginVertical: "2%"
     },
     Poster_Cont: {
-       width:'100%',
-       height:300,
-       
+        width: '100%',
+        height: 300,
     },
     Poster: {
-       width:330,
-       height:300,
-       marginHorizontal:10,
-       borderRadius:20,
-       marginVertical:10,
-       resizeMode:'contain'
+        width: 330,
+        height: 300,
+        marginHorizontal: 10,
+        borderRadius: 20,
+        marginVertical: 10,
+        resizeMode: 'contain'
+    },
+    Wishlist: {
+        width: 25,
+        height: 25,
+        alignSelf: "center",
+        resizeMode: "contain"
     },
 
 })

@@ -20,13 +20,14 @@ import Admin_Home from '../../Screens/Admin/Panel/Index';
 import Job_Post from '../../Screens/Admin/JOBS/Post/Post';
 import Job_Data from '../../Screens/Admin/JOBS/Get/Get';
 import SchlorShip_Post from '../../Screens/Admin/Schlorship/Post/Post';
-import SchlorShip_Data from '../../Screens/Admin/Schlorship/Get/Get';
 import Schlorship_Update from '../../Screens/Admin/Schlorship/Update/Update';
-import Jobs_Data from '../../Screens/Jobs/Jobs_Data/Index';
+import JOB_Data from '../../Screens/Jobs/Jobs_Data/Index';
 import Jobs_Details from '../../Screens/Jobs/Detail';
-import Sch_Details from '../../Screens/SchlorShips/Details';
-import Sch_Data from '../../Screens/SchlorShips/Sch_Data/Index';
 import Jobs_Update from '../../Screens/Admin/JOBS/Update/Update';
+import Sch_Details from '../../Screens/SchlorShips/Details';
+import SchlorShip_Data from '../../Screens/SchlorShips/Data/Index';
+
+
 
 const Stack = createNativeStackNavigator();
 
@@ -60,14 +61,16 @@ const Stack_Navigation = () => {
         <Stack.Screen name="Bottom" component={Bottom} />
         <Stack.Screen name="Uni_Name" component={University_Name} />
         <Stack.Screen name="Uni_Detail" component={Uni_Details} />
-        <Stack.Screen name="Jobs_Data" component={Jobs_Data} />
+        <Stack.Screen name="Jobs_Data" component={JOB_Data} />
         <Stack.Screen name="Jobs_Details" component={Jobs_Details} />
-        <Stack.Screen name="Sch_Data" component={Sch_Data} />
+        <Stack.Screen name="Sch_Data" component={SchlorShip_Data} />
         <Stack.Screen name="Sch_Details" component={Sch_Details} />
         <Stack.Screen name="Edit_Profile" component={Edit_Profile} />
         
+     
 
 
+        
         <Stack.Screen name="Admin" component={Admin_Home} />
         <Stack.Screen name="Uni_Post" component={Post_Data} />
         <Stack.Screen name="Uni_Data" component={Get_Data} />

@@ -105,6 +105,7 @@ const Job_Post = ({ navigation }) => {
           Job_City: City,
           Description: Description,
           Seats: Seats,
+          Status: Status,
           Position: Position,
           Country: Country,
           Qualification: Qualification,

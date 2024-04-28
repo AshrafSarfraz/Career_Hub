@@ -3,20 +3,26 @@ import { View, Text, ScrollView, StyleSheet, FlatList, Image, TouchableOpacity, 
 import React, { useState, useEffect } from 'react'
 import { Colors } from '../../../Themes/Colors'
 import { Back_Icon, Bookmark, Bookmark1, Search } from '../../../Themes/Images'
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import CitiesName from '../../../Components/Alerts/Cities_Names'
 import { styles } from './style';
 import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator';
+import { UniversitiesData } from '../../../Redux_Toolkit/University_Data/Universities';
+import { Add_Scholarship, Remove_Scholarship } from '../../../Redux_Toolkit/wishlist/Scholarship_slice';
 
-const Sch_Data = (props) => {
+
+
+const SchlorShip_Data = (props) => {
   const dispatch=useDispatch();
+  const Scholarship_D = useSelector((state) => state.scholarship); // Accessing 'user' slice
+
+
   const isFocused = useIsFocused();
   const currentDate = new Date();
   const [BtnState, setBtnState] = useState(0)
   const [items, setItems] = useState([]);
-  const [itemStates, setItemStates] = useState(items.map(() => true));
   const filteredData = items.filter(item => new Date(item.data.EndingDate) >= currentDate);
   const [filteredItems, setFilteredItems] = useState([]);
   const [alertVisible, setAlertVisible] = useState(false);
@@ -24,6 +30,13 @@ const Sch_Data = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [Error, setError] = useState('');
+
+
+  useEffect(()=>{
+    filteredData.map(item=>{
+      dispatch(UniversitiesData(item))
+    })
+    },[] )
 
   useEffect(() => {
     getItems();
@@ -50,15 +63,18 @@ const Sch_Data = (props) => {
     setFilteredItems(filterDataByButton());
   }, [BtnState, items, selectedCities]);
 
-
   const filterItems = () => {
     const filtered = filteredData.filter((item) => {
-      const itemName = item.data.name.toLowerCase();
-      const searchLowerCase = searchQuery.toLowerCase();
-      return itemName.includes(searchLowerCase);
+      if (item && item.data && typeof item.data.name === 'string') {
+        const itemName = item.data.name.toLowerCase();
+        const searchLowerCase = searchQuery.toLowerCase();
+        return itemName.includes(searchLowerCase);
+      }
+      return false; 
     });
     setFilteredItems(filtered);
   };
+  
 
   const filterDataByButton = () => {
     let filtered = filteredData;
@@ -68,14 +84,14 @@ const Sch_Data = (props) => {
           filtered = filtered.filter(
             item =>
               selectedCities.includes(item.data.City) &&
-              (BtnState === 0 || item.data.Status === 'Government' ||  item.data.Status === 'Private')
+              (BtnState === 0 || item.data.Status === 'Pakistan' ||  item.data.Status === 'Foreign')
           );
           break;
         case 1:
-          filtered = filtered.filter(item => item.data.Status === ' Government' && selectedCities.includes(item.data.City));
+          filtered = filtered.filter(item => item.data.Status === 'Pakistan' && selectedCities.includes(item.data.City));
           break;
         case 2:
-          filtered = filtered.filter(item => item.data.Status === 'Private' && selectedCities.includes(item.data.City));
+          filtered = filtered.filter(item => item.data.Status === 'Foreign' && selectedCities.includes(item.data.City));
           break;
         default:
           break;
@@ -85,10 +101,10 @@ const Sch_Data = (props) => {
         case 0:
           break;
         case 1:
-          filtered = filtered.filter(item => item.data.Status === 'Government');
+          filtered = filtered.filter(item => item.data.Status === 'Pakistan');
           break;
         case 2:
-          filtered = filtered.filter(item => item.data.Status === 'Private');
+          filtered = filtered.filter(item => item.data.Status === 'Foreign');
           break;
         default:
           break;
@@ -138,20 +154,22 @@ const Sch_Data = (props) => {
       <TouchableOpacity  style={styles.Img_Cont}  onPress={() => { props.navigation.navigate('Sch_Details', { item: item }) }} >
       <Image source={{ uri: item.data.Logo[0] }} style={styles.Product_Img} resizeMode='cover'/>
      <View style={styles.Title_City_Container}>
-      <Text style={styles.Title}>{item.data.name}</Text>
+      <Text style={styles.Title}>{item.data.Sch_name}</Text>
         <View style={styles.City_Cont}>
-          <Text style={styles.City_Text}>{item.data.City}</Text>
+          <Text style={styles.City_Text}>{item.data.Status}</Text>
         </View>
         </View>         
-      </TouchableOpacity>
+      </TouchableOpacity> 
       <View  style={{width:"10%",height:90,justifyContent:"flex-end"}}>
-      {itemStates[index] ? (
-        <TouchableOpacity onPress={() => {dispatch(Add_To_Wishlist(item.id)),toggleItemState(index) }}     style={{}} >
-          <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]}/>
-        </TouchableOpacity>
-      ) : <TouchableOpacity onPress={() =>{dispatch(Add_To_Wishlist(item.id)), toggleItemState(index)}} style={{}} >
-        <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
-      </TouchableOpacity>}
+        {Scholarship_D.find(Scholarship_D => Scholarship_D.id === item.id) ? (
+          <TouchableOpacity onPress={() => {dispatch(Remove_Scholarship(item.id))}} style={{}} >
+            <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]}/>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => {dispatch(Add_Scholarship(item))}} style={{}} >
+            <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -164,7 +182,7 @@ const Sch_Data = (props) => {
         <TouchableOpacity onPress={() => { props.navigation.goBack() }} style={styles.Back_Cont} >
           <Image source={Back_Icon} style={styles.Back_Icon} />
         </TouchableOpacity>
-        <Text style={styles.Back_Txt} >Schlorship</Text>
+        <Text style={styles.Back_Txt} >Scholarship</Text>
         <View style={styles.Auth_Cont} >
         </View>
       </View>
@@ -184,11 +202,11 @@ const Sch_Data = (props) => {
           <Text style={[styles.Btn_Txt, BtnState === 0 ? styles.ActiveBtn_Txt : null]} >All</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.Btn, BtnState === 1 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(1) }}>
-          <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Government</Text>
+          <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Pakistan</Text>
         </TouchableOpacity>
      
         <TouchableOpacity style={[styles.Btn, BtnState === 3 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
-          <Text style={[styles.Btn_Txt, BtnState === 3 ? styles.ActiveBtn_Txt : null]} >Private</Text>
+          <Text style={[styles.Btn_Txt, BtnState === 3 ? styles.ActiveBtn_Txt : null]} >Foreign</Text>
         </TouchableOpacity>
       </ScrollView>
       {
@@ -228,7 +246,7 @@ const Sch_Data = (props) => {
   )
 }
 
-export default Sch_Data
+export default SchlorShip_Data
 
 
 

@@ -1,19 +1,18 @@
-import { View, Text, ScrollView,  FlatList, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
-import React, { useState,useEffect } from 'react'
-import { Colors } from '../../../../Themes/Colors'
-import {  Back_Icon, Plus, Search } from '../../../../Themes/Images'
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, FlatList, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import firestore from '@react-native-firebase/firestore';
-import CitiesName from '../../../../Components/Alerts/Cities_Names'
-import ActivityIndicatorModal from '../../../../Components/Loader/ActivityIndicator'
+import { fetchJobData, deleteJobItem } from './Backend'; // Import backend functions
+import { Colors } from '../../../../Themes/Colors';
+import { Back_Icon, Plus, Search } from '../../../../Themes/Images';
+import CitiesName from '../../../../Components/Alerts/Cities_Names';
+import ActivityIndicatorModal from '../../../../Components/Loader/ActivityIndicator';
 import { styles } from './style';
-
 
 const Job_Data = (props) => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const currentDate = new Date();
-  const [BtnState, setBtnState] = useState(0)
+  const [BtnState, setBtnState] = useState(0);
   const [items, setItems] = useState([]);
   const [itemStates, setItemStates] = useState(items.map(() => true));
   const filteredData = items;
@@ -23,6 +22,7 @@ const Job_Data = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [Error, setError] = useState('');
+  
   const filterItems = () => {
     const filtered = filteredData.filter((item) => {
       const itemName = (item.data && item.data.name) ? item.data.name.toLowerCase() : '';
@@ -97,69 +97,34 @@ const Job_Data = (props) => {
     setSearchQuery(text);
   };
 
-  const getItems = () => {
+  const getItems = async () => {
     try {
-      firestore()
-        .collection('Jobs-Posting')
-        .get()
-        .then(querySnapshot => {
-          let tempData = [];
-          querySnapshot.forEach(documentSnapshot => {
-            tempData.push({
-              id: documentSnapshot.id,
-              data: documentSnapshot.data(),
-            });
-          });
-          setItems(tempData);
-          setIsLoading(false)
-        })
-        .catch(error => {
-         setError.error('Error getting items from Firestore:', error);
-         setIsLoading(false)
-        });
+      setIsLoading(true);
+      const data = await fetchJobData(); // Call fetchJobData from backend
+      setItems(data);
+      setIsLoading(false);
     } catch (error) {
-      setError.error('Error fetching items:', error);
-      setIsLoading(false)
+      setError('Error fetching items:', error.message);
+      setIsLoading(false);
     }
   };
 
-  const deleteItem = docId => {
-    Alert.alert(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {
-          text: 'Delete',
-          onPress: () => {
-            setIsLoading(true);
-            firestore()
-              .collection('Jobs-Posting')
-              .doc(docId)
-              .delete()
-              .then(() => {
-                getItems();
-                setIsLoading(false);
-              })
-              .catch(error => {
-                setIsLoading(false);
-                setError.error('Error deleting item:', error);
-              });
-          },
-        },
-      ],
-      { cancelable: false }
-    );
+  const deleteItem = async (docId) => {
+    try {
+      setIsLoading(true);
+      await deleteJobItem(docId); // Call deleteJobItem from backend
+      await getItems(); // Refresh data after deletion
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      setError('Error deleting item:', error.message);
+    }
   };
 
   const renderItem = ({ item, index }) => (
     <View style={styles.Cart}>
 
-      <TouchableOpacity  style={styles.ItemCont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
+      <TouchableOpacity  style={styles.ItemCont} onPress={() => { props.navigation.navigate('Jobs_Details', { item: item }) }} >
    <ImageBackground source={ item.data && item.data.poster && item.data.poster[0] ? { uri: item.data.poster[0] }
           : require('../../../../Assets/Images/uni_logo.png') }
            style={styles.Product_Img}
@@ -167,10 +132,10 @@ const Job_Data = (props) => {
            resizeMode='cover' >
     </ImageBackground>
     <View  style={styles.Detail_cont}>
-     <Text style={styles.Title}>{item.data.name}</Text>
+     <Text style={styles.Title}>{item.data.Job_Name}</Text>
      <View style={styles.City_Cont}>
      <View style={styles.City_Text_Container}>
-       <Text style={styles.City_Text}>{item.data.City}</Text>
+       <Text style={styles.City_Text}>{item.data.Job_City}</Text>
      </View>
    </View>
         </View>
@@ -256,14 +221,11 @@ const Job_Data = (props) => {
     </View>
     </View>:null
 }
-      
-
-
       <View style={styles.FlatList_Cont} >
         <FlatList
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-          data={filteredItems}
+          data={items}
           renderItem={renderItem}
           keyExtractor={item => item.id.toString()}
 
@@ -282,7 +244,6 @@ const Job_Data = (props) => {
       <Image source={Plus}  style={{width:25,height:25,tintColor:'white'}}/>
       </TouchableOpacity>
      </View>
-  )
-}
+  )}
 
 export default Job_Data

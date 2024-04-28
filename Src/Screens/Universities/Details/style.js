@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
         backgroundColor: Colors.Bg,
         marginBottom: '6%',
         padding: "5%"
-
     },
     Header: {
         flexDirection: 'row',
@@ -23,7 +22,6 @@ export const styles = StyleSheet.create({
     Back_Cont: {
         flexDirection: 'row',
         alignItems: "center",
-
     },
     Back_Txt: {
         color: Colors.Green,
@@ -43,13 +41,11 @@ export const styles = StyleSheet.create({
         alignItems: "center",
         marginRight: "5%"
     },
-
     Bookmark: {
         width: 23, height: 23,
         resizeMode:"contain",
         tintColor:Colors.Green
     },
-
     slideContainer: {
         backgroundColor: Colors.White,
         alignItems: 'center',
@@ -74,8 +70,7 @@ export const styles = StyleSheet.create({
         marginTop:"2%"
 
     },
-    paginationScrollView: {
-        
+    paginationScrollView: {      
     },
     paginationDot: {
         width: 8,

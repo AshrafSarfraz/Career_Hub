@@ -3,20 +3,26 @@ import { View, Text, ScrollView, StyleSheet, FlatList, Image, TouchableOpacity, 
 import React, { useState, useEffect } from 'react'
 import { Colors } from '../../../Themes/Colors'
 import { Back_Icon, Bookmark, Bookmark1, Search } from '../../../Themes/Images'
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import CitiesName from '../../../Components/Alerts/Cities_Names'
 import { styles } from './style';
 import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator';
+import { UniversitiesData } from '../../../Redux_Toolkit/University_Data/Universities';
+import { Add_Job, RemoveJob } from '../../../Redux_Toolkit/wishlist/Job_slice';
 
-const Jobs_Data = (props) => {
+
+
+const JOB_Data = (props) => {
   const dispatch=useDispatch();
+  const Job = useSelector((state) => state.job); // Accessing 'user' slice
+
+
   const isFocused = useIsFocused();
   const currentDate = new Date();
   const [BtnState, setBtnState] = useState(0)
   const [items, setItems] = useState([]);
-  const [itemStates, setItemStates] = useState(items.map(() => true));
   const filteredData = items.filter(item => new Date(item.data.EndingDate) >= currentDate);
   const [filteredItems, setFilteredItems] = useState([]);
   const [alertVisible, setAlertVisible] = useState(false);
@@ -24,6 +30,13 @@ const Jobs_Data = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [Error, setError] = useState('');
+
+
+  useEffect(()=>{
+    filteredData.map(item=>{
+      dispatch(UniversitiesData(item))
+    })
+    },[] )
 
   useEffect(() => {
     getItems();
@@ -50,15 +63,18 @@ const Jobs_Data = (props) => {
     setFilteredItems(filterDataByButton());
   }, [BtnState, items, selectedCities]);
 
-
   const filterItems = () => {
     const filtered = filteredData.filter((item) => {
-      const itemName = item.data.name.toLowerCase();
-      const searchLowerCase = searchQuery.toLowerCase();
-      return itemName.includes(searchLowerCase);
+      if (item && item.data && typeof item.data.name === 'string') {
+        const itemName = item.data.name.toLowerCase();
+        const searchLowerCase = searchQuery.toLowerCase();
+        return itemName.includes(searchLowerCase);
+      }
+      return false; 
     });
     setFilteredItems(filtered);
   };
+  
 
   const filterDataByButton = () => {
     let filtered = filteredData;
@@ -110,7 +126,7 @@ const Jobs_Data = (props) => {
   const getItems = () => {
     try {
       firestore()
-        .collection('Jobs')
+        .collection('Jobs-Posting')
         .get()
         .then(querySnapshot => {   // console.log('Total items: ', querySnapshot.size);
           let tempData = [];
@@ -136,22 +152,26 @@ const Jobs_Data = (props) => {
   const renderItem = ({ item, index }) => (
     <View style={styles.Cart}>
       <TouchableOpacity  style={styles.Img_Cont}  onPress={() => { props.navigation.navigate('Jobs_Details', { item: item }) }} >
-      <Image source={{ uri: item.data.Logo[0] }} style={styles.Product_Img} resizeMode='cover'/>
+      <Image source={{ uri: item.data.poster[0] }} style={styles.Product_Img} resizeMode='cover'/>
      <View style={styles.Title_City_Container}>
-      <Text style={styles.Title}>{item.data.name}</Text>
+      <Text style={styles.Title}>{item.data.Job_Name}</Text>
         <View style={styles.City_Cont}>
-          <Text style={styles.City_Text}>{item.data.City}</Text>
+          <Text style={styles.City_Text}>{item.data.Job_City}</Text>
         </View>
         </View>         
-      </TouchableOpacity>
+      </TouchableOpacity> 
       <View  style={{width:"10%",height:90,justifyContent:"flex-end"}}>
-      {itemStates[index] ? (
-        <TouchableOpacity onPress={() => {dispatch(Add_To_Wishlist(item.id)),toggleItemState(index) }}     style={{}} >
-          <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]}/>
-        </TouchableOpacity>
-      ) : <TouchableOpacity onPress={() =>{dispatch(Add_To_Wishlist(item.id)), toggleItemState(index)}} style={{}} >
-        <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
-      </TouchableOpacity>}
+    
+        {Job.find(Job => Job.id === item.id) ? (
+          <TouchableOpacity onPress={() => {dispatch(RemoveJob(item.id))}} style={{}} >
+            <Image source={Bookmark1} style={[styles.Wishlist, { tintColor: Colors.Green }]}/>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => {dispatch(Add_Job(item))}} style={{}} >
+            <Image source={Bookmark} style={[styles.Wishlist, { tintColor: Colors.Green }]} />
+          </TouchableOpacity>
+        )}
+    
       </View>
     </View>
   );
@@ -228,7 +248,7 @@ const Jobs_Data = (props) => {
   )
 }
 
-export default Jobs_Data
+export default JOB_Data
 
 
 

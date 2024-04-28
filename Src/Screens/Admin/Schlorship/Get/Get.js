@@ -1,7 +1,7 @@
-import { View, Text, ScrollView,  FlatList, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
-import React, { useState,useEffect } from 'react'
+import { View, Text, ScrollView, FlatList, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { Colors } from '../../../../Themes/Colors'
-import {  Back_Icon, Plus, Search } from '../../../../Themes/Images'
+import { Back_Icon, Plus, Search } from '../../../../Themes/Images'
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import CitiesName from '../../../../Components/Alerts/Cities_Names'
@@ -35,17 +35,17 @@ const SchlorShip_Data = (props) => {
   useEffect(() => {
     filterItems();
   }, [searchQuery, items]);
-  
+
   const filterDataByButton = () => {
     let filtered = filteredData;
     if (selectedCities.length > 0) {
-  switch (BtnState) {
+      switch (BtnState) {
         case 0:
-           filtered = filtered.filter(
-      item =>
-        selectedCities.includes(item.data.City) &&
-        (BtnState === 0 || item.data.Status === 'Government' || item.data.Status === 'Private')
-    );
+          filtered = filtered.filter(
+            item =>
+              selectedCities.includes(item.data.City) &&
+              (BtnState === 0 || item.data.Status === 'Government' || item.data.Status === 'Private')
+          );
           break;
         case 1:
           filtered = filtered.filter(item => item.data.Status === 'Government' && selectedCities.includes(item.data.City));
@@ -70,14 +70,14 @@ const SchlorShip_Data = (props) => {
           break;
       }
     }
-  
-   
+
+
     return filtered;
   };
   useEffect(() => {
     setFilteredItems(filterDataByButton());
   }, [BtnState, items, selectedCities]);
-  
+
   const showAlert = () => {
     setAlertVisible(true);
   };
@@ -92,7 +92,7 @@ const SchlorShip_Data = (props) => {
 
   const onCitiesSelect = (cities) => {
     setSelectedCities(cities);
-  }; 
+  };
   const onSearchInputChange = (text) => {
     setSearchQuery(text);
   };
@@ -114,8 +114,8 @@ const SchlorShip_Data = (props) => {
           setIsLoading(false)
         })
         .catch(error => {
-         setError.error('Error getting items from Firestore:', error);
-         setIsLoading(false)
+          setError.error('Error getting items from Firestore:', error);
+          setIsLoading(false)
         });
     } catch (error) {
       setError.error('Error fetching items:', error);
@@ -158,46 +158,46 @@ const SchlorShip_Data = (props) => {
   const renderItem = ({ item, index }) => (
     <View style={styles.Cart}>
 
-      <TouchableOpacity  style={styles.ItemCont} onPress={() => { props.navigation.navigate('Uni_Detail', { item: item }) }} >
-   <ImageBackground source={ item.data && item.data.Logo && item.data.Logo[0] ? { uri: item.data.Logo[0] }
-          : require('../../../../Assets/Images/uni_logo.png') }
-           style={styles.Product_Img}
-           imageStyle={{ borderRadius: 10, alignItems: 'center' }}
-           resizeMode='cover' >
-    </ImageBackground>
-    <View  style={styles.Detail_cont}>
-     <Text style={styles.Title}>{item.data.name}</Text>
-     <View style={styles.City_Cont}>
-     <View style={styles.City_Text_Container}>
-       <Text style={styles.City_Text}>{item.data.City}</Text>
-     </View>
-   </View>
+      <TouchableOpacity style={styles.ItemCont} onPress={() => { props.navigation.navigate('Sch_Details', { item: item }) }} >
+        <ImageBackground source={item.data && item.data.Logo && item.data.Logo[0] ? { uri: item.data.Logo[0] }
+          : require('../../../../Assets/Images/uni_logo.png')}
+          style={styles.Product_Img}
+          imageStyle={{ borderRadius: 10, alignItems: 'center' }}
+          resizeMode='cover' >
+        </ImageBackground>
+        <View style={styles.Detail_cont}>
+          <Text style={styles.Title}>{item.data.Sch_name}</Text>
+          <View style={styles.City_Cont}>
+            <View style={styles.City_Text_Container}>
+              <Text style={styles.City_Text}>{item.data.Status}</Text>
+            </View>
+          </View>
         </View>
       </TouchableOpacity>
 
       <View style={styles.Action_Cont}  >
-      <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('Schlorship_Update', {
-          data: item.data,
-          id: item.id,
-        });
-      }}>
-      <Image
-        source={require('../../../../Assets/Icons/edit.png')}
-        style={[styles.icon, {width:25,height:25, }]}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity
-      onPress={() => {
-        deleteItem(item.id);
-      }}>
-      <Image
-        source={require('../../../../Assets/Icons/remove.png')}
-        style={[styles.icon, { width:30,height:30,resizeMode:"contain"   }]}
-      />
-    </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Schlorship_Update', {
+              data: item.data,
+              id: item.id,
+            });
+          }}>
+          <Image
+            source={require('../../../../Assets/Icons/edit.png')}
+            style={[styles.icon, { width: 25, height: 25, }]}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            deleteItem(item.id);
+          }}>
+          <Image
+            source={require('../../../../Assets/Icons/remove.png')}
+            style={[styles.icon, { width: 30, height: 30, resizeMode: "contain" }]}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
@@ -210,77 +210,77 @@ const SchlorShip_Data = (props) => {
 
   return (
     <View>
-    <ScrollView style={styles.MainCont}  showsVerticalScrollIndicator={false}>
-      <View style={styles.Header} >
-        <TouchableOpacity onPress={() => { navigation.goBack()}} style={styles.Back_Cont} >
-          <Image source={Back_Icon} style={styles.Back_Icon} />
-        </TouchableOpacity>
-        <Text style={styles.Back_Txt} >SchlorShip</Text>
-        <View style={styles.Auth_Cont} >
+      <ScrollView style={styles.MainCont} showsVerticalScrollIndicator={false}>
+        <View style={styles.Header} >
+          <TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.Back_Cont} >
+            <Image source={Back_Icon} style={styles.Back_Icon} />
+          </TouchableOpacity>
+          <Text style={styles.Back_Txt} >SchlorShip</Text>
+          <View style={styles.Auth_Cont} >
+          </View>
         </View>
-      </View>
-      <View style={styles.Input_With_Filter} >
-      <View style={styles.Input_Cont} >
-      <TouchableOpacity onPress={filterItems}>
-      <Image source={Search} style={styles.SearchIcon} />
-      </TouchableOpacity> 
-        <TextInput placeholder='Search here...' placeholderTextColor={Colors.Grey9} style={styles.Search_Input}  
-        value={searchQuery}
-        onChangeText={(text) => setSearchQuery(text)} />
-      </View>
-      <TouchableOpacity onPress={showAlert}  >
-          <Image source={require('../../../../Assets/Icons/filter.png')} style={styles.Filter} />
-        </TouchableOpacity>
-      </View>
-      <ScrollView horizontal style={styles.Btn_Cont} showsHorizontalScrollIndicator={false}  >
-        <TouchableOpacity style={[styles.Btn, BtnState === 0 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(0) }}>
-          <Text style={[styles.Btn_Txt, BtnState === 0 ? styles.ActiveBtn_Txt : null]} >All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.Btn, BtnState === 1 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(1) }}>
-          <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Government</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.Btn, BtnState === 3 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
-          <Text style={[styles.Btn_Txt, BtnState === 3 ? styles.ActiveBtn_Txt : null]} >Private</Text>
-        </TouchableOpacity>
-      </ScrollView>
-{
-  selectedCities.length>0?
-  <View style={styles.selected_City_}> 
-      <View style={styles.SelectedCitiesContainer}>
-      {selectedCities.map((city, index) => (
-        <View key={index} style={styles.SelectedCityBackground}>
-          <Text style={styles.SelectedCityText}>{city}</Text>
+        <View style={styles.Input_With_Filter} >
+          <View style={styles.Input_Cont} >
+            <TouchableOpacity onPress={filterItems}>
+              <Image source={Search} style={styles.SearchIcon} />
+            </TouchableOpacity>
+            <TextInput placeholder='Search here...' placeholderTextColor={Colors.Grey9} style={styles.Search_Input}
+              value={searchQuery}
+              onChangeText={(text) => setSearchQuery(text)} />
+          </View>
+          <TouchableOpacity onPress={showAlert}  >
+            <Image source={require('../../../../Assets/Icons/filter.png')} style={styles.Filter} />
+          </TouchableOpacity>
         </View>
-      ))}
-    </View>
-    </View>:null
-}
-      
+        <ScrollView horizontal style={styles.Btn_Cont} showsHorizontalScrollIndicator={false}  >
+          <TouchableOpacity style={[styles.Btn, BtnState === 0 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(0) }}>
+            <Text style={[styles.Btn_Txt, BtnState === 0 ? styles.ActiveBtn_Txt : null]} >All</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.Btn, BtnState === 1 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(1) }}>
+            <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Government</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.Btn, BtnState === 3 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
+            <Text style={[styles.Btn_Txt, BtnState === 3 ? styles.ActiveBtn_Txt : null]} >Private</Text>
+          </TouchableOpacity>
+        </ScrollView>
+        {
+          selectedCities.length > 0 ?
+            <View style={styles.selected_City_}>
+              <View style={styles.SelectedCitiesContainer}>
+                {selectedCities.map((city, index) => (
+                  <View key={index} style={styles.SelectedCityBackground}>
+                    <Text style={styles.SelectedCityText}>{city}</Text>
+                  </View>
+                ))}
+              </View>
+            </View> : null
+        }
 
 
-      <View style={styles.FlatList_Cont} >
-        <FlatList
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-          data={filteredItems}
-          renderItem={renderItem}
-          keyExtractor={item => item.id.toString()}
 
+        <View style={styles.FlatList_Cont} >
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            data={filteredItems}
+            renderItem={renderItem}
+            keyExtractor={item => item.id.toString()}
+
+          />
+        </View>
+
+        <CitiesName
+          visible={alertVisible}
+          message="This is a custom alert!"
+          onClose={() => { hideAlert(); }}
+          onCitiesSelect={onCitiesSelect}
         />
-      </View>
-     
-      <CitiesName
-      visible={alertVisible}
-      message="This is a custom alert!"
-      onClose={() => { hideAlert();}}
-      onCitiesSelect={onCitiesSelect}
-      />
-      <ActivityIndicatorModal visible={isLoading} />
+        <ActivityIndicatorModal visible={isLoading} />
       </ScrollView>
-        <TouchableOpacity  style={styles.AddBtn} onPress={()=>{navigation.navigate('Schlorship_Post')}} >
-      <Image source={Plus}  style={{width:25,height:25,tintColor:'white'}}/>
+      <TouchableOpacity style={styles.AddBtn} onPress={() => { navigation.navigate('Schlorship_Post') }} >
+        <Image source={Plus} style={{ width: 25, height: 25, tintColor: 'white' }} />
       </TouchableOpacity>
-     </View>
+    </View>
   )
 }
 
