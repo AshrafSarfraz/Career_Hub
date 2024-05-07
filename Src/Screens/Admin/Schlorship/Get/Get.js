@@ -44,14 +44,14 @@ const SchlorShip_Data = (props) => {
           filtered = filtered.filter(
             item =>
               selectedCities.includes(item.data.City) &&
-              (BtnState === 0 || item.data.Status === 'Government' || item.data.Status === 'Private')
+              (BtnState === 0 || item.data.Status === 'Pakistan' || item.data.Status === 'Foreign')
           );
           break;
         case 1:
-          filtered = filtered.filter(item => item.data.Status === 'Government' && selectedCities.includes(item.data.City));
+          filtered = filtered.filter(item => item.data.Status === 'Pakistan' && selectedCities.includes(item.data.City));
           break;
         case 2:
-          filtered = filtered.filter(item => item.data.Status === 'Private' && selectedCities.includes(item.data.City));
+          filtered = filtered.filter(item => item.data.Status === 'Foreign' && selectedCities.includes(item.data.City));
           break;
         default:
           break;
@@ -61,10 +61,10 @@ const SchlorShip_Data = (props) => {
         case 0:
           break;
         case 1:
-          filtered = filtered.filter(item => item.data.Status === 'Government');
+          filtered = filtered.filter(item => item.data.Status === 'Pakistan');
           break;
         case 2:
-          filtered = filtered.filter(item => item.data.Status === 'Private');
+          filtered = filtered.filter(item => item.data.Status === 'Foreign');
           break;
         default:
           break;
@@ -100,7 +100,7 @@ const SchlorShip_Data = (props) => {
   const getItems = () => {
     try {
       firestore()
-        .collection('Schlorship')
+        .collection('Scholarship')
         .get()
         .then(querySnapshot => {
           let tempData = [];
@@ -138,7 +138,7 @@ const SchlorShip_Data = (props) => {
           onPress: () => {
             setIsLoading(true);
             firestore()
-              .collection('Education')
+              .collection('Scholarship')
               .doc(docId)
               .delete()
               .then(() => {
@@ -215,7 +215,7 @@ const SchlorShip_Data = (props) => {
           <TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.Back_Cont} >
             <Image source={Back_Icon} style={styles.Back_Icon} />
           </TouchableOpacity>
-          <Text style={styles.Back_Txt} >SchlorShip</Text>
+          <Text style={styles.Back_Txt} >Scholarship</Text>
           <View style={styles.Auth_Cont} >
           </View>
         </View>
@@ -237,10 +237,10 @@ const SchlorShip_Data = (props) => {
             <Text style={[styles.Btn_Txt, BtnState === 0 ? styles.ActiveBtn_Txt : null]} >All</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.Btn, BtnState === 1 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(1) }}>
-            <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Government</Text>
+            <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Pakistan</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.Btn, BtnState === 3 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
-            <Text style={[styles.Btn_Txt, BtnState === 3 ? styles.ActiveBtn_Txt : null]} >Private</Text>
+          <TouchableOpacity style={[styles.Btn, BtnState === 2 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
+            <Text style={[styles.Btn_Txt, BtnState === 2 ? styles.ActiveBtn_Txt : null]} >Foreign</Text>
           </TouchableOpacity>
         </ScrollView>
         {
@@ -255,8 +255,6 @@ const SchlorShip_Data = (props) => {
               </View>
             </View> : null
         }
-
-
 
         <View style={styles.FlatList_Cont} >
           <FlatList

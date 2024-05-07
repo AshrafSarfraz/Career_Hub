@@ -25,7 +25,8 @@ import JOB_Data from '../../Screens/Jobs/Jobs_Data/Index';
 import Jobs_Details from '../../Screens/Jobs/Detail';
 import Jobs_Update from '../../Screens/Admin/JOBS/Update/Update';
 import Sch_Details from '../../Screens/SchlorShips/Details';
-import SchlorShip_Data from '../../Screens/SchlorShips/Data/Index';
+import Sch_Data from '../../Screens/SchlorShips/Data/Index';
+import SchlorShip_Data from '../../Screens/Admin/Schlorship/Get/Get';
 
 
 
@@ -63,7 +64,7 @@ const Stack_Navigation = () => {
         <Stack.Screen name="Uni_Detail" component={Uni_Details} />
         <Stack.Screen name="Jobs_Data" component={JOB_Data} />
         <Stack.Screen name="Jobs_Details" component={Jobs_Details} />
-        <Stack.Screen name="Sch_Data" component={SchlorShip_Data} />
+        <Stack.Screen name="Sch_Data" component={Sch_Data} />
         <Stack.Screen name="Sch_Details" component={Sch_Details} />
         <Stack.Screen name="Edit_Profile" component={Edit_Profile} />
         

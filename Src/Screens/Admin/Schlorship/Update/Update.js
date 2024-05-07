@@ -13,36 +13,28 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import { useRoute } from '@react-navigation/native';
 import { Calendar } from 'react-native-calendars';
-import { Fonts } from '../../../../Themes/Fonts';
 import { styles } from './style';
 import ActivityIndicatorModal from '../../../../Components/Loader/ActivityIndicator';
 
 const Schlorship_Update = ({ navigation }) => {
   const route = useRoute();
 
-  const [logoImages, setLogoImages] = useState(route.params.Logo || []);
+  const [Logo, setLogo] = useState(route.params.Logo || []);
   const [posterImages, setPosterImages] = useState(route.params.poster || []);
-  const [uniImages, setUniImages] = useState(route.params.uni || []);
-
-  const [name, setName] = useState(route.params.data.name);
-  const [City, setCity] = useState(route.params.data.City);
-  const [City_Link, setCity_Link] = useState(route.params.data.City_Link);
-  const [Province, setProvince] = useState(route.params.data.Province);
-  const [Campus, setCampus] = useState(route.params.data.Campus);
-  const [Status, setStatus] = useState(route.params.data.Status);
-  const [Location, setLocation] = useState(route.params.data.Location);
-  const [Longitude, setLongitude] = useState(route.params.data.Longitude);
-  const [Latitude, setLatitude] = useState(route.params.data.Latitude);
-  const [description, setDescription] = useState(route.params.data.description);
-  const [StartingDate, setStartingDate] = useState(route.params.data.StartingDate);
-  const [EndingDate, setEndingDate] = useState(route.params.data.EndingDate);
-  const [PhoneNumber, setPhoneNumber] = useState(route.params.data.PhoneNumber);
-  const [Link, setLink] = useState(route.params.data.Link);
-  const [VideoLink, setVideoLink] = useState(route.params.data.VideoLink);
-  const [Type, setType] = useState(route.params.data.Type);
+  const [Sch_name, setSch_name] = useState(route.params.Sch_name);
+  const [Selected_City, setSelected_City] = useState(route.params.Selected_City);
+  const [Province, setProvince] = useState(route.params.Province);
+  const [Status, setStatus] = useState(route.params.Status);
+  const [description, setDescription] = useState(route.params.description);
+  const [Apply_Des, setApply_Des] = useState(route.params.Apply_Des);
+  const [Qualification, setQualification] = useState(route.params.Qualification);
+  const [StartingDate, setStartingDate] = useState(route.params.StartingDate);
+  const [EndingDate, setEndingDate] = useState(route.params.EndingDate);
+  const [Link, setLink] = useState(route.params.Link);
+  const [Sch_Type, setSch_Type] = useState(route.params.Sch_Type);
+  const [VideoLink, setVideoLink] = useState(route.params.VideoLink);
   const [isLoading, setIsLoading] = useState(false);
   const [Error, setError] = useState('');
-
 
   const openImagePicker = async (setImage, itemId) => {
     try {
@@ -50,7 +42,6 @@ const Schlorship_Update = ({ navigation }) => {
         mediaType: 'photo',
         multiple: true,
       });
-  
       if (results && !results.didCancel) { // Check if results is not undefined
         const updatedImages = results.map((result) => result.path); // Update state variable with selected image paths
         setImage(updatedImages);
@@ -60,9 +51,6 @@ const Schlorship_Update = ({ navigation }) => {
     }
   };
   
-  
-  
-
   const uploadImages = async (images, categoryName) => {
     try {
       const uploadTasks = images.map(async (image, index) => {
@@ -80,39 +68,31 @@ const Schlorship_Update = ({ navigation }) => {
     }
   };
 
-  const uploadItem = async () => {
+  const Update_Data = async (itemId) => {
     try {
       setIsLoading(true);
-  
-      const LogoImageUrls = logoImages.length > 0 ? await uploadImages(logoImages, 'Logo') : route.params.data.Logo;
-      const posterImageUrls = posterImages.length > 0 ? await uploadImages(posterImages, 'Poster') : route.params.data.poster;
-      const uniImageUrls = uniImages.length > 0 ? await uploadImages(uniImages, 'Uni') : route.params.data.uni;
-  
-      const updatedData = {
-        Logo: LogoImageUrls,
-        poster: posterImageUrls,
-        uni: uniImageUrls.length > 0 ? uniImageUrls : route.params.data.uni,
-        name: name,
-        City: City,
-        City_Link: City_Link,
-        Province: Province || "",
-        Status: Status,
-        Location: Location,
-        Longitude: Longitude,
-        Latitude: Latitude,
-        description: description,
-        StartingDate: StartingDate,
-        EndingDate: EndingDate,
-        PhoneNumber: PhoneNumber,
-        Link: Link,
-        VideoLink: VideoLink,
-        Type: Type  
-      };
-  
+    const LogoImageUrls = Logo.length > 0 ? await uploadImages(Logo, 'Logo') : route.params.data.Logo;
+     const posterImageUrls = posterImages.length > 0 ? await uploadImages(posterImages, 'Poster', itemId) : route.params.data.poster;
+      const updatedData = {};
+      if (LogoImageUrls) updatedData.Logo = LogoImageUrls;
+      if (posterImageUrls) updatedData.poster = posterImageUrls;
+      if (Sch_name) updatedData.Sch_name = Sch_name;
+      if (Selected_City) updatedData.Selected_City = Selected_City;
+      if (Province) updatedData.Province = Province;
+      if (Status) updatedData.Status = Status;
+      if (description) updatedData.description = description;
+      if (Apply_Des) updatedData.Apply_Des = Apply_Des;
+      if (Qualification) updatedData.Qualification = Qualification;
+      if (StartingDate) updatedData.StartingDate = StartingDate;
+      if (EndingDate) updatedData.EndingDate = EndingDate;
+      if (Sch_Type) updatedData.Sch_Type = Sch_Type;
+      if (VideoLink) updatedData.VideoLink = VideoLink;
+      if (Link) updatedData.Link = Link;
+      
       await firestore()
-        .collection('Schlorship')
-        .doc(route.params.id)
-        .update(updatedData); // Correct the update query to update the document with updatedData
+        .collection('Scholarship')
+        .doc(itemId)
+        .update(updatedData); 
       setIsLoading(false);
       navigation.goBack();
     } catch (error) {
@@ -120,8 +100,7 @@ const Schlorship_Update = ({ navigation }) => {
       setIsLoading(false);
     }
   };
-  
-
+      
   const onDayPress = (day) => {
     setStartingDate(day.dateString);
   };
@@ -161,200 +140,138 @@ const Schlorship_Update = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
     <View style={styles.header}>
-      <Text style={styles.headerText}>Edit_Data</Text>
+      <Text style={styles.headerText}>Update Scholarship</Text>
     </View>
 
     <View style={styles.Body_container}>
-      <TextInput
-        placeholder="University Name"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={name}
-        onChangeText={text => setName(text)}
-      />
-      <TextInput
-        placeholder="City Name"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={City}
-        onChangeText={text => setCity(text)}
-      />
-      <TextInput
-        placeholder="Government, Private, Semi-Government"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={Status}
-        onChangeText={text => setStatus(text)}
-      />
-      <TextInput
-        placeholder="Location (Address)"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={Location}
-        onChangeText={text => setLocation(text)}
-      />
-      <View style={styles.Input_Cont}>
-        <TextInput
-          placeholder="Longitude"
-          placeholderTextColor={'#7F7F7F'}
-          style={styles.inputStyle1}
-          value={Longitude}
-          onChangeText={text => setLongitude(text)}
-        />
-        <TextInput
-          placeholder="Latitude"
-          placeholderTextColor={'#7F7F7F'}
-          style={styles.inputStyle1}
-          value={Latitude}
-          onChangeText={text => setLatitude(text)}
-        />
+
+    <TextInput
+      placeholder="ScholarShip Name"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={Sch_name}
+      onChangeText={text => setSch_name(text)}
+    />
+    <TextInput
+      placeholder="In/Out Country"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={Status}
+      onChangeText={text => setStatus(text)}
+    />
+    <TextInput
+      placeholder="ScholarShip Type"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={Sch_Type}
+      onChangeText={text => setSch_Type(text)}
+    />
+    <TextInput
+      placeholder="ScholarShip Description"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={description}
+      onChangeText={text => setDescription(text)}
+    />
+    <TextInput
+    placeholder="Apply Description"
+    placeholderTextColor={'#7F7F7F'}
+    style={styles.inputStyle}
+    value={Apply_Des}
+    onChangeText={text => setApply_Des(text)}
+  />
+    <TextInput
+      placeholder="Selected City"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={Selected_City}
+      onChangeText={text => setSelected_City(text)}
+    />
+
+    <TextInput
+      placeholder="Qualification"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={Qualification}
+      onChangeText={text => setQualification(text)}
+    />
+    <TextInput
+      placeholder="Apply Link"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={Link}
+      onChangeText={text => setLink(text)}
+    />
+    <TextInput
+      placeholder="Province"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={Province}
+      onChangeText={text => setProvince(text)}
+    />
+    <TextInput
+      placeholder="Video_Link"
+      placeholderTextColor={'#7F7F7F'}
+      style={styles.inputStyle}
+      value={VideoLink}
+      onChangeText={text => setVideoLink(text)}
+    />
+    <View style={styles.Schdule_Cont}>
+      <View style={{ alignItems: "center" }}>
+        <Text style={styles.End} >Starting Date</Text>
+        <Text style={styles.Dates}>{StartingDate}</Text>
+      </View>
+      <View style={{ alignItems: "center" }}>
+        <Text style={styles.End} >Ending Date</Text>
+        <Text style={styles.Dates}>{EndingDate}</Text>
       </View>
 
+    </View>
 
-      <TextInput
-        placeholder="Enter Item Description"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={description}
-        onChangeText={text => setDescription(text)}
-      />
-      <TextInput
-        placeholder="Enter Administration Number"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={PhoneNumber}
-        onChangeText={text => setPhoneNumber(text)}
-      />
-      <TextInput
-        placeholder="Apply_Link"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={Link}
-        onChangeText={text => setLink(text)}
-      />
-      <TextInput
-        placeholder="Video_Link"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={VideoLink}
-        onChangeText={text => setVideoLink(text)}
-      />
-      <TextInput
-        placeholder="City_Link"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={City_Link}
-        onChangeText={text => setCity_Link(text)}
-      />
-      <TextInput
-        placeholder="University-Type"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={Type}
-        onChangeText={text => setType(text)}
-      />
-      <TextInput
-        placeholder="Campus"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={Campus}
-        onChangeText={text => setCampus(text)}
-      />
-      <TextInput
-        placeholder="Province"
-        placeholderTextColor={'#7F7F7F'}
-        style={styles.inputStyle}
-        value={Province}
-        onChangeText={text => setProvince(text)}
-      />
-      <View style={styles.Schdule_Cont}>
-        <View style={{ alignItems: "center" }}>
-          <Text style={styles.End} >Starting Date</Text>
-          <Text style={styles.Dates}>{StartingDate}</Text>
-        </View>
-        <View style={{ alignItems: "center" }}>
-          <Text style={styles.End} >Ending Date</Text>
-          <Text style={styles.Dates}>{EndingDate}</Text>
-        </View>
+    <Text style={styles.Title} >Starting Date</Text>
+    <Calendar
+      markedDates={{
+        [StartingDate]: { selected: true, marked: true },
+      }}
+      onDayPress={onDayPress}
+    />
 
-      </View>
+    <View style={{ marginTop: 20 }}>
+      <Text>Selected Date: {StartingDate}</Text>
+    </View>
+    <Text style={styles.Title}>Ending Date</Text>
 
-      <Text style={styles.Title} >Starting Date</Text>
-      <Calendar
-        markedDates={{
-          [StartingDate]: { selected: true, marked: true },
-        }}
-        onDayPress={onDayPress}
-      />
+    <Calendar
+      markedDates={{
+        [EndingDate]: { selected: true, marked: true },
+      }}
+      onDayPress={onDayPress1}
+    />
 
-      <View style={{ marginTop: 20 }}>
-        <Text>Selected Date: {StartingDate}</Text>
-      </View>
-      <Text style={styles.Title}>Ending Date</Text>
+    <View style={{ marginTop: 20 }}>
+      <Text>Selected Date: {EndingDate}</Text>
+    </View>
 
-      <Calendar
-        markedDates={{
-          [EndingDate]: { selected: true, marked: true },
-        }}
-        onDayPress={onDayPress1}
-      />
 
-      <View style={{ marginTop: 20 }}>
-        <Text>Selected Date: {EndingDate}</Text>
-      </View>
-      <Text style={{ fontSize: 14, color: "#000", fontFamily: Fonts.SF_SemiBold, marginVertical: '3%' }}>University Poster_Images Backend</Text>
-      {route.params.data && route.params.data.poster && route.params.data.poster.map((imageUri, index) => (
-        <Image
-          key={index}
-          source={typeof imageUri === 'string' ? { uri: imageUri } : require('../../../../Assets/Images/uni_logo.png')}
-          style={[styles.icon, { width: 100, height: 100, resizeMode: "contain", marginBottom: '2%' }]}
-        />
-      ))}
-      
-      {route.params.data && route.params.data.Logo && route.params.data.Logo.map((imageUri, index) => (
-        <Image
-          key={index}
-          source={typeof imageUri === 'string' ? { uri: imageUri } : require('../../../../Assets/Images/uni_logo.png')}
-          style={[styles.icon, { width: 100, height: 100, resizeMode: "contain", marginBottom: "2%" }]}
-        />
-      ))}
-      
-      {route.params.data && route.params.data.uni && route.params.data.uni.map((imageUri, index) => (
-        <Image
-          key={index}
-          source={typeof imageUri === 'string' ? { uri: imageUri } : require('../../../../Assets/Images/uni_logo.png')}
-          style={[styles.icon, { width: 100, height: 100, resizeMode: "contain" }]}
-        />
-      ))}
-      
-      
+    {renderImages(Logo, 'Logo')}
+    {renderImages(posterImages, 'Poster_Images')}
 
-      {renderImages(logoImages, 'New Logo')}
-      {renderImages(posterImages, 'New Poster_Images')}
-      {renderImages(uniImages, 'New Uni_Images')}
 
-      <TouchableOpacity
+    <TouchableOpacity
       style={styles.pickBtn}
-      onPress={() => openImagePicker(setLogoImages, route.params.id)}>
+      onPress={() => openImagePicker(setLogo)}>
       <Text style={styles.Picker_Txt}>New Logo</Text>
     </TouchableOpacity>
     <TouchableOpacity
       style={styles.pickBtn}
-      onPress={() => openImagePicker(setPosterImages, route.params.id)}>
+      onPress={() => openImagePicker(setPosterImages)}>
       <Text style={styles.Picker_Txt}>New Poster</Text>
     </TouchableOpacity>
-    <TouchableOpacity
-      style={styles.pickBtn}
-      onPress={() => openImagePicker(setUniImages, route.params.id)}>
-      <Text style={styles.Picker_Txt}>New University Images</Text>
-    </TouchableOpacity>
 
-      <TouchableOpacity style={styles.uploadBtn} onPress={() => { uploadItem(); }}>
-        <Text style={{ color: '#FFF' }}>Update Data</Text>
-      </TouchableOpacity>
-
-
-    </View>
+    <TouchableOpacity style={styles.uploadBtn} onPress={() => { Update_Data(route.params.id); }}>
+    <Text style={{ color: '#FFF' }}>Update Data</Text>
+  </TouchableOpacity>
+  </View>
     <ActivityIndicatorModal visible={isLoading} />
   </ScrollView>
   );

@@ -127,7 +127,8 @@ const styles = StyleSheet.create({
    
   
   FlatList_Cont: {
-    paddingBottom: "10%"
+    paddingBottom: "15%",
+
   },
   Cart: {
     backgroundColor: Colors.White,
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
     bottom:20,
     right:20,
     justifyContent:"center",
-    alignItems:"center"
+    alignItems:"center",
 
   }
  

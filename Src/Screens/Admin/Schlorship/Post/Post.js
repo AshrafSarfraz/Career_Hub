@@ -77,7 +77,7 @@ const SchlorShip_Post = ({ navigation }) => {
     const LogoImageUrls = await uploadImages(Logo, 'Logo');
     const posterImageUrls = await uploadImages(posterImages, 'Poster');
     try {
-      await firestore().collection('Schlorship').doc().set({
+      await firestore().collection('Scholarship').doc().set({
         Logo: LogoImageUrls,
         poster: posterImageUrls,
         Sch_name: Sch_name,

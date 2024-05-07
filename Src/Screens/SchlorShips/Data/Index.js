@@ -14,7 +14,7 @@ import { Add_Scholarship, Remove_Scholarship } from '../../../Redux_Toolkit/wish
 
 
 
-const SchlorShip_Data = (props) => {
+const Sch_Data = (props) => {
   const dispatch=useDispatch();
   const Scholarship_D = useSelector((state) => state.scholarship); // Accessing 'user' slice
 
@@ -126,7 +126,7 @@ const SchlorShip_Data = (props) => {
   const getItems = () => {
     try {
       firestore()
-        .collection('Schlorship')
+        .collection('Scholarship')
         .get()
         .then(querySnapshot => {   // console.log('Total items: ', querySnapshot.size);
           let tempData = [];
@@ -205,8 +205,8 @@ const SchlorShip_Data = (props) => {
           <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Pakistan</Text>
         </TouchableOpacity>
      
-        <TouchableOpacity style={[styles.Btn, BtnState === 3 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
-          <Text style={[styles.Btn_Txt, BtnState === 3 ? styles.ActiveBtn_Txt : null]} >Foreign</Text>
+        <TouchableOpacity style={[styles.Btn, BtnState === 2 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
+          <Text style={[styles.Btn_Txt, BtnState === 2 ? styles.ActiveBtn_Txt : null]} >Foreign</Text>
         </TouchableOpacity>
       </ScrollView>
       {
@@ -246,7 +246,7 @@ const SchlorShip_Data = (props) => {
   )
 }
 
-export default SchlorShip_Data
+export default Sch_Data
 
 
 
