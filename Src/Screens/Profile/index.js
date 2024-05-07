@@ -21,7 +21,6 @@ const Profile = () => {
           if (userDocument.exists) {
             const userDataFromFirestore = userDocument.data();
             setUserData(userDataFromFirestore);
-            // Set user image URL directly from user document
             setUserImage(userDataFromFirestore.imageUrl);
           } else {
             console.log('User document does not exist.');
