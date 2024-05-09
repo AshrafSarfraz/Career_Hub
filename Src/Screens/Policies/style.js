@@ -9,14 +9,15 @@ import { Fonts } from "../../Themes/Fonts"
 export const styles=StyleSheet.create({
     MainCont:{
        backgroundColor:Colors.White,
-       paddingBottom:'5%',
-       flex:1
+       padding:'4%',
+       flex:1,
+
     },
     Header:{
        flexDirection:'row',
        alignItems:'center',
        justifyContent:'space-between',
-       padding:'4%'
+       paddingBottom:"3%"
     },
     Menu:{
        width:50,height:50,
@@ -28,22 +29,24 @@ export const styles=StyleSheet.create({
        color:Colors.Green,
        fontWeight:'600'
     },
-    Body:{
-     padding:'4%'
+    itemContainer:{
+
     },
-    PoliciesCont:{
-     flexDirection:'row',
-     alignItems:'flex-start',
-     marginBottom:'4%'
+    heading:{
+     fontSize:14,
+     lineHeight:16,
+     fontFamily:Fonts.SF_Bold,
+     fontWeight:"400",
+     color:Colors.Black,
+     marginTop:"3%",
+     marginBottom:"0.5%",
     },
-    Dot:{
-     fontSize:20,color:"#212121",
-     bottom:'2%', marginRight:'2%'
-    },
-    Policies_Txt:{
-     fontSize:16,lineHeight:24,
-     color:'#212121',
-     width:'98%'
+    Item_text:{
+      fontSize:12,
+      lineHeight:16,
+      fontFamily:Fonts.SF_Regular,
+      color:Colors.Grey9,
+      textAlign:"justify"
     }
     
    })

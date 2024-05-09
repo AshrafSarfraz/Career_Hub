@@ -114,11 +114,11 @@ const SchlorShip_Data = (props) => {
           setIsLoading(false)
         })
         .catch(error => {
-          setError.error('Error getting items from Firestore:', error);
+          setError('Error getting items from Firestore:', error);
           setIsLoading(false)
         });
     } catch (error) {
-      setError.error('Error fetching items:', error);
+      setError('Error fetching items:', error);
       setIsLoading(false)
     }
   };

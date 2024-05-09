@@ -16,8 +16,7 @@ import { Add_Scholarship, Remove_Scholarship } from '../../../Redux_Toolkit/wish
 
 const Sch_Data = (props) => {
   const dispatch=useDispatch();
-  const Scholarship_D = useSelector((state) => state.scholarship); // Accessing 'user' slice
-
+  const Scholarship_D = useSelector((state) => state.scholarship); 
 
   const isFocused = useIsFocused();
   const currentDate = new Date();
@@ -30,7 +29,6 @@ const Sch_Data = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [Error, setError] = useState('');
-
 
   useEffect(()=>{
     filteredData.map(item=>{
@@ -75,7 +73,6 @@ const Sch_Data = (props) => {
     setFilteredItems(filtered);
   };
   
-
   const filterDataByButton = () => {
     let filtered = filteredData;
     if (selectedCities.length > 0) {
@@ -110,7 +107,6 @@ const Sch_Data = (props) => {
           break;
       }
     }
-
     // console.log('Filtered Data:', filtered);
     return filtered;
   };

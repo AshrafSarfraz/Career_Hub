@@ -205,8 +205,8 @@ const Job_Data = (props) => {
         <TouchableOpacity style={[styles.Btn, BtnState === 1 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(1) }}>
           <Text style={[styles.Btn_Txt, BtnState == 1 ? styles.ActiveBtn_Txt : null]} >Government</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.Btn, BtnState === 3 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
-          <Text style={[styles.Btn_Txt, BtnState === 3 ? styles.ActiveBtn_Txt : null]} >Private</Text>
+        <TouchableOpacity style={[styles.Btn, BtnState === 2 ? styles.ActiveBtn : null]} onPress={() => { setBtnState(2) }}>
+          <Text style={[styles.Btn_Txt, BtnState === 2 ? styles.ActiveBtn_Txt : null]} >Private</Text>
         </TouchableOpacity>
       </ScrollView>
 {

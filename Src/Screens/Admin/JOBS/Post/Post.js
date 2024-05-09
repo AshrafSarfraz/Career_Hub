@@ -15,21 +15,21 @@ import ActivityIndicatorModal from '../../../../Components/Loader/ActivityIndica
 
 const Job_Post = ({ navigation }) => {
   const [posterImages, setPosterImages] = useState([]);
-  const [name, setname] = useState('Power Planning & Monitoring');
-  const [City, setCity] = useState('Islamabad');
-  const [Description, setDescription] = useState('Today jobs latest Power Planning & Monitoring Company Government jobs in Pakistan has been announced, Interested Candidates to fulfill these positions with Handsome Salary Package and Allowances according to Organization Policies., currently hiring for various positions in government jobs across Pakistan, including jobs in Islamabad 2024. Explore our latest govt job vacancies in Pakistan and apply online for Power Planning & Monitoring Company Careers today.');
-  const [Seats, setSeats] = useState('1');
-  const [Position, setPosition] = useState('1');
-  const [Location, setLocation] = useState('Islamabad, Pakistan');
-  const [Country, setCountry] = useState('Pakistan');
-  const [Status, setStatus] = useState('Government');
-  const [Qualification, setQualification] = useState('Chartered Accountant from ICAP');
-  const [Organization, setOrganization] = useState('Power Planning & Monitoring Company');
-  const [Employment_Type, setEmployment_Type] = useState('Full Time');
-  const [StartingDate, setStartingDate] = useState('2000-01-01');
-  const [EndingDate, setEndingDate] = useState('2000-01-01');
-  const [Apply_Des, setApply_Des] = useState('Prepare a hard copy of your application along with all required documents.Send your application via mail to the General Manager (HR) at the following address: Room No. 112, Evacuee Trust Complex, F-5/1, Agha Khan Road, Islamabad. Alternatively, you can apply online on the website www.pitc.com.pk. Make sure to include a recent passport-size photograph, copy of your CNIC or Passport, and experience certificates with your application. Attest copies of your degrees and certificates as required. Only shortlisted candidates will be contacted for the interview process. No TA/DA will be provided for the interview. Note that Power Planning & Monitoring Company (SPPAC) reserves the right to withhold or cancel the recruitment process at any stage without assigning any reason.');
-  const [Link, setLink] = useState('www.pitc.com.pk');
+  const [name, setname] = useState('');
+  const [City, setCity] = useState('');
+  const [Description, setDescription] = useState('');
+  const [Seats, setSeats] = useState('');
+  const [Position, setPosition] = useState('');
+  const [Location, setLocation] = useState('');
+  const [Country, setCountry] = useState('');
+  const [Status, setStatus] = useState('');
+  const [Qualification, setQualification] = useState('');
+  const [Organization, setOrganization] = useState('');
+  const [Employment_Type, setEmployment_Type] = useState('');
+  const [StartingDate, setStartingDate] = useState('');
+  const [EndingDate, setEndingDate] = useState('');
+  const [Apply_Des, setApply_Des] = useState('');
+  const [Link, setLink] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [Error, setError] = useState('');
   
@@ -52,7 +52,7 @@ const Job_Post = ({ navigation }) => {
           setImage(results.map((result) => result.path));
         }
       } catch (error) {
-        console.error('Error picking images:', error);
+        setError('Error picking images:', error);
         // Handle error gracefully
       }
     };
@@ -69,7 +69,7 @@ const Job_Post = ({ navigation }) => {
         const downloadURLs = await Promise.all(uploadTasks);
         return downloadURLs;
       } catch (error) {
-        console.error('Error uploading images:', error);
+        setError('Error uploading images:', error);
         // Handle error gracefully
         throw error;
       }
@@ -121,7 +121,7 @@ const Job_Post = ({ navigation }) => {
   
         navigation.goBack(); // Navigate back
       } catch (error) {
-        console.error('Error uploading data:', error);
+        setError('Error uploading data:', error);
       } 
     };
   

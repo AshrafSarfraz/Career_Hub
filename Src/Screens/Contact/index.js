@@ -1,15 +1,22 @@
 import { View, Text, ScrollView, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
 import React,{useState} from 'react'
-import CustomHeader from '../../Components/CustomHeader/CustomHeader'
-import { Colors } from '../../Themes/Colors'
-import { Fonts } from '../../Themes/Fonts'
-import { DocPlus, Menu } from '../../Themes/Images'
-
+import ImageCropPicker from 'react-native-image-crop-picker';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+import { DocPlus, Menu, Plus } from '../../Themes/Images'
 import SubmissionAlert from '../../Components/Alerts/SubmissionAlert'
 import CustomButton from '../../Components/CustomButton/CustomButton'
+import { styles } from './style';
+import { Colors } from '../../Themes/Colors';
+import { Fonts } from '../../Themes/Fonts';
+
 
 const Contact = ({navigation}) => {
+  const [BugsImages, setBugsImages] = useState([]);
+  const [Subject, setSubject] = useState('');
+  const [Description, setDescription] = useState('');
   const [alertVisible, setAlertVisible] = useState(false);
+  const [Error, setError] = useState('');
 
   const showAlert = () => {
     setAlertVisible(true);
@@ -19,7 +26,63 @@ const Contact = ({navigation}) => {
     setAlertVisible(false);
   };
 
+  const openImagePicker = async (setImage) => {
+    try {
+      const results = await ImageCropPicker.openPicker({
+        mediaType: 'photo',
+        multiple: true,
+      });
 
+      if (!results.didCancel) {
+        setImage(results.map((result) => result.path));
+      }
+    } catch (error) {
+      setError('Error picking images:', error);
+    }
+  };
+
+  const uploadImages = async (images, categoryName) => {
+    try {
+      const uploadTasks = images.map(async (image, index) => {
+        const imageName = `${categoryName}_${index}.jpg`;
+        const reference = storage().ref(imageName);
+        await reference.putFile(image);
+        return reference.getDownloadURL();
+      });
+
+      const downloadURLs = await Promise.all(uploadTasks);
+      return downloadURLs;
+    } catch (error) {
+      setError('Error uploading images:', error);
+    }
+  };
+
+  const handleUpload = async () => {
+    setIsLoading(true);
+    const BugsImagesUrl = await uploadImages(BugsImages, 'BugsImages');
+    try {
+      await firestore().collection('Complaint').doc().set({
+        BugsImages: BugsImagesUrl,
+        Subject:Subject,
+        Description:Description
+      });
+    } catch (error) {
+      setError('Error storing images in Firestore:', error);
+    } finally {
+      setIsLoading(false); // Hide activity indicator modal after upload completes
+    }
+  };
+
+  const renderImages = (images, label) => {
+    return (
+      <View style={styles.imageContainer}>
+        <Text style={styles.imageLabel}>{label}</Text>
+        {images.map((image, index) => (
+          <Image key={index} source={{ uri: image }} style={{width:70,height:70,resizeMode:"contain",marginRight:5,borderWidth:2,borderColor:"blue"}} />
+        ))}
+      </View>
+    );
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.MainCont} >
@@ -37,13 +100,21 @@ const Contact = ({navigation}) => {
        <TextInput style={styles.Input_Design} placeholder='Enter Description' placeholderTextColor={Colors.Grey9} />
       </View>
       <Text style={styles.Subject_Txt} >Upload up to 3 images:</Text>
+      
        <View style={styles.Doc_Cont} >
-        <TouchableOpacity onPress={()=>{}} >
-        <Image style={styles.Img} source={DocPlus} />
+        <TouchableOpacity onPress={() => openImagePicker(setBugsImages)} style={styles.btn_} >
+         <View style={styles.Plus_Img_Cont}>
+        <Image style={styles.Img} source={Plus} />
+        </View>
         <Text style={styles.Upload_Txt} >Upload here</Text>
         </TouchableOpacity>
+        <View>
+        {renderImages(BugsImages, '')}
+        </View>
+     
        </View>
        <CustomButton title={'Submit'} onPress={showAlert} />
+       
        <SubmissionAlert
         visible={alertVisible}
         message="This is a custom alert!"
@@ -54,54 +125,3 @@ const Contact = ({navigation}) => {
 }
 
 export default Contact
-
-const styles=StyleSheet.create({
-  MainCont:{
-    backgroundColor:Colors.Bg,
-    padding:'2%',
-    paddingHorizontal:'4%'
-  },
-  InputCont:{
-    marginVertical:'4%'
-  },
-  Subject_Txt:{
-    fontSize:14,
-    fontFamily:Fonts.SF_Regular,
-    color:Colors.Green,
-    lineHeight:18,
-    marginVertical:'4%'
-  },
-  Input_Design:{
-    fontSize:14,
-    fontFamily:Fonts.SF_Medium,
-    color:Colors.Black,
-    lineHeight:18,
-    padding:'4%',
-    elevation:1,
-    backgroundColor:Colors.White,
-    borderRadius:10,
-  },
-  Doc_Cont:{
-    height:250,
-    width:'100%',
-    backgroundColor:Colors.White,
-    borderRadius:10,
-    elevation:1,
-    alignItems:'center',
-    justifyContent:'center',
-    marginBottom:100
-  },
-  Img:{
-    width:50,height:50
-  },
-  Upload_Txt:{
-    color:Colors.Grey9,
-    fontSize:14,
-    fontFamily:Fonts.SF_Regular,
-     marginTop:'5%',
-     textAlign:'center',
-     marginLeft:"-2%"
-    
-  }
-
-})
