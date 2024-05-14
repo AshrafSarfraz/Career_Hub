@@ -57,7 +57,7 @@ const SignInScreen = ({ navigation }) => {
     }
     if (!Email || !Password) {
       setIsError('Please fill in both email and password fields.');
-      return; // Don't proceed with sign-in
+      return; 
     }
        setIsLoading(true)
     try {
@@ -67,12 +67,14 @@ const SignInScreen = ({ navigation }) => {
         setIsLoading(false)
         navigation.navigate('Bottom')
       } else {
+        setIsLoading(false)
         setIsError('You are not verified So Please check your Gmail for verification');
         await auth.currentUser.sendEmailVerification();
         await auth.signOut();
       }
     } catch (error) {
-      setIsError('Error signing in:', error.message);
+      setIsLoading(false)
+      setIsError('Please check your Email or Internet Connection ');
     }};
 
   
@@ -87,7 +89,7 @@ const SignInScreen = ({ navigation }) => {
           <View style={[styles.Input_Field, Email !== '' ? styles.Active_Input_Field : null]}>
             <Image source={Message} style={[styles.Input_Icon, { tintColor: Email !== '' ? Colors.Black2 : Colors.Grey9 }]} resizeMode='contain' />
             <TextInput
-              placeholder="Email"
+              placeholder="Enter Email"
               value={Email}
               placeholderTextColor={Colors.Grey9}
               onChangeText={(txt) => { setEmail(txt); }}

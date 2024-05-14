@@ -41,11 +41,11 @@ export const styles=StyleSheet.create({
      marginTop:"3%",
      marginBottom:"0.5%",
     },
-    Item_text:{
-      fontSize:12,
+    Term_Text:{
+      fontSize:10,
       lineHeight:16,
       fontFamily:Fonts.SF_Regular,
-      color:Colors.Grey9,
+      color:'red',
       textAlign:"justify"
     }
     

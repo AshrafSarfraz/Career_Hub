@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
+import { generatePolicyText } from './Terms_Condition';
 import { useNavigation } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import Icons from 'react-native-vector-icons/FontAwesome5';
@@ -29,7 +30,6 @@ const SignUp = () => {
   const [isChecked, setIsChecked] = useState(false);
 
  
-
   const checkPasswordStrength = (Password) => {
     // Define criteria for medium and strong passwords
     const mediumCriteria = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
@@ -125,6 +125,10 @@ const SignUp = () => {
       }
     }
   }
+  const showPoliciesAlert = () => {
+    const policyText = generatePolicyText();
+    Alert.alert('Terms & Policies', policyText);
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.MainContainer}>
@@ -221,7 +225,7 @@ const SignUp = () => {
             </TouchableOpacity>
             <View style={{ flexDirection: 'row' }} >
               <Text style={styles.label}>I Agree to the Bobi’s </Text>
-              <TouchableOpacity onPress={() => Alert.alert('Conditions')} >
+              <TouchableOpacity onPress={() => showPoliciesAlert()} >
                 <Text style={styles.Term_Text} >Term & Conditions</Text>
               </TouchableOpacity>
             </View>
