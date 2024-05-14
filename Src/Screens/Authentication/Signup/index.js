@@ -13,6 +13,7 @@ import CustomButton from '../../../Components/CustomButton/CustomButton';
 import { styles } from './style';
 import CustomHeader2 from '../../../Components/CustomHeader2/CustomHeader2';
 import ActivityIndicatorModal from '../../../Components/Loader/ActivityIndicator';
+import Terms_And_Conditions from '../../../Components/Alerts/Terms_and_Condition';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -28,7 +29,16 @@ const SignUp = () => {
   const [isError, setIsError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [Error, setError] = useState('');
 
+  const showAlert = () => {
+    setAlertVisible(true);
+  };
+
+  const hideAlert = () => {
+    setAlertVisible(false);
+  };
  
   const checkPasswordStrength = (Password) => {
     // Define criteria for medium and strong passwords
@@ -125,10 +135,7 @@ const SignUp = () => {
       }
     }
   }
-  const showPoliciesAlert = () => {
-    const policyText = generatePolicyText();
-    Alert.alert('Terms & Policies', policyText);
-  };
+
 
   return (
     <ScrollView contentContainerStyle={styles.MainContainer}>
@@ -225,7 +232,7 @@ const SignUp = () => {
             </TouchableOpacity>
             <View style={{ flexDirection: 'row' }} >
               <Text style={styles.label}>I Agree to the Bobi’s </Text>
-              <TouchableOpacity onPress={() => showPoliciesAlert()} >
+              <TouchableOpacity onPress={() => showAlert()} >
                 <Text style={styles.Term_Text} >Term & Conditions</Text>
               </TouchableOpacity>
             </View>
@@ -250,6 +257,12 @@ const SignUp = () => {
 
       </View>
       <ActivityIndicatorModal visible={isLoading} />
+  
+       <Terms_And_Conditions
+        visible={alertVisible}
+        message="This is a custom alert!"
+        onClose={()=>{hideAlert(),navigation.goBack()}}
+      />
     </ScrollView>
   );
 }
