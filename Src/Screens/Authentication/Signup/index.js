@@ -257,7 +257,6 @@ const SignUp = () => {
 
       </View>
       <ActivityIndicatorModal visible={isLoading} />
-  
        <Terms_And_Conditions
         visible={alertVisible}
         message="This is a custom alert!"

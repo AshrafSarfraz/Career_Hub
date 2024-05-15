@@ -12,11 +12,11 @@ const Admin_Home = ({navigation}) => {
     <CustomHeader title={'Admin Panel'} onBackPress={()=>{navigation.goBack()}} />
     </View>
     <View style={Styles.Body}>
-     <CustomButton title={'University Data'} onPress={()=>{navigation.navigate('Uni_Data')}} />
+     <CustomButton title={'Universities'} onPress={()=>{navigation.navigate('Uni_Data')}} />
      <View style={Styles.Btn_Space} >
-     <CustomButton title={'Job Data'} onPress={()=>{navigation.navigate('Job_Data')}} />
+     <CustomButton title={'Jobs'} onPress={()=>{navigation.navigate('Job_Data')}} />
      </View>
-     <CustomButton title={'SchlorShip'} onPress={()=>{navigation.navigate('Schlorship_Data')}} />
+     <CustomButton title={'Scholarship'} onPress={()=>{navigation.navigate('Schlorship_Data')}} />
     </View>
     </View>
   )

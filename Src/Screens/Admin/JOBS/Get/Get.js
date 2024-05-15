@@ -25,7 +25,7 @@ const Job_Data = (props) => {
   
   const filterItems = () => {
     const filtered = filteredData.filter((item) => {
-      const itemName = (item.data && item.data.name) ? item.data.name.toLowerCase() : '';
+      const itemName = (item.data && item.data.Job_Name) ? item.data.Job_Name.toLowerCase() : '';
       const searchLowerCase = searchQuery.toLowerCase();
       return itemName.includes(searchLowerCase);
     });

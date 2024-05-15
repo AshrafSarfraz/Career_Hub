@@ -9,6 +9,7 @@ import CustomButton from '../../Components/CustomButton/CustomButton'
 import { styles } from './style';
 import { Colors } from '../../Themes/Colors';
 import { Fonts } from '../../Themes/Fonts';
+import ActivityIndicatorModal from '../../Components/Loader/ActivityIndicator';
 
 
 const Contact = ({navigation}) => {
@@ -17,7 +18,8 @@ const Contact = ({navigation}) => {
   const [Description, setDescription] = useState('');
   const [alertVisible, setAlertVisible] = useState(false);
   const [Error, setError] = useState('');
-
+  const [isLoading, setIsLoading] = useState(false);
+  
   const showAlert = () => {
     setAlertVisible(true);
   };
@@ -26,20 +28,29 @@ const Contact = ({navigation}) => {
     setAlertVisible(false);
   };
 
-  const openImagePicker = async (setImage) => {
-    try {
-      const results = await ImageCropPicker.openPicker({
-        mediaType: 'photo',
-        multiple: true,
-      });
+ const openImagePicker = async () => {
+  try {
+    const results = await ImageCropPicker.openPicker({
+      mediaType: 'photo',
+      multiple: true,
+    });
 
-      if (!results.didCancel) {
-        setImage(results.map((result) => result.path));
+    if (!results.didCancel) {
+      const selectedImages = results.map((result) => result.path);
+      if (Array.isArray(selectedImages)) {
+        setBugsImages(selectedImages);
+      } else {
+        console.error("Selected images are not an array:", selectedImages);
       }
-    } catch (error) {
-      setError('Error picking images:', error);
     }
-  };
+  } catch (error) {
+    setError('Error picking images:', error);
+  }
+};
+
+ 
+  
+  
 
   const uploadImages = async (images, categoryName) => {
     try {
@@ -66,8 +77,11 @@ const Contact = ({navigation}) => {
         Subject:Subject,
         Description:Description
       });
+      setBugsImages([]),setSubject(''),setDescription(''),
+      showAlert()
     } catch (error) {
       setError('Error storing images in Firestore:', error);
+      setIsLoading(false);
     } finally {
       setIsLoading(false); // Hide activity indicator modal after upload completes
     }
@@ -113,8 +127,8 @@ const Contact = ({navigation}) => {
         </View>
      
        </View>
-       <CustomButton title={'Submit'} onPress={showAlert} />
-       
+       <CustomButton title={'Submit'} onPress={()=>{handleUpload()}} />
+       <ActivityIndicatorModal visible={isLoading} />
        <SubmissionAlert
         visible={alertVisible}
         message="This is a custom alert!"
